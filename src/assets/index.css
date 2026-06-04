@@ -1,0 +1,400 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@import "tw-animate-css";
+
+@import "shadcn-vue/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================
+   全局根容器尺寸
+   ============================================ */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================
+   shadcn-vue 主题变量 — Light Mode
+   ============================================ */
+:root {
+  /* --- shadcn 语义色 --- */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.839);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+
+  /* --- 布局变量 --- */
+  --sidebar-width: 210px;
+  --sidebar-width-collapsed: 54px;
+  --navbar-height: 50px;
+  --tags-view-height: 40px;
+  --page-padding: 20px;
+
+  /* --- 菜单 --- */
+  --menu-bg: #ffffff;
+  --menu-text: #606266;
+  --menu-active-text: var(--primary);
+  --menu-hover: #e6f4ff;
+  --sidebar-logo-bg: #fafafa;
+  --sidebar-logo-text: #383853;
+
+  /* --- 页面 --- */
+  --page-bg: #fafbfc;
+  --content-bg: #ffffff;
+
+  /* --- 边框 & 卡片 --- */
+  --border-color: #e2e8ee;
+  --card-border: rgb(0 0 0 / 8%);
+  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 6%), 0 1px 2px -1px rgb(0 0 0 / 4%);
+
+  /* --- 侧边栏蓝主题 --- */
+  --sidebar-blue-bg: #304156;
+  --sidebar-blue-text: #bfcbd9;
+  --sidebar-blue-hover: #263445;
+  --sidebar-blue-logo-bg: #2d3748;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* --- 液态玻璃 --- */
+  --glass-bg: rgba(255, 255, 255, 0.2);
+  --glass-blur: 20px;
+  --glass-saturate: 180%;
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  --glass-inner-glow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -0.5px 0 rgba(0, 0, 0, 0.03);
+  --glass-btn-bg: rgba(255, 255, 255, 0.4);
+  --glass-btn-border: rgba(255, 255, 255, 0.5);
+  --glass-btn-hover: rgba(255, 255, 255, 0.6);
+  --glass-input-bg: rgba(255, 255, 255, 0.35);
+  --glass-input-border: rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================
+   深蓝侧边栏主题
+   ============================================ */
+html.sidebar-color-blue {
+  --menu-bg: var(--sidebar-blue-bg);
+  --menu-text: var(--sidebar-blue-text);
+  --menu-hover: var(--sidebar-blue-hover);
+  --sidebar-logo-bg: var(--sidebar-blue-logo-bg);
+  --sidebar-logo-text: #fff;
+}
+
+/* ============================================
+   Dark Mode
+   ============================================ */
+html.dark {
+  --background: oklch(0.145 0.017 285.823);
+  --foreground: oklch(0.984 0.003 247.839);
+  --card: oklch(0.17 0.017 285.823);
+  --card-foreground: oklch(0.984 0.003 247.839);
+  --popover: oklch(0.17 0.017 285.823);
+  --popover-foreground: oklch(0.984 0.003 247.839);
+  --primary: oklch(0.702 0.187 258.374);
+  --primary-foreground: oklch(0.145 0.017 285.823);
+  --secondary: oklch(0.269 0.015 285.788);
+  --secondary-foreground: oklch(0.984 0.003 247.839);
+  --muted: oklch(0.269 0.015 285.788);
+  --muted-foreground: oklch(0.706 0.015 285.788);
+  --accent: oklch(0.269 0.015 285.788);
+  --accent-foreground: oklch(0.984 0.003 247.839);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.145 0.017 285.823);
+  --border: oklch(0.3 0.015 285.788);
+  --input: oklch(0.3 0.015 285.788);
+  --ring: oklch(0.702 0.187 258.374);
+
+  --menu-bg: oklch(0.17 0.017 285.823);
+  --menu-text: #fff;
+  --menu-hover: rgb(0 0 0 / 20%);
+  --sidebar-logo-bg: rgb(0 0 0 / 20%);
+  --sidebar-logo-text: #fff;
+
+  --page-bg: #070707;
+  --content-bg: #161618;
+  --border-color: rgb(255 255 255 / 10%);
+  --card-border: rgb(255 255 255 / 8%);
+  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 40%), 0 1px 2px -1px rgb(0 0 0 / 30%);
+
+  /* --- 磨砂黑 --- */
+  --glass-bg: rgba(18, 18, 20, 0.35);
+  --glass-blur: 24px;
+  --glass-saturate: 150%;
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-inner-glow: inset 0 0.5px 0 rgba(255, 255, 255, 0.04), inset 0 0 20px rgba(255, 255, 255, 0.02);
+  --glass-btn-bg: rgba(30, 30, 35, 0.6);
+  --glass-btn-border: rgba(255, 255, 255, 0.08);
+  --glass-btn-hover: rgba(40, 40, 48, 0.7);
+  --glass-input-bg: rgba(25, 25, 30, 0.5);
+  --glass-input-border: rgba(255, 255, 255, 0.06);
+}
+
+/* ============================================
+   Glass Surface — 液态玻璃基础样式
+   ============================================ */
+.glass-effect .glass-surface {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* GPU 加速：SVG 滤镜重绘时减少主线程负担 */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 弹性追踪组件 — 额外提示浏览器预分配合成层 */
+.glass-surface--elastic {
+  will-change: transform, left, top;
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+html.color-weak {
+  filter: invert(80%);
+}
+
+/* ============================================
+   Tailwind v4 Dark Mode Variant
+   ============================================ */
+@variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: 'Geist Variable', sans-serif;
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    @apply font-sans;
+  }
+}
+
+/* ============================================
+   液态玻璃 / 磨砂黑 全局效果
+   基于 SVG feDisplacementMap 折射管线
+   ============================================ */
+
+/* 基础玻璃 class — backdrop-filter blur + saturate（用于 Button/Badge glass variant） */
+.glass-base {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+}
+
+/*
+ * 浮层组件玻璃化 — 当 LiquidGlass 包裹组件时自动生效
+ * 此处仅作为 CSS 变量回退，实际折射效果由 LiquidGlass 组件提供
+ */
+
+/* ============================================
+   布局玻璃效果 — 与登录页一致的渐变背景
+   玻璃面板样式由各 Layout 组件的 Tailwind 类控制
+   ============================================ */
+
+/* 背景容器 */
+html.glass-effect .layout-glass-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 亮色：动态渐变 — 与登录页 .login-gradient 一致 */
+html.glass-effect .layout-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #005ec0 0%, #2a8ade 30%, #7ec8e3 55%, #f5d76e 80%, #fee070 100%);
+  background-size: 100% 300%;
+  animation: layoutGradientShift 8s ease-in-out infinite alternate;
+}
+
+@keyframes layoutGradientShift {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 0% 60%; }
+  100% { background-position: 0% 100%; }
+}
+
+/* 装饰浮动圆 — 与登录页 .deco 一致 */
+html.glass-effect .layout-deco {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+html.glass-effect .layout-deco--1 {
+  width: 400px;
+  height: 400px;
+  top: -10%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(0, 94, 192, 0.4), transparent 70%);
+  filter: blur(60px);
+  animation: layoutFloatA 12s ease-in-out infinite alternate;
+}
+
+html.glass-effect .layout-deco--2 {
+  width: 350px;
+  height: 350px;
+  bottom: -5%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(254, 224, 112, 0.35), transparent 70%);
+  filter: blur(55px);
+  animation: layoutFloatB 10s ease-in-out infinite alternate;
+}
+
+html.glass-effect .layout-deco--3 {
+  width: 250px;
+  height: 250px;
+  top: 50%;
+  left: 60%;
+  background: radial-gradient(circle, rgba(126, 200, 227, 0.25), transparent 70%);
+  filter: blur(50px);
+  animation: layoutFloatA 14s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes layoutFloatA {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, -40px) scale(1.1); }
+}
+
+@keyframes layoutFloatB {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-20px, 30px) scale(1.08); }
+}
+
+/* 暗色：宇宙背景图 */
+html.glass-effect .layout-dark-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+html.glass-effect .layout-dark-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================
+   玻璃面板样式已迁移至各 Layout 组件的 Tailwind 条件类
+   （backdrop-blur-2xl bg-white/10 dark:bg-black/25 等）
+   ============================================ */
