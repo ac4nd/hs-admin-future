@@ -1,22 +1,3 @@
-<script lang="ts" setup>
-import type { ToasterProps } from 'vue-sonner'
-
-import {
-  CircleCheckIcon,
-  InfoIcon,
-  Loader2Icon,
-  OctagonXIcon,
-  TriangleAlertIcon,
-  XIcon,
-} from '@lucide/vue'
-import { Toaster as Sonner } from 'vue-sonner'
-import { cn } from '@/lib/utils'
-import { reactiveOmit } from '@vueuse/core'
-
-const props = defineProps<ToasterProps>()
-const delegatedProps = reactiveOmit(props, 'class', 'toastOptions')
-</script>
-
 <template>
   <Sonner
     :class="cn('toaster group', props.class)"
@@ -60,3 +41,22 @@ const delegatedProps = reactiveOmit(props, 'class', 'toastOptions')
     </template>
   </Sonner>
 </template>
+
+<script lang="ts" setup>
+import type { ToasterProps } from "vue-sonner";
+
+import {
+  CircleCheckIcon,
+  InfoIcon,
+  Loader2Icon,
+  OctagonXIcon,
+  TriangleAlertIcon,
+  XIcon,
+} from "@lucide/vue";
+import { Toaster as Sonner } from "vue-sonner";
+import { cn } from "@/lib/utils";
+import { reactiveOmit } from "@vueuse/core";
+
+const props = defineProps<ToasterProps>();
+const delegatedProps = reactiveOmit(props, "class", "toastOptions");
+</script>

@@ -53,7 +53,7 @@ watch(
       expanded.value = true;
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function hasMatch(node: OptionItem, kw: string): boolean {

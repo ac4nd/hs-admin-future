@@ -7,7 +7,12 @@
         <div class="flex flex-wrap items-end gap-3">
           <div class="space-y-1.5">
             <Label class="text-xs">关键字</Label>
-            <Input v-model="queryParams.keywords" placeholder="用户名/昵称" class="w-52 h-8 text-sm" @keyup.enter="handleQuery" />
+            <Input
+              v-model="queryParams.keywords"
+              placeholder="用户名/昵称"
+              class="w-52 h-8 text-sm"
+              @keyup.enter="handleQuery"
+            />
           </div>
           <div class="space-y-1.5">
             <Label class="text-xs">状态</Label>
@@ -20,8 +25,14 @@
             </Select>
           </div>
           <div class="flex gap-2">
-            <Button size="sm" @click="handleQuery"><SearchIcon class="size-3.5" />搜索</Button>
-            <Button variant="outline" size="sm" @click="handleReset"><RotateCcwIcon class="size-3.5" />重置</Button>
+            <Button size="sm" @click="handleQuery">
+              <SearchIcon class="size-3.5" />
+              搜索
+            </Button>
+            <Button variant="outline" size="sm" @click="handleReset">
+              <RotateCcwIcon class="size-3.5" />
+              重置
+            </Button>
           </div>
         </div>
       </CardContent>
@@ -32,17 +43,33 @@
       <CardHeader class="pb-3">
         <div class="flex items-center justify-between">
           <div class="flex gap-2">
-            <Button size="sm" @click="openAdd"><PlusIcon class="size-3.5" />新增</Button>
-            <Button variant="destructive" size="sm" :disabled="checkedIds.size === 0" @click="handleBatchDelete"><TrashIcon class="size-3.5" />删除</Button>
+            <Button size="sm" @click="openAdd">
+              <PlusIcon class="size-3.5" />
+              新增
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              :disabled="checkedIds.size === 0"
+              @click="handleBatchDelete"
+            >
+              <TrashIcon class="size-3.5" />
+              删除
+            </Button>
           </div>
-          <Button variant="outline" size="sm" @click="handleExport"><DownloadIcon class="size-3.5" />导出</Button>
+          <Button variant="outline" size="sm" @click="handleExport">
+            <DownloadIcon class="size-3.5" />
+            导出
+          </Button>
         </div>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead class="w-10"><Checkbox :checked="isAllSelected" @update:checked="toggleAll" /></TableHead>
+              <TableHead class="w-10">
+                <Checkbox :checked="isAllSelected" @update:checked="toggleAll" />
+              </TableHead>
               <TableHead>用户名</TableHead>
               <TableHead>昵称</TableHead>
               <TableHead>部门</TableHead>
@@ -54,8 +81,14 @@
             <TableEmpty v-if="filteredList.length === 0" :colspan="6">
               <div class="text-muted-foreground text-sm">暂无数据</div>
             </TableEmpty>
-            <TableRow v-for="row in filteredList" :key="row.id" :data-state="checkedIds.has(row.id) ? 'selected' : undefined">
-              <TableCell><Checkbox :checked="checkedIds.has(row.id)" @update:checked="toggleRow(row)" /></TableCell>
+            <TableRow
+              v-for="row in filteredList"
+              :key="row.id"
+              :data-state="checkedIds.has(row.id) ? 'selected' : undefined"
+            >
+              <TableCell>
+                <Checkbox :checked="checkedIds.has(row.id)" @update:checked="toggleRow(row)" />
+              </TableCell>
               <TableCell class="font-medium">{{ row.username }}</TableCell>
               <TableCell>{{ row.nickname }}</TableCell>
               <TableCell>{{ row.deptName }}</TableCell>
@@ -66,8 +99,19 @@
               </TableCell>
               <TableCell class="text-right">
                 <div class="flex justify-end gap-1">
-                  <Button variant="ghost" size="sm" @click="openEdit(row)"><PencilIcon class="size-3.5 mr-1" />编辑</Button>
-                  <Button variant="ghost" size="sm" class="text-destructive" @click="handleDelete(row.id)"><TrashIcon class="size-3.5 mr-1" />删除</Button>
+                  <Button variant="ghost" size="sm" @click="openEdit(row)">
+                    <PencilIcon class="size-3.5 mr-1" />
+                    编辑
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    class="text-destructive"
+                    @click="handleDelete(row.id)"
+                  >
+                    <TrashIcon class="size-3.5 mr-1" />
+                    删除
+                  </Button>
                 </div>
               </TableCell>
             </TableRow>
@@ -84,11 +128,17 @@
         </DialogHeader>
         <div class="space-y-4 py-2">
           <div class="space-y-1.5">
-            <Label>用户名 <span class="text-destructive">*</span></Label>
+            <Label>
+              用户名
+              <span class="text-destructive">*</span>
+            </Label>
             <Input v-model="formData.username" placeholder="请输入用户名" :readonly="isEdit" />
           </div>
           <div class="space-y-1.5">
-            <Label>昵称 <span class="text-destructive">*</span></Label>
+            <Label>
+              昵称
+              <span class="text-destructive">*</span>
+            </Label>
             <Input v-model="formData.nickname" placeholder="请输入昵称" />
           </div>
           <div class="space-y-1.5">
@@ -104,7 +154,10 @@
           </div>
           <div class="flex items-center justify-between">
             <Label>状态</Label>
-            <Switch :checked="formData.status === 1" @update:checked="(v: boolean) => formData.status = v ? 1 : 0" />
+            <Switch
+              :checked="formData.status === 1"
+              @update:checked="(v: boolean) => (formData.status = v ? 1 : 0)"
+            />
           </div>
         </div>
         <DialogFooter>
@@ -119,7 +172,14 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import { toast } from "vue-sonner";
-import { SearchIcon, RotateCcwIcon, PlusIcon, TrashIcon, DownloadIcon, PencilIcon } from "@lucide/vue";
+import {
+  SearchIcon,
+  RotateCcwIcon,
+  PlusIcon,
+  TrashIcon,
+  DownloadIcon,
+  PencilIcon,
+} from "@lucide/vue";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -127,9 +187,29 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableEmpty } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableEmpty,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface Row {
   id: string;
@@ -149,18 +229,28 @@ const mockData: Row[] = [
 ];
 
 const dataList = ref<Row[]>([...mockData]);
-const queryParams = reactive({ keywords: undefined as string | undefined, status: undefined as number | undefined });
+const queryParams = reactive({
+  keywords: undefined as string | undefined,
+  status: undefined as number | undefined,
+});
 const checkedIds = ref<Set<string>>(new Set());
 
 const filteredList = computed(() => {
   return dataList.value.filter((r) => {
-    if (queryParams.keywords && !r.username.includes(queryParams.keywords) && !r.nickname.includes(queryParams.keywords)) return false;
+    if (
+      queryParams.keywords &&
+      !r.username.includes(queryParams.keywords) &&
+      !r.nickname.includes(queryParams.keywords)
+    )
+      return false;
     if (queryParams.status !== undefined && r.status !== queryParams.status) return false;
     return true;
   });
 });
 
-const isAllSelected = computed(() => filteredList.value.length > 0 && filteredList.value.every((r) => checkedIds.value.has(r.id)));
+const isAllSelected = computed(
+  () => filteredList.value.length > 0 && filteredList.value.every((r) => checkedIds.value.has(r.id))
+);
 
 function toggleRow(row: Row) {
   const s = new Set(checkedIds.value);
@@ -174,15 +264,31 @@ function toggleAll(val: boolean | "indeterminate") {
   checkedIds.value = s;
 }
 
-function handleQuery() { /* 前端过滤，自动响应 */ }
-function handleReset() { queryParams.keywords = undefined; queryParams.status = undefined; }
-function handleExport() { toast.success("导出成功（模拟）"); }
+function handleQuery() {
+  /* 前端过滤，自动响应 */
+}
+function handleReset() {
+  queryParams.keywords = undefined;
+  queryParams.status = undefined;
+}
+function handleExport() {
+  toast.success("导出成功（模拟）");
+}
 
 // 表单
 const dialogOpen = ref(false);
 const isEdit = ref(false);
-const formData = reactive<{ id?: string; username: string; nickname: string; deptId: string; status: number }>({
-  username: "", nickname: "", deptId: "", status: 1,
+const formData = reactive<{
+  id?: string;
+  username: string;
+  nickname: string;
+  deptId: string;
+  status: number;
+}>({
+  username: "",
+  nickname: "",
+  deptId: "",
+  status: 1,
 });
 
 function openAdd() {
@@ -198,7 +304,10 @@ function openEdit(row: Row) {
 }
 
 function handleSubmit() {
-  if (!formData.username || !formData.nickname) { toast.error("请填写必填项"); return; }
+  if (!formData.username || !formData.nickname) {
+    toast.error("请填写必填项");
+    return;
+  }
   if (isEdit.value && formData.id) {
     const idx = dataList.value.findIndex((r) => r.id === formData.id);
     if (idx >= 0) {

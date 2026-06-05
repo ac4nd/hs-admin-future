@@ -5,23 +5,26 @@
       <CardContent class="pt-6">
         <div class="flex items-center gap-3 flex-wrap">
           <Input
-            v-model="queryParams.keywords"
+            v-model.trim="queryParams.keywords"
             :placeholder="t('dept.keywordPlaceholder')"
             class="w-60"
             @keyup.enter="handleQuery"
           />
-          <Select v-model="statusFilter" @update:model-value="(v) => queryParams.status = v === 'all' ? undefined : Number(v)">
+          <Select
+            v-model="statusFilter"
+            @update:model-value="(v) => (queryParams.status = v === 'all' ? undefined : Number(v))"
+          >
             <SelectTrigger class="w-28">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{{ t('dept.statusAll') }}</SelectItem>
-              <SelectItem value="1">{{ t('dept.statusEnabled') }}</SelectItem>
-              <SelectItem value="0">{{ t('dept.statusDisabled') }}</SelectItem>
+              <SelectItem value="all">{{ t("dept.statusAll") }}</SelectItem>
+              <SelectItem value="1">{{ t("dept.statusEnabled") }}</SelectItem>
+              <SelectItem value="0">{{ t("dept.statusDisabled") }}</SelectItem>
             </SelectContent>
           </Select>
-          <Button @click="handleQuery">{{ t('dept.search') }}</Button>
-          <Button variant="outline" @click="handleResetQuery">{{ t('dept.reset') }}</Button>
+          <Button @click="handleQuery">{{ t("dept.search") }}</Button>
+          <Button variant="outline" @click="handleResetQuery">{{ t("dept.reset") }}</Button>
         </div>
       </CardContent>
     </Card>
@@ -31,17 +34,17 @@
       <CardContent class="pt-6">
         <!-- 工具栏 -->
         <div class="flex items-center gap-2 mb-4">
-          <Button @click="handleCreate()">{{ t('dept.add') }}</Button>
+          <Button @click="handleCreate()">{{ t("dept.add") }}</Button>
           <Button
             variant="destructive"
             :disabled="selectedIds.length === 0"
             @click="handleBatchDelete"
           >
-            {{ t('dept.delete') }}
+            {{ t("dept.delete") }}
           </Button>
           <div class="flex-1" />
           <Button variant="outline" size="sm" @click="toggleExpandAll">
-            {{ allExpanded ? t('dept.collapseAll') : t('dept.expandAll') }}
+            {{ allExpanded ? t("dept.collapseAll") : t("dept.expandAll") }}
           </Button>
         </div>
 
@@ -58,21 +61,21 @@
                     @change="toggleSelectAll"
                   />
                 </TableHead>
-                <TableHead>{{ t('dept.name') }}</TableHead>
-                <TableHead class="text-center w-24">{{ t('dept.status') }}</TableHead>
-                <TableHead class="text-center w-20">{{ t('dept.sort') }}</TableHead>
-                <TableHead class="text-center w-56">{{ t('dept.action') }}</TableHead>
+                <TableHead>{{ t("dept.name") }}</TableHead>
+                <TableHead class="text-center w-24">{{ t("dept.status") }}</TableHead>
+                <TableHead class="text-center w-20">{{ t("dept.sort") }}</TableHead>
+                <TableHead class="text-center w-56">{{ t("dept.action") }}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               <TableRow v-if="loading">
                 <TableCell :colspan="5" class="h-24 text-center text-muted-foreground">
-                  {{ t('dept.loading') }}
+                  {{ t("dept.loading") }}
                 </TableCell>
               </TableRow>
               <TableRow v-else-if="deptList.length === 0">
                 <TableCell :colspan="5" class="h-24 text-center text-muted-foreground">
-                  {{ t('dept.noData') }}
+                  {{ t("dept.noData") }}
                 </TableCell>
               </TableRow>
               <template v-else>
@@ -97,14 +100,24 @@
     </Card>
 
     <!-- 新增/编辑弹窗 -->
-    <Dialog :open="dialogVisible" @update:open="(v) => { if (!v) closeDialog() }">
+    <Dialog
+      :open="dialogVisible"
+      @update:open="
+        (v) => {
+          if (!v) closeDialog();
+        }
+      "
+    >
       <DialogContent class="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{{ dialogTitle }}</DialogTitle>
         </DialogHeader>
         <div class="space-y-4 py-2">
           <div class="space-y-2">
-            <Label>{{ t('dept.parentDept') }} <span class="text-destructive">*</span></Label>
+            <Label>
+              {{ t("dept.parentDept") }}
+              <span class="text-destructive">*</span>
+            </Label>
             <DeptTreeSelect
               v-model="formData.parentId"
               :options="deptOptions"
@@ -112,44 +125,59 @@
             />
           </div>
           <div class="space-y-2">
-            <Label>{{ t('dept.name') }} <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.name" :placeholder="t('dept.namePlaceholder')" />
+            <Label>
+              {{ t("dept.name") }}
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input v-model.trim="formData.name" :placeholder="t('dept.namePlaceholder')" />
           </div>
           <div class="space-y-2">
-            <Label>{{ t('dept.sortLabel') }}</Label>
+            <Label>{{ t("dept.sortLabel") }}</Label>
             <Input v-model.number="formData.sort" type="number" min="0" class="w-24" />
           </div>
           <div class="space-y-2">
-            <Label>{{ t('dept.status') }}</Label>
+            <Label>{{ t("dept.status") }}</Label>
             <div class="flex items-center gap-4">
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="1" v-model.number="formData.status" class="accent-primary" />
-                {{ t('dept.statusEnabled') }}
+                <input
+                  v-model.number="formData.status"
+                  type="radio"
+                  :value="1"
+                  class="accent-primary"
+                />
+                {{ t("dept.statusEnabled") }}
               </label>
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="0" v-model.number="formData.status" class="accent-primary" />
-                {{ t('dept.statusDisabled') }}
+                <input
+                  v-model.number="formData.status"
+                  type="radio"
+                  :value="0"
+                  class="accent-primary"
+                />
+                {{ t("dept.statusDisabled") }}
               </label>
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" @click="closeDialog">{{ t('dept.cancel') }}</Button>
-          <Button @click="handleSubmit">{{ t('dept.confirm') }}</Button>
+          <Button variant="outline" @click="closeDialog">{{ t("dept.cancel") }}</Button>
+          <Button @click="handleSubmit">{{ t("dept.confirm") }}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
 
     <!-- 删除确认 -->
-    <AlertDialog :open="deleteConfirmVisible" @update:open="(v) => deleteConfirmVisible = v">
+    <AlertDialog :open="deleteConfirmVisible" @update:open="(v) => (deleteConfirmVisible = v)">
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{{ t('dept.deleteWarning') }}</AlertDialogTitle>
-          <AlertDialogDescription>{{ t('dept.deleteConfirm') }}</AlertDialogDescription>
+          <AlertDialogTitle>{{ t("dept.deleteWarning") }}</AlertDialogTitle>
+          <AlertDialogDescription>{{ t("dept.deleteConfirm") }}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel @click="deleteConfirmVisible = false">{{ t('dept.cancel') }}</AlertDialogCancel>
-          <AlertDialogAction @click="confirmDelete">{{ t('dept.confirm') }}</AlertDialogAction>
+          <AlertDialogCancel @click="deleteConfirmVisible = false">
+            {{ t("dept.cancel") }}
+          </AlertDialogCancel>
+          <AlertDialogAction @click="confirmDelete">{{ t("dept.confirm") }}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -164,18 +192,40 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  getDeptList, getDeptOptions, getDeptFormData,
-  createDept, updateDept, deleteDeptByIds,
-} from "@/api/system/dept";
-import type { DeptItem, DeptForm, DeptQuery } from "@/api/system/dept/types";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import DeptAPI from "@/api/system/dept";
+import type { DeptItem, DeptForm, DeptQueryParams } from "@/api/system/dept/types";
 import type { OptionItem } from "@/api/common";
 import DeptTreeSelect from "./DeptTreeSelect.vue";
 import DeptTableRow from "./DeptTableRow.vue";
@@ -190,7 +240,7 @@ const selectedIds = ref<string[]>([]);
 const expandedIds = ref<Set<string>>(new Set());
 const allExpanded = ref(true);
 
-const queryParams = reactive<DeptQuery>({});
+const queryParams = reactive<DeptQueryParams>({});
 const statusFilter = ref("all");
 
 const isAllSelected = computed(() => {
@@ -253,10 +303,10 @@ function toggleExpandAll() {
   }
 }
 
-function fetchList() {
+async function fetchList() {
   loading.value = true;
   try {
-    deptList.value = getDeptList(queryParams);
+    deptList.value = await DeptAPI.getList(queryParams);
     initExpanded(deptList.value);
     selectedIds.value = [];
     allExpanded.value = true;
@@ -302,35 +352,37 @@ function closeDialog() {
   resetForm();
 }
 
-function handleCreate(parentId?: string) {
+async function handleCreate(parentId?: string) {
   dialogTitle.value = t("dept.addTitle");
-  deptOptions.value = [
-    { value: "0", label: t("dept.topLevel"), children: getDeptOptions() },
-  ];
+  deptOptions.value = [{ value: "0", label: t("dept.topLevel"), children: await DeptAPI.getOptions() }];
   resetForm();
   if (parentId) formData.parentId = parentId;
   dialogVisible.value = true;
 }
 
-function handleEdit(id: string) {
+async function handleEdit(id: string) {
   dialogTitle.value = t("dept.editTitle");
-  deptOptions.value = [
-    { value: "0", label: t("dept.topLevel"), children: getDeptOptions() },
-  ];
-  const data = getDeptFormData(id);
+  deptOptions.value = [{ value: "0", label: t("dept.topLevel"), children: await DeptAPI.getOptions() }];
+  const data = await DeptAPI.getFormData(id);
   if (data) Object.assign(formData, data);
   dialogVisible.value = true;
 }
 
-function handleSubmit() {
-  if (!formData.name) { toast.error(t("dept.nameRequired")); return; }
-  if (!formData.parentId && formData.parentId !== "0") { toast.error(t("dept.parentRequired")); return; }
+async function handleSubmit() {
+  if (!formData.name) {
+    toast.error(t("dept.nameRequired"));
+    return;
+  }
+  if (!formData.parentId && formData.parentId !== "0") {
+    toast.error(t("dept.parentRequired"));
+    return;
+  }
 
   if (formData.id) {
-    updateDept(formData.id, formData);
+    await DeptAPI.update(formData.id, formData);
     toast.success(t("dept.editSuccess"));
   } else {
-    createDept(formData);
+    await DeptAPI.create(formData);
     toast.success(t("dept.addSuccess"));
   }
   closeDialog();
@@ -344,7 +396,10 @@ const pendingDeleteIds = ref("");
 
 function handleDelete(id?: string) {
   const ids = id ?? selectedIds.value.join(",");
-  if (!ids) { toast.warning(t("dept.selectDelete")); return; }
+  if (!ids) {
+    toast.warning(t("dept.selectDelete"));
+    return;
+  }
   pendingDeleteIds.value = ids;
   deleteConfirmVisible.value = true;
 }
@@ -353,8 +408,8 @@ function handleBatchDelete() {
   handleDelete();
 }
 
-function confirmDelete() {
-  deleteDeptByIds(pendingDeleteIds.value);
+async function confirmDelete() {
+  await DeptAPI.deleteByIds(pendingDeleteIds.value);
   toast.success(t("dept.deleteSuccess"));
   deleteConfirmVisible.value = false;
   fetchList();

@@ -8,7 +8,7 @@
     @click="emit('click')"
     @contextmenu.prevent
   >
-    <span class="text-sm">{{ tag.icon || '📄' }}</span>
+    <span class="text-sm">{{ tag.icon || "📄" }}</span>
     <span>{{ translateRouteTitle(tag.title) }}</span>
     <span
       v-if="!tag.affix"

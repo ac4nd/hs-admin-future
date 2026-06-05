@@ -6,7 +6,8 @@
         <div class="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 class="text-xl font-bold">
-              {{ greetingEmoji }} {{ t('dashboard.greeting.message', { greeting: greetingText, name: 'Admin' }) }}
+              {{ greetingEmoji }}
+              {{ t("dashboard.greeting.message", { greeting: greetingText, name: "Admin" }) }}
             </h1>
             <p class="text-sm text-muted-foreground mt-1">{{ currentDate }}</p>
           </div>
@@ -39,7 +40,11 @@
               <p class="text-2xl font-bold tabular-nums">{{ stat.displayValue }}</p>
               <p class="text-xs text-muted-foreground mt-1">{{ stat.desc }}</p>
             </div>
-            <Badge v-if="stat.growth > 0" variant="secondary" class="text-green-600 dark:text-green-400">
+            <Badge
+              v-if="stat.growth > 0"
+              variant="secondary"
+              class="text-green-600 dark:text-green-400"
+            >
               +{{ stat.growth }}%
             </Badge>
           </div>
@@ -51,9 +56,15 @@
     <Card>
       <CardHeader class="pb-3">
         <div class="flex items-center justify-between">
-          <CardTitle class="text-sm">🕐 {{ t('dashboard.recentVisit.title') }}</CardTitle>
-          <Button v-if="recentMenus.length" variant="ghost" size="sm" class="h-7 text-xs" @click="clearRecentMenus">
-            {{ t('dashboard.recentVisit.clear') }}
+          <CardTitle class="text-sm">🕐 {{ t("dashboard.recentVisit.title") }}</CardTitle>
+          <Button
+            v-if="recentMenus.length"
+            variant="ghost"
+            size="sm"
+            class="h-7 text-xs"
+            @click="clearRecentMenus"
+          >
+            {{ t("dashboard.recentVisit.clear") }}
           </Button>
         </div>
       </CardHeader>
@@ -70,7 +81,7 @@
             {{ menu.icon }} {{ menu.title }}
           </Button>
         </div>
-        <p v-else class="text-sm text-muted-foreground">{{ t('dashboard.recentVisit.empty') }}</p>
+        <p v-else class="text-sm text-muted-foreground">{{ t("dashboard.recentVisit.empty") }}</p>
       </CardContent>
     </Card>
 
@@ -80,7 +91,7 @@
       <Card>
         <CardHeader class="pb-2">
           <div class="flex items-center justify-between">
-            <CardTitle class="text-sm">📈 {{ t('dashboard.trend.title') }}</CardTitle>
+            <CardTitle class="text-sm">📈 {{ t("dashboard.trend.title") }}</CardTitle>
             <div class="flex gap-1">
               <Button
                 variant="ghost"
@@ -89,7 +100,7 @@
                 :class="{ 'bg-muted': trendRange === 7 }"
                 @click="trendRange = 7"
               >
-                {{ t('dashboard.trend.days7') }}
+                {{ t("dashboard.trend.days7") }}
               </Button>
               <Button
                 variant="ghost"
@@ -98,7 +109,7 @@
                 :class="{ 'bg-muted': trendRange === 30 }"
                 @click="trendRange = 30"
               >
-                {{ t('dashboard.trend.days30') }}
+                {{ t("dashboard.trend.days30") }}
               </Button>
             </div>
           </div>
@@ -108,16 +119,20 @@
           <div class="flex items-center gap-4 mb-2 text-xs text-muted-foreground">
             <span class="flex items-center gap-1">
               <span class="inline-block w-3 h-0.5 rounded bg-blue-500" />
-              {{ t('dashboard.trend.pv') }}
+              {{ t("dashboard.trend.pv") }}
             </span>
             <span class="flex items-center gap-1">
               <span class="inline-block w-3 h-0.5 rounded bg-green-500" />
-              {{ t('dashboard.trend.uv') }}
+              {{ t("dashboard.trend.uv") }}
             </span>
           </div>
           <!-- SVG 折线图 -->
           <div class="w-full" style="height: 200px">
-            <svg :viewBox="`0 0 ${svgWidth} ${svgHeight}`" class="w-full h-full" preserveAspectRatio="none">
+            <svg
+              :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
+              class="w-full h-full"
+              preserveAspectRatio="none"
+            >
               <defs>
                 <linearGradient id="pvGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3" />
@@ -145,9 +160,25 @@
               <!-- UV 填充区域 -->
               <polygon v-if="uvAreaPoints" :points="uvAreaPoints" fill="url(#uvGrad)" />
               <!-- PV 折线 -->
-              <polyline v-if="pvLinePoints" :points="pvLinePoints" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <polyline
+                v-if="pvLinePoints"
+                :points="pvLinePoints"
+                fill="none"
+                stroke="#3b82f6"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
               <!-- UV 折线 -->
-              <polyline v-if="uvLinePoints" :points="uvLinePoints" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <polyline
+                v-if="uvLinePoints"
+                :points="uvLinePoints"
+                fill="none"
+                stroke="#22c55e"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </div>
           <!-- 日期标签 -->
@@ -163,7 +194,7 @@
         <!-- 待办事项 -->
         <Card>
           <CardHeader class="pb-3">
-            <CardTitle class="text-sm">✅ {{ t('dashboard.todo.title') }}</CardTitle>
+            <CardTitle class="text-sm">✅ {{ t("dashboard.todo.title") }}</CardTitle>
           </CardHeader>
           <CardContent>
             <div class="space-y-2">
@@ -172,7 +203,9 @@
                 :key="index"
                 class="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-muted/50 transition-colors"
               >
-                <Badge :variant="todo.priorityVariant" class="text-[10px] px-1.5 py-0">{{ todo.priority }}</Badge>
+                <Badge :variant="todo.priorityVariant" class="text-[10px] px-1.5 py-0">
+                  {{ todo.priority }}
+                </Badge>
                 <span class="text-sm">{{ todo.text }}</span>
               </div>
             </div>
@@ -182,15 +215,11 @@
         <!-- 系统动态 -->
         <Card>
           <CardHeader class="pb-3">
-            <CardTitle class="text-sm">📋 {{ t('dashboard.activity.title') }}</CardTitle>
+            <CardTitle class="text-sm">📋 {{ t("dashboard.activity.title") }}</CardTitle>
           </CardHeader>
           <CardContent>
             <div class="space-y-3">
-              <div
-                v-for="(activity, index) in activities"
-                :key="index"
-                class="flex gap-3 text-sm"
-              >
+              <div v-for="(activity, index) in activities" :key="index" class="flex gap-3 text-sm">
                 <div class="flex flex-col items-center">
                   <div class="w-2 h-2 rounded-full mt-1.5" :class="activity.dotColor" />
                   <div v-if="index < activities.length - 1" class="w-px flex-1 bg-border mt-1" />

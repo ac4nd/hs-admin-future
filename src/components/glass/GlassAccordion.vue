@@ -1,31 +1,3 @@
-<script lang="ts" setup>
-import { ref, type HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-  items: Array<{ id: string | number; title: string; content: string }>
-  multiple?: boolean
-}>()
-
-const { isEnabled } = useGlassFilter('accordion')
-
-const openItems = ref<Set<string | number>>(new Set())
-
-function toggle(id: string | number) {
-  if (openItems.value.has(id)) {
-    openItems.value.delete(id)
-  } else {
-    if (!props.multiple) openItems.value.clear()
-    openItems.value.add(id)
-  }
-  // 触发响应式更新
-  openItems.value = new Set(openItems.value)
-}
-</script>
-
 <template>
   <div :class="cn('w-full space-y-2', props.class)">
     <GlassSurface
@@ -56,3 +28,31 @@ function toggle(id: string | number) {
     </GlassSurface>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { ref, type HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = defineProps<{
+  class?: HTMLAttributes["class"];
+  items: Array<{ id: string | number; title: string; content: string }>;
+  multiple?: boolean;
+}>();
+
+const { isEnabled } = useGlassFilter("accordion");
+
+const openItems = ref<Set<string | number>>(new Set());
+
+function toggle(id: string | number) {
+  if (openItems.value.has(id)) {
+    openItems.value.delete(id);
+  } else {
+    if (!props.multiple) openItems.value.clear();
+    openItems.value.add(id);
+  }
+  // 触发响应式更新
+  openItems.value = new Set(openItems.value);
+}
+</script>

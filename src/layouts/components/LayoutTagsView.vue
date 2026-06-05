@@ -31,20 +31,25 @@
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom" :side-offset="4">
-          {{ t('tagsView.refresh') }}
+          {{ t("tagsView.refresh") }}
         </TooltipContent>
       </Tooltip>
 
       <!-- 内容区全屏 -->
       <Tooltip>
         <TooltipTrigger as-child>
-          <Button variant="ghost" size="icon" class="h-6 w-6" @click="appStore.toggleContentFullscreen()">
+          <Button
+            variant="ghost"
+            size="icon"
+            class="h-6 w-6"
+            @click="appStore.toggleContentFullscreen()"
+          >
             <X v-if="appStore.contentFullscreen" class="h-3.5 w-3.5" />
             <Expand v-else class="h-3.5 w-3.5" />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom" :side-offset="4">
-          {{ appStore.contentFullscreen ? t('navbar.fullscreenExit') : t('navbar.fullscreen') }}
+          {{ appStore.contentFullscreen ? t("navbar.fullscreenExit") : t("navbar.fullscreen") }}
         </TooltipContent>
       </Tooltip>
 
@@ -58,32 +63,29 @@
         <DropdownMenuContent align="end">
           <DropdownMenuItem @click="handleRefresh">
             <RefreshCw class="mr-2 h-4 w-4" />
-            {{ t('tagsView.refresh') }}
+            {{ t("tagsView.refresh") }}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            v-if="currentTag && !currentTag.affix"
-            @click="handleCloseCurrent"
-          >
+          <DropdownMenuItem v-if="currentTag && !currentTag.affix" @click="handleCloseCurrent">
             <X class="mr-2 h-4 w-4" />
-            {{ t('tagsView.closeCurrent') }}
+            {{ t("tagsView.closeCurrent") }}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem @click="handleCloseOthers">
             <FolderX class="mr-2 h-4 w-4" />
-            {{ t('tagsView.closeOthers') }}
+            {{ t("tagsView.closeOthers") }}
           </DropdownMenuItem>
           <DropdownMenuItem @click="handleCloseLeft">
             <ChevronLeft class="mr-2 h-4 w-4" />
-            {{ t('tagsView.closeLeft') }}
+            {{ t("tagsView.closeLeft") }}
           </DropdownMenuItem>
           <DropdownMenuItem @click="handleCloseRight">
             <ChevronRight class="mr-2 h-4 w-4" />
-            {{ t('tagsView.closeRight') }}
+            {{ t("tagsView.closeRight") }}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem @click="handleCloseAll">
             <XCircle class="mr-2 h-4 w-4" />
-            {{ t('tagsView.closeAll') }}
+            {{ t("tagsView.closeAll") }}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -128,9 +130,7 @@ const tagsViewStore = useTagsViewStore();
 const glassEffect = computed(() => settingsStore.glassEffect);
 
 /** 当前路由对应的标签 */
-const currentTag = computed(() =>
-  tagsViewStore.visitedViews.find((v) => v.path === route.path)
-);
+const currentTag = computed(() => tagsViewStore.visitedViews.find((v) => v.path === route.path));
 
 /** 路由变化时自动添加标签 */
 watch(
@@ -219,6 +219,8 @@ function toLastView() {
   align-items: center;
   width: 100%;
   height: var(--tags-view-height);
-  transition: background-color 0.3s, backdrop-filter 0.3s;
+  transition:
+    background-color 0.3s,
+    backdrop-filter 0.3s;
 }
 </style>

@@ -10,7 +10,10 @@
             : 'bg-[var(--content-bg)] border-b border-[var(--card-border)]'
         "
       >
-        <div class="layout-top__header-left" :class="{ 'layout-top__header-left--mobile': isMobile }">
+        <div
+          class="layout-top__header-left"
+          :class="{ 'layout-top__header-left--mobile': isMobile }"
+        >
           <LayoutLogo :collapse="isMobile" />
         </div>
         <TopMenu />
@@ -55,7 +58,9 @@ const isMobile = computed(() => width.value < 768);
   display: flex;
   align-items: center;
   height: var(--navbar-height);
-  transition: background-color 0.3s, backdrop-filter 0.3s;
+  transition:
+    background-color 0.3s,
+    backdrop-filter 0.3s;
 }
 .layout-top__header-left {
   display: flex;

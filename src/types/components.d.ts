@@ -136,6 +136,8 @@ declare module 'vue' {
     LayoutSettings: typeof import('./../layouts/components/LayoutSettings.vue')['default']
     LayoutSidebar: typeof import('./../layouts/components/LayoutSidebar.vue')['default']
     LayoutTagsView: typeof import('./../layouts/components/LayoutTagsView.vue')['default']
+    MixSidebar: typeof import('./../layouts/components/MixSidebar.vue')['default']
+    MixTopMenu: typeof import('./../layouts/components/MixTopMenu.vue')['default']
     NoticeDropdown: typeof import('./../layouts/components/toolbar/NoticeDropdown.vue')['default']
     Pagination: typeof import('./../components/ui/pagination/Pagination.vue')['default']
     PaginationContent: typeof import('./../components/ui/pagination/PaginationContent.vue')['default']

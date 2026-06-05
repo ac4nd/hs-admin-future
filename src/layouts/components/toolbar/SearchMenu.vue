@@ -6,7 +6,7 @@
   <CommandDialog v-model:open="open">
     <CommandInput :placeholder="t('navbar.search') + '...'" />
     <CommandList>
-      <CommandEmpty>{{ t('navbar.search') }} — 0</CommandEmpty>
+      <CommandEmpty>{{ t("navbar.search") }} — 0</CommandEmpty>
       <CommandGroup>
         <CommandItem
           v-for="item in flatMenus"
@@ -14,7 +14,7 @@
           :value="item.title"
           @select="handleSelect(item)"
         >
-          <span class="mr-2">{{ item.icon || '📄' }}</span>
+          <span class="mr-2">{{ item.icon || "📄" }}</span>
           <span>{{ translateRouteTitle(item.title) }}</span>
         </CommandItem>
       </CommandGroup>
@@ -48,9 +48,7 @@ const permissionStore = usePermissionStore();
 const open = ref(false);
 
 /** 将菜单树展平为一级列表用于搜索 */
-const flatMenus = flattenMenus(
-  generateMenus(permissionStore.routes)
-);
+const flatMenus = flattenMenus(generateMenus(permissionStore.routes));
 
 function flattenMenus(items: MenuItem[]): MenuItem[] {
   const result: MenuItem[] = [];

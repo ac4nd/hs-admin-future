@@ -9,6 +9,8 @@ export const usePermissionStore = defineStore("permission", () => {
   const routes = ref<RouteRecordRaw[]>([...constantRoutes]);
   /** 动态路由是否已生成 */
   const isRouteGenerated = ref(false);
+  /** 混合布局 — 当前激活一级菜单的子路由 */
+  const mixLayoutSideMenus = ref<RouteRecordRaw[]>([]);
 
   /**
    * 生成动态路由
@@ -30,10 +32,19 @@ export const usePermissionStore = defineStore("permission", () => {
     isRouteGenerated.value = false;
   }
 
+  /** 设置混合布局侧边栏菜单 */
+  function setMixLayoutSideMenus(parentPath: string) {
+    // 从动态路由（非静态路由）中查找匹配的一级菜单
+    const parentMenu = routes.value.find((item) => item.path === parentPath);
+    mixLayoutSideMenus.value = parentMenu?.children ?? [];
+  }
+
   return {
     routes,
     isRouteGenerated,
+    mixLayoutSideMenus,
     generateRoutes,
     resetRoutes,
+    setMixLayoutSideMenus,
   };
 });

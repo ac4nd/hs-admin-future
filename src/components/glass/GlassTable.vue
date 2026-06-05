@@ -1,24 +1,3 @@
-<script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-}>()
-
-const { isEnabled } = useGlassFilter('table')
-</script>
-
 <template>
   <GlassSurface
     v-if="isEnabled"
@@ -37,3 +16,17 @@ const { isEnabled } = useGlassFilter('table')
     <slot />
   </Table>
 </template>
+
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { Table } from "@/components/ui/table";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = defineProps<{
+  class?: HTMLAttributes["class"];
+}>();
+
+const { isEnabled } = useGlassFilter("table");
+</script>

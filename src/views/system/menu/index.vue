@@ -5,13 +5,13 @@
       <CardContent class="pt-6">
         <div class="flex items-center gap-3 flex-wrap">
           <Input
-            v-model="queryParams.keywords"
+            v-model.trim="queryParams.keywords"
             :placeholder="t('menu.keywordPlaceholder')"
             class="w-60"
             @keyup.enter="handleQuery"
           />
-          <Button @click="handleQuery">{{ t('menu.search') }}</Button>
-          <Button variant="outline" @click="handleResetQuery">{{ t('menu.reset') }}</Button>
+          <Button @click="handleQuery">{{ t("menu.search") }}</Button>
+          <Button variant="outline" @click="handleResetQuery">{{ t("menu.reset") }}</Button>
         </div>
       </CardContent>
     </Card>
@@ -21,9 +21,9 @@
       <CardContent class="pt-6">
         <!-- 工具栏 -->
         <div class="flex items-center gap-2 mb-4">
-          <Button @click="handleCreate">{{ t('menu.add') }}</Button>
+          <Button @click="handleCreate">{{ t("menu.add") }}</Button>
           <Button variant="outline" size="sm" @click="toggleExpandAll">
-            {{ allExpanded ? t('menu.collapse', '收缩') : t('menu.expand', '展开') }}
+            {{ allExpanded ? t("menu.collapse", "收缩") : t("menu.expand", "展开") }}
           </Button>
         </div>
 
@@ -32,34 +32,32 @@
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead class="min-w-[200px]">{{ t('menu.menuName') }}</TableHead>
-                <TableHead class="w-20 text-center">{{ t('menu.type') }}</TableHead>
-                <TableHead class="w-32">{{ t('menu.routeName') }}</TableHead>
-                <TableHead class="w-32">{{ t('menu.routePath') }}</TableHead>
-                <TableHead class="w-44">{{ t('menu.componentPath') }}</TableHead>
-                <TableHead class="w-36">{{ t('menu.permission') }}</TableHead>
-                <TableHead v-if="showMenuScope" class="w-20 text-center">{{ t('menu.scope') }}</TableHead>
-                <TableHead class="w-16 text-center">{{ t('menu.status') }}</TableHead>
-                <TableHead class="w-14 text-center">{{ t('menu.sort') }}</TableHead>
-                <TableHead class="w-40 text-center">{{ t('menu.action') }}</TableHead>
+                <TableHead class="min-w-[200px]">{{ t("menu.menuName") }}</TableHead>
+                <TableHead class="w-20 text-center">{{ t("menu.type") }}</TableHead>
+                <TableHead class="w-32">{{ t("menu.routeName") }}</TableHead>
+                <TableHead class="w-32">{{ t("menu.routePath") }}</TableHead>
+                <TableHead class="w-44">{{ t("menu.componentPath") }}</TableHead>
+                <TableHead class="w-36">{{ t("menu.permission") }}</TableHead>
+                <TableHead v-if="showMenuScope" class="w-20 text-center">
+                  {{ t("menu.scope") }}
+                </TableHead>
+                <TableHead class="w-16 text-center">{{ t("menu.status") }}</TableHead>
+                <TableHead class="w-14 text-center">{{ t("menu.sort") }}</TableHead>
+                <TableHead class="w-40 text-center">{{ t("menu.action") }}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               <TableRow v-if="loading">
                 <TableCell :colspan="colspan" class="h-24 text-center text-muted-foreground">
-                  {{ t('menu.loading') }}
+                  {{ t("menu.loading") }}
                 </TableCell>
               </TableRow>
               <TableRow v-else-if="flatMenuData.length === 0">
                 <TableCell :colspan="colspan" class="h-24 text-center text-muted-foreground">
-                  {{ t('menu.noData') }}
+                  {{ t("menu.noData") }}
                 </TableCell>
               </TableRow>
-              <TableRow
-                v-for="row in flatMenuData"
-                :key="row.id"
-                class="hover:bg-muted/50"
-              >
+              <TableRow v-for="row in flatMenuData" :key="row.id" class="hover:bg-muted/50">
                 <!-- 菜单名称（带缩进和展开图标） -->
                 <TableCell>
                   <div class="flex items-center" :style="{ paddingLeft: `${row._level * 24}px` }">
@@ -75,8 +73,8 @@
                     </button>
                     <span v-else class="inline-block w-5 shrink-0" />
                     <component
-                      v-if="resolveIcon(row.icon)"
                       :is="resolveIcon(row.icon)"
+                      v-if="resolveIcon(row.icon)"
                       class="size-4 mr-1 shrink-0 text-muted-foreground"
                     />
                     <span class="truncate">{{ row.name }}</span>
@@ -85,25 +83,35 @@
 
                 <!-- 类型 -->
                 <TableCell class="text-center">
-                  <Badge v-if="row.type === MenuTypeEnum.CATALOG" variant="outline" class="border-yellow-500 text-yellow-600">
-                    {{ t('menu.typeCatalog') }}
+                  <Badge
+                    v-if="row.type === MenuTypeEnum.CATALOG"
+                    variant="outline"
+                    class="border-yellow-500 text-yellow-600"
+                  >
+                    {{ t("menu.typeCatalog") }}
                   </Badge>
                   <Badge v-else-if="row.type === MenuTypeEnum.MENU" variant="default">
-                    {{ t('menu.typeMenu') }}
+                    {{ t("menu.typeMenu") }}
                   </Badge>
                   <Badge v-else-if="row.type === MenuTypeEnum.BUTTON" variant="destructive">
-                    {{ t('menu.typeButton') }}
+                    {{ t("menu.typeButton") }}
                   </Badge>
                 </TableCell>
 
                 <!-- 路由名称 -->
-                <TableCell class="text-sm text-muted-foreground">{{ row.routeName || '-' }}</TableCell>
+                <TableCell class="text-sm text-muted-foreground">
+                  {{ row.routeName || "-" }}
+                </TableCell>
 
                 <!-- 路由路径 -->
-                <TableCell class="text-sm text-muted-foreground">{{ row.routePath || row.path || '-' }}</TableCell>
+                <TableCell class="text-sm text-muted-foreground">
+                  {{ row.routePath || row.path || "-" }}
+                </TableCell>
 
                 <!-- 组件路径 -->
-                <TableCell class="text-sm text-muted-foreground">{{ row.component || '-' }}</TableCell>
+                <TableCell class="text-sm text-muted-foreground">
+                  {{ row.component || "-" }}
+                </TableCell>
 
                 <!-- 权限标识 -->
                 <TableCell>
@@ -116,17 +124,17 @@
                 <!-- 范围 -->
                 <TableCell v-if="showMenuScope" class="text-center">
                   <Badge v-if="row.scope === MenuScopeEnum.PLATFORM" variant="destructive">
-                    {{ t('menu.scopePlatform') }}
+                    {{ t("menu.scopePlatform") }}
                   </Badge>
                   <Badge v-else variant="default">
-                    {{ t('menu.scopeBusiness') }}
+                    {{ t("menu.scopeBusiness") }}
                   </Badge>
                 </TableCell>
 
                 <!-- 状态 -->
                 <TableCell class="text-center">
                   <Badge :variant="row.visible === 1 ? 'default' : 'secondary'">
-                    {{ row.visible === 1 ? t('menu.statusShow') : t('menu.statusHide') }}
+                    {{ row.visible === 1 ? t("menu.statusShow") : t("menu.statusHide") }}
                   </Badge>
                 </TableCell>
 
@@ -143,10 +151,15 @@
                       class="h-7 text-xs"
                       @click="handleAddChild(row.id!)"
                     >
-                      {{ t('menu.add') }}
+                      {{ t("menu.add") }}
                     </Button>
-                    <Button variant="ghost" size="sm" class="h-7 text-xs" @click="handleEdit(row.id!)">
-                      {{ t('menu.edit') }}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      class="h-7 text-xs"
+                      @click="handleEdit(row.id!)"
+                    >
+                      {{ t("menu.edit") }}
                     </Button>
                     <Button
                       variant="ghost"
@@ -154,7 +167,7 @@
                       class="h-7 text-xs text-destructive hover:text-destructive"
                       @click="handleDelete(row.id!)"
                     >
-                      {{ t('menu.delete') }}
+                      {{ t("menu.delete") }}
                     </Button>
                   </div>
                 </TableCell>
@@ -166,7 +179,14 @@
     </Card>
 
     <!-- 新增/编辑抽屉 -->
-    <Sheet :open="dialogVisible" @update:open="(v) => { if (!v) closeDialog() }">
+    <Sheet
+      :open="dialogVisible"
+      @update:open="
+        (v) => {
+          if (!v) closeDialog();
+        }
+      "
+    >
       <SheetContent class="sm:max-w-xl overflow-auto">
         <SheetHeader>
           <SheetTitle>{{ dialogTitle }}</SheetTitle>
@@ -174,7 +194,10 @@
         <div class="py-4 space-y-4">
           <!-- 父级菜单 -->
           <div class="space-y-2">
-            <Label>{{ t('menu.parentMenu') }} <span class="text-destructive">*</span></Label>
+            <Label>
+              {{ t("menu.parentMenu") }}
+              <span class="text-destructive">*</span>
+            </Label>
             <TreeSelect
               v-model="formData.parentId!"
               :options="menuOptions"
@@ -185,16 +208,32 @@
 
           <!-- 菜单名称 -->
           <div class="space-y-2">
-            <Label>{{ t('menu.menuName') }} <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.name!" :placeholder="t('menu.menuNamePlaceholder')" />
+            <Label>
+              {{ t("menu.menuName") }}
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input v-model.trim="formData.name!" :placeholder="t('menu.menuNamePlaceholder')" />
           </div>
 
           <!-- 菜单类型 -->
           <div class="space-y-2">
-            <Label>{{ t('menu.menuType') }} <span class="text-destructive">*</span></Label>
+            <Label>
+              {{ t("menu.menuType") }}
+              <span class="text-destructive">*</span>
+            </Label>
             <div class="flex items-center gap-4">
-              <label v-for="item in menuTypeOptions" :key="item.value" class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="item.value" v-model="formData.type" class="accent-primary" @change="handleMenuTypeChange" />
+              <label
+                v-for="item in menuTypeOptions"
+                :key="item.value"
+                class="flex items-center gap-2 cursor-pointer text-sm"
+              >
+                <input
+                  v-model="formData.type"
+                  type="radio"
+                  :value="item.value"
+                  class="accent-primary"
+                  @change="handleMenuTypeChange"
+                />
                 {{ item.label }}
               </label>
             </div>
@@ -203,89 +242,124 @@
           <!-- 路由名称 -->
           <div v-if="formData.type === MenuTypeEnum.MENU && !isExternalLink" class="space-y-2">
             <Label>
-              {{ t('menu.routeName') }}
+              {{ t("menu.routeName") }}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger as-child>
                     <InfoIcon class="inline size-3.5 ml-1 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent side="bottom" class="max-w-xs">
-                    <p>{{ t('menu.routeNameTooltip') }}</p>
+                    <p>{{ t("menu.routeNameTooltip") }}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </Label>
-            <Input v-model="formData.routeName!" :placeholder="t('menu.routeNamePlaceholder')" />
+            <Input v-model.trim="formData.routeName!" :placeholder="t('menu.routeNamePlaceholder')" />
           </div>
 
           <!-- 路由路径 -->
-          <div v-if="formData.type === MenuTypeEnum.CATALOG || formData.type === MenuTypeEnum.MENU" class="space-y-2">
+          <div
+            v-if="formData.type === MenuTypeEnum.CATALOG || formData.type === MenuTypeEnum.MENU"
+            class="space-y-2"
+          >
             <Label>
-              {{ t('menu.routePath') }}
+              {{ t("menu.routePath") }}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger as-child>
                     <InfoIcon class="inline size-3.5 ml-1 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent side="bottom" class="max-w-xs">
-                    <p>{{ t('menu.routePathTooltip') }}</p>
+                    <p>{{ t("menu.routePathTooltip") }}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </Label>
             <Input
-              v-model="formData.routePath!"
-              :placeholder="formData.type === MenuTypeEnum.CATALOG ? t('menu.routePathCatalogPlaceholder') : t('menu.routePathMenuPlaceholder')"
+              v-model.trim="formData.routePath!"
+              :placeholder="
+                formData.type === MenuTypeEnum.CATALOG
+                  ? t('menu.routePathCatalogPlaceholder')
+                  : t('menu.routePathMenuPlaceholder')
+              "
             />
           </div>
 
           <!-- 组件路径 -->
           <div v-if="formData.type === MenuTypeEnum.MENU && !isExternalLink" class="space-y-2">
             <Label>
-              {{ t('menu.componentPath') }}
+              {{ t("menu.componentPath") }}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger as-child>
                     <InfoIcon class="inline size-3.5 ml-1 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent side="bottom" class="max-w-xs">
-                    <p>{{ t('menu.componentPathTooltip') }}</p>
+                    <p>{{ t("menu.componentPathTooltip") }}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </Label>
             <div class="flex items-center">
-              <span class="bg-muted px-2 py-1.5 rounded-l-md border border-r-0 text-sm text-muted-foreground whitespace-nowrap">src/views/</span>
-              <Input v-model="formData.component!" :placeholder="t('menu.componentPathPlaceholder')" class="rounded-none" />
-              <span class="bg-muted px-2 py-1.5 rounded-r-md border border-l-0 text-sm text-muted-foreground">.vue</span>
+              <span
+                class="bg-muted px-2 py-1.5 rounded-l-md border border-r-0 text-sm text-muted-foreground whitespace-nowrap"
+              >
+                src/views/
+              </span>
+              <Input
+                v-model.trim="formData.component!"
+                :placeholder="t('menu.componentPathPlaceholder')"
+                class="rounded-none"
+              />
+              <span
+                class="bg-muted px-2 py-1.5 rounded-r-md border border-l-0 text-sm text-muted-foreground"
+              >
+                .vue
+              </span>
             </div>
           </div>
 
           <!-- 路由参数 -->
           <div v-if="formData.type === MenuTypeEnum.MENU && !isExternalLink" class="space-y-2">
             <Label>
-              {{ t('menu.routeParams') }}
+              {{ t("menu.routeParams") }}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger as-child>
                     <InfoIcon class="inline size-3.5 ml-1 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent side="bottom" class="max-w-xs">
-                    <p>{{ t('menu.routeParamsTooltip') }}</p>
+                    <p>{{ t("menu.routeParamsTooltip") }}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </Label>
             <div v-if="!formData.params || formData.params.length === 0">
-              <Button variant="outline" size="sm" @click="formData.params = [{ key: '', value: '' }]">
-                {{ t('menu.addParam') }}
+              <Button
+                variant="outline"
+                size="sm"
+                @click="formData.params = [{ key: '', value: '' }]"
+              >
+                {{ t("menu.addParam") }}
               </Button>
             </div>
             <div v-else class="space-y-2">
-              <div v-for="(item, idx) in formData.params" :key="idx" class="flex items-center gap-2">
-                <Input v-model="item.key!" :placeholder="t('menu.paramKeyPlaceholder')" class="w-32" />
+              <div
+                v-for="(item, idx) in formData.params"
+                :key="idx"
+                class="flex items-center gap-2"
+              >
+                <Input
+                  v-model="item.key!"
+                  :placeholder="t('menu.paramKeyPlaceholder')"
+                  class="w-32"
+                />
                 <span class="text-muted-foreground">=</span>
-                <Input v-model="item.value!" :placeholder="t('menu.paramValuePlaceholder')" class="w-32" />
+                <Input
+                  v-model="item.value!"
+                  :placeholder="t('menu.paramValuePlaceholder')"
+                  class="w-32"
+                />
                 <Button
                   v-if="idx === formData.params!.length - 1"
                   variant="ghost"
@@ -309,117 +383,162 @@
 
           <!-- 菜单范围 -->
           <div v-if="formData.type !== MenuTypeEnum.BUTTON && showMenuScope" class="space-y-2">
-            <Label>{{ t('menu.menuScope') }}</Label>
+            <Label>{{ t("menu.menuScope") }}</Label>
             <div class="flex items-center gap-4">
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="MenuScopeEnum.PLATFORM" v-model.number="formData.scope" class="accent-primary" />
-                {{ t('menu.scopePlatformLabel') }}
+                <input
+                  v-model.number="formData.scope"
+                  type="radio"
+                  :value="MenuScopeEnum.PLATFORM"
+                  class="accent-primary"
+                />
+                {{ t("menu.scopePlatformLabel") }}
               </label>
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="MenuScopeEnum.TENANT" v-model.number="formData.scope" class="accent-primary" />
-                {{ t('menu.scopeBusinessLabel') }}
+                <input
+                  v-model.number="formData.scope"
+                  type="radio"
+                  :value="MenuScopeEnum.TENANT"
+                  class="accent-primary"
+                />
+                {{ t("menu.scopeBusinessLabel") }}
               </label>
             </div>
           </div>
 
           <!-- 显示状态 -->
           <div v-if="formData.type !== MenuTypeEnum.BUTTON" class="space-y-2">
-            <Label>{{ t('menu.visibleStatus') }}</Label>
+            <Label>{{ t("menu.visibleStatus") }}</Label>
             <div class="flex items-center gap-4">
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="1" v-model.number="formData.visible" class="accent-primary" />
-                {{ t('menu.statusShow') }}
+                <input
+                  v-model.number="formData.visible"
+                  type="radio"
+                  :value="1"
+                  class="accent-primary"
+                />
+                {{ t("menu.statusShow") }}
               </label>
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="0" v-model.number="formData.visible" class="accent-primary" />
-                {{ t('menu.statusHide') }}
+                <input
+                  v-model.number="formData.visible"
+                  type="radio"
+                  :value="0"
+                  class="accent-primary"
+                />
+                {{ t("menu.statusHide") }}
               </label>
             </div>
           </div>
 
           <!-- 始终显示 -->
-          <div v-if="formData.type === MenuTypeEnum.CATALOG || formData.type === MenuTypeEnum.MENU" class="space-y-2">
+          <div
+            v-if="formData.type === MenuTypeEnum.CATALOG || formData.type === MenuTypeEnum.MENU"
+            class="space-y-2"
+          >
             <Label>
-              {{ t('menu.alwaysShow') }}
+              {{ t("menu.alwaysShow") }}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger as-child>
                     <InfoIcon class="inline size-3.5 ml-1 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent side="bottom" class="max-w-xs">
-                    <p>{{ t('menu.alwaysShowTooltip') }}</p>
+                    <p>{{ t("menu.alwaysShowTooltip") }}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </Label>
             <div class="flex items-center gap-4">
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="1" v-model.number="formData.alwaysShow" class="accent-primary" />
-                {{ t('menu.yes') }}
+                <input
+                  v-model.number="formData.alwaysShow"
+                  type="radio"
+                  :value="1"
+                  class="accent-primary"
+                />
+                {{ t("menu.yes") }}
               </label>
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="0" v-model.number="formData.alwaysShow" class="accent-primary" />
-                {{ t('menu.no') }}
+                <input
+                  v-model.number="formData.alwaysShow"
+                  type="radio"
+                  :value="0"
+                  class="accent-primary"
+                />
+                {{ t("menu.no") }}
               </label>
             </div>
           </div>
 
           <!-- 缓存页面 -->
           <div v-if="formData.type === MenuTypeEnum.MENU && !isExternalLink" class="space-y-2">
-            <Label>{{ t('menu.keepAlive') }}</Label>
+            <Label>{{ t("menu.keepAlive") }}</Label>
             <div class="flex items-center gap-4">
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="1" v-model.number="formData.keepAlive" class="accent-primary" />
-                {{ t('menu.keepAliveOn') }}
+                <input
+                  v-model.number="formData.keepAlive"
+                  type="radio"
+                  :value="1"
+                  class="accent-primary"
+                />
+                {{ t("menu.keepAliveOn") }}
               </label>
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="0" v-model.number="formData.keepAlive" class="accent-primary" />
-                {{ t('menu.keepAliveOff') }}
+                <input
+                  v-model.number="formData.keepAlive"
+                  type="radio"
+                  :value="0"
+                  class="accent-primary"
+                />
+                {{ t("menu.keepAliveOff") }}
               </label>
             </div>
           </div>
 
           <!-- 排序 -->
           <div class="space-y-2">
-            <Label>{{ t('menu.sort') }}</Label>
+            <Label>{{ t("menu.sort") }}</Label>
             <Input v-model.number="formData.sort" type="number" min="0" class="w-24" />
           </div>
 
           <!-- 权限标识 -->
           <div v-if="formData.type === MenuTypeEnum.BUTTON" class="space-y-2">
-            <Label>{{ t('menu.permLabel') }}</Label>
-            <Input v-model="formData.perm!" :placeholder="t('menu.permPlaceholder')" />
+            <Label>{{ t("menu.permLabel") }}</Label>
+            <Input v-model.trim="formData.perm!" :placeholder="t('menu.permPlaceholder')" />
           </div>
 
           <!-- 图标 -->
           <div v-if="formData.type !== MenuTypeEnum.BUTTON" class="space-y-2">
-            <Label>{{ t('menu.iconLabel') }}</Label>
-            <Input v-model="formData.icon!" :placeholder="t('menu.iconPlaceholder')" />
+            <Label>{{ t("menu.iconLabel") }}</Label>
+            <Input v-model.trim="formData.icon!" :placeholder="t('menu.iconPlaceholder')" />
           </div>
 
           <!-- 跳转路由 -->
           <div v-if="formData.type === MenuTypeEnum.CATALOG" class="space-y-2">
-            <Label>{{ t('menu.redirectLabel') }}</Label>
-            <Input v-model="formData.redirect!" :placeholder="t('menu.redirectPlaceholder')" />
+            <Label>{{ t("menu.redirectLabel") }}</Label>
+            <Input v-model.trim="formData.redirect!" :placeholder="t('menu.redirectPlaceholder')" />
           </div>
         </div>
         <SheetFooter>
-          <Button variant="outline" @click="closeDialog">{{ t('menu.cancel') }}</Button>
-          <Button @click="handleSubmit">{{ t('menu.confirm') }}</Button>
+          <Button variant="outline" @click="closeDialog">{{ t("menu.cancel") }}</Button>
+          <Button @click="handleSubmit">{{ t("menu.confirm") }}</Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>
 
     <!-- 删除确认 -->
-    <AlertDialog :open="deleteConfirmVisible" @update:open="(v) => deleteConfirmVisible = v">
+    <AlertDialog :open="deleteConfirmVisible" @update:open="(v) => (deleteConfirmVisible = v)">
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{{ t('menu.deleteWarning') }}</AlertDialogTitle>
-          <AlertDialogDescription>{{ t('menu.deleteConfirm') }}</AlertDialogDescription>
+          <AlertDialogTitle>{{ t("menu.deleteWarning") }}</AlertDialogTitle>
+          <AlertDialogDescription>{{ t("menu.deleteConfirm") }}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel @click="deleteConfirmVisible = false">{{ t('menu.cancel') }}</AlertDialogCancel>
-          <AlertDialogAction @click="confirmDelete">{{ t('menu.confirm') }}</AlertDialogAction>
+          <AlertDialogCancel @click="deleteConfirmVisible = false">
+            {{ t("menu.cancel") }}
+          </AlertDialogCancel>
+          <AlertDialogAction @click="confirmDelete">{{ t("menu.confirm") }}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -437,15 +556,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { getMenuList, getMenuOptions, getMenuFormData, createMenu, updateMenu, deleteMenu } from "@/api/menu";
-import type { MenuItem, MenuForm } from "@/api/menu/types";
+import MenuAPI from "@/api/system/menu";
+import type { MenuItem, MenuForm } from "@/api/menu";
 import type { OptionItem } from "@/api/common";
 import { MenuTypeEnum, MenuScopeEnum } from "@/enums/menu";
 import { appConfig } from "@/settings";
@@ -501,7 +633,7 @@ const allExpanded = computed(() => {
   return allIds.length > 0 && allIds.every((id) => expandedIds.value.has(id));
 });
 
-const colspan = computed(() => showMenuScope.value ? 10 : 9);
+const colspan = computed(() => (showMenuScope.value ? 10 : 9));
 
 const queryParams = reactive({ keywords: "" });
 
@@ -533,17 +665,17 @@ function toggleExpandAll() {
   }
 }
 
-function fetchData() {
+async function fetchData() {
   loading.value = true;
   try {
-    menuTableData.value = getMenuList(queryParams);
+    menuTableData.value = await MenuAPI.getList(queryParams);
   } finally {
     loading.value = false;
   }
 }
 
-function fetchOptions() {
-  menuOptions.value = getMenuOptions(true);
+async function fetchOptions() {
+  menuOptions.value = await MenuAPI.getOptions(true);
 }
 
 function handleQuery() {
@@ -590,7 +722,7 @@ const isExternalLink = computed(
   () =>
     formData.type === MenuTypeEnum.MENU &&
     !!formData.routePath &&
-    /^https?:\/\//.test(formData.routePath),
+    /^https?:\/\//.test(formData.routePath)
 );
 
 function resetForm() {
@@ -633,10 +765,10 @@ function handleAddChild(parentId: string) {
   dialogVisible.value = true;
 }
 
-function handleEdit(id: string) {
+async function handleEdit(id: string) {
   dialogTitle.value = t("menu.editTitle");
   fetchOptions();
-  const data = getMenuFormData(id);
+  const data = await MenuAPI.getFormData(id);
   if (data) Object.assign(formData, data);
   dialogVisible.value = true;
 }
@@ -658,14 +790,26 @@ function handleMenuTypeChange() {
   }
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   // 表单验证
-  if (!formData.name) { toast.error(t("menu.nameRequired")); return; }
-  if (!formData.type) { toast.error(t("menu.typeRequired")); return; }
-  if (!formData.parentId) { toast.error(t("menu.parentRequired")); return; }
+  if (!formData.name) {
+    toast.error(t("menu.nameRequired"));
+    return;
+  }
+  if (!formData.type) {
+    toast.error(t("menu.typeRequired"));
+    return;
+  }
+  if (!formData.parentId) {
+    toast.error(t("menu.parentRequired"));
+    return;
+  }
 
   // 菜单类型必填路由路径
-  if ((formData.type === MenuTypeEnum.CATALOG || formData.type === MenuTypeEnum.MENU) && !formData.routePath) {
+  if (
+    (formData.type === MenuTypeEnum.CATALOG || formData.type === MenuTypeEnum.MENU) &&
+    !formData.routePath
+  ) {
     toast.error(t("menu.routePathRequired"));
     return;
   }
@@ -689,10 +833,10 @@ function handleSubmit() {
   }
 
   if (formData.id) {
-    updateMenu(formData.id, { ...formData });
+    await MenuAPI.update(formData.id, { ...formData });
     toast.success(t("menu.editSuccess"));
   } else {
-    createMenu({ ...formData });
+    await MenuAPI.create({ ...formData });
     toast.success(t("menu.addSuccess"));
   }
 
@@ -710,8 +854,8 @@ function handleDelete(id: string) {
   deleteConfirmVisible.value = true;
 }
 
-function confirmDelete() {
-  deleteMenu(pendingDeleteId.value);
+async function confirmDelete() {
+  await MenuAPI.deleteById(pendingDeleteId.value);
   toast.success(t("menu.deleteSuccess"));
   deleteConfirmVisible.value = false;
   handleQuery();

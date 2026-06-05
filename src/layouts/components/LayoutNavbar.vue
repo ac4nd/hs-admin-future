@@ -9,7 +9,12 @@
   >
     <!-- 左侧：折叠按钮(仅 LeftLayout) + 面包屑 -->
     <div class="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
-      <Button v-if="showSidebarToggle" variant="ghost" size="icon" @click="appStore.toggleSidebar()">
+      <Button
+        v-if="showSidebarToggle"
+        variant="ghost"
+        size="icon"
+        @click="appStore.toggleSidebar()"
+      >
         <component :is="isSidebarOpen ? PanelLeftClose : PanelLeft" class="h-4 w-4" />
       </Button>
       <LayoutBreadcrumb v-if="showBreadcrumb" />
@@ -25,11 +30,7 @@
         <TenantSwitcher />
       </template>
       <UserDropdown />
-      <Button
-        variant="ghost"
-        size="icon"
-        @click="settingsStore.settingsVisible = true"
-      >
+      <Button variant="ghost" size="icon" @click="settingsStore.settingsVisible = true">
         <Settings class="h-4 w-4" />
       </Button>
     </div>
@@ -50,13 +51,16 @@ import NoticeDropdown from "./toolbar/NoticeDropdown.vue";
 import TenantSwitcher from "./toolbar/TenantSwitcher.vue";
 import UserDropdown from "./toolbar/UserDropdown.vue";
 
-withDefaults(defineProps<{
-  showSidebarToggle?: boolean;
-  showBreadcrumb?: boolean;
-}>(), {
-  showSidebarToggle: true,
-  showBreadcrumb: true,
-});
+withDefaults(
+  defineProps<{
+    showSidebarToggle?: boolean;
+    showBreadcrumb?: boolean;
+  }>(),
+  {
+    showSidebarToggle: true,
+    showBreadcrumb: true,
+  }
+);
 
 const appStore = useAppStore();
 const settingsStore = useSettingsStore();
@@ -73,6 +77,8 @@ const glassEffect = computed(() => settingsStore.glassEffect);
   padding: 0 16px 0 4px;
   position: relative;
   z-index: 10;
-  transition: background-color 0.3s, backdrop-filter 0.3s;
+  transition:
+    background-color 0.3s,
+    backdrop-filter 0.3s;
 }
 </style>

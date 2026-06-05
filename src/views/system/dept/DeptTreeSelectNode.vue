@@ -11,7 +11,7 @@
         class="text-muted-foreground text-xs w-4 shrink-0"
         @click.stop="localExpanded = !localExpanded"
       >
-        {{ localExpanded ? '▼' : '▶' }}
+        {{ localExpanded ? "▼" : "▶" }}
       </button>
       <span v-else class="w-4 shrink-0" />
 

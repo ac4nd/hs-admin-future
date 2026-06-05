@@ -74,7 +74,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     path: "/codegen",
     component: () => import("@/layouts/index.vue"),
     name: "/codegen",
-    meta: { title: "系统工具", icon: "🛠️" },
+    meta: { title: "系统工具", icon: "🛠️", hideInBreadcrumb: true },
     children: [
       {
         path: "codegen",

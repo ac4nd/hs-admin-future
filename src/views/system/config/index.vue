@@ -5,13 +5,13 @@
       <CardContent class="pt-6">
         <div class="flex items-center gap-3 flex-wrap">
           <Input
-            v-model="queryParams.keywords"
+            v-model.trim="queryParams.keywords"
             :placeholder="t('config.keywordPlaceholder')"
             class="w-60"
             @keyup.enter="handleQuery"
           />
-          <Button @click="handleQuery">{{ t('config.search') }}</Button>
-          <Button variant="outline" @click="handleResetQuery">{{ t('config.reset') }}</Button>
+          <Button @click="handleQuery">{{ t("config.search") }}</Button>
+          <Button variant="outline" @click="handleResetQuery">{{ t("config.reset") }}</Button>
         </div>
       </CardContent>
     </Card>
@@ -21,8 +21,10 @@
       <CardContent class="pt-6">
         <!-- 工具栏 -->
         <div class="flex items-center gap-2 mb-4">
-          <Button @click="handleCreate">{{ t('config.add') }}</Button>
-          <Button variant="outline" @click="handleRefreshCache">{{ t('config.refreshCache') }}</Button>
+          <Button @click="handleCreate">{{ t("config.add") }}</Button>
+          <Button variant="outline" @click="handleRefreshCache">
+            {{ t("config.refreshCache") }}
+          </Button>
         </div>
 
         <!-- 表格 -->
@@ -30,23 +32,23 @@
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead class="w-14 text-center">{{ t('config.index') }}</TableHead>
-                <TableHead>{{ t('config.configName') }}</TableHead>
-                <TableHead>{{ t('config.configKey') }}</TableHead>
-                <TableHead>{{ t('config.configValue') }}</TableHead>
-                <TableHead>{{ t('config.remark') }}</TableHead>
-                <TableHead class="text-center w-36">{{ t('config.action') }}</TableHead>
+                <TableHead class="w-14 text-center">{{ t("config.index") }}</TableHead>
+                <TableHead>{{ t("config.configName") }}</TableHead>
+                <TableHead>{{ t("config.configKey") }}</TableHead>
+                <TableHead>{{ t("config.configValue") }}</TableHead>
+                <TableHead>{{ t("config.remark") }}</TableHead>
+                <TableHead class="text-center w-36">{{ t("config.action") }}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               <TableRow v-if="loading">
                 <TableCell :colspan="6" class="h-24 text-center text-muted-foreground">
-                  {{ t('config.loading') }}
+                  {{ t("config.loading") }}
                 </TableCell>
               </TableRow>
               <TableRow v-else-if="pageData.length === 0">
                 <TableCell :colspan="6" class="h-24 text-center text-muted-foreground">
-                  {{ t('config.noData') }}
+                  {{ t("config.noData") }}
                 </TableCell>
               </TableRow>
               <TableRow v-for="(item, idx) in pageData" :key="item.id" class="hover:bg-muted/50">
@@ -63,11 +65,21 @@
                 <TableCell class="text-muted-foreground text-sm">{{ item.remark }}</TableCell>
                 <TableCell class="text-center">
                   <div class="flex items-center justify-center gap-1">
-                    <Button variant="ghost" size="sm" class="h-7 text-xs" @click="handleEdit(item.id)">
-                      {{ t('config.edit') }}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      class="h-7 text-xs"
+                      @click="handleEdit(item.id)"
+                    >
+                      {{ t("config.edit") }}
                     </Button>
-                    <Button variant="ghost" size="sm" class="h-7 text-xs text-destructive hover:text-destructive" @click="handleDelete(item.id)">
-                      {{ t('config.delete') }}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      class="h-7 text-xs text-destructive hover:text-destructive"
+                      @click="handleDelete(item.id)"
+                    >
+                      {{ t("config.delete") }}
                     </Button>
                   </div>
                 </TableCell>
@@ -80,7 +92,12 @@
         <div v-if="total > 0" class="flex items-center justify-between mt-4">
           <p class="text-sm text-muted-foreground">共 {{ total }} 条</p>
           <div class="flex items-center gap-1">
-            <Button variant="outline" size="sm" :disabled="queryParams.pageNum <= 1" @click="goPage(queryParams.pageNum - 1)">
+            <Button
+              variant="outline"
+              size="sm"
+              :disabled="queryParams.pageNum <= 1"
+              @click="goPage(queryParams.pageNum - 1)"
+            >
               &lt;
             </Button>
             <Button
@@ -93,7 +110,12 @@
             >
               {{ page }}
             </Button>
-            <Button variant="outline" size="sm" :disabled="queryParams.pageNum >= totalPages" @click="goPage(queryParams.pageNum + 1)">
+            <Button
+              variant="outline"
+              size="sm"
+              :disabled="queryParams.pageNum >= totalPages"
+              @click="goPage(queryParams.pageNum + 1)"
+            >
               &gt;
             </Button>
           </div>
@@ -102,46 +124,81 @@
     </Card>
 
     <!-- 新增/编辑弹窗 -->
-    <Dialog :open="dialogVisible" @update:open="(v) => { if (!v) closeDialog() }">
+    <Dialog
+      :open="dialogVisible"
+      @update:open="
+        (v) => {
+          if (!v) closeDialog();
+        }
+      "
+    >
       <DialogContent class="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{{ dialogTitle }}</DialogTitle>
         </DialogHeader>
         <div class="space-y-4 py-2">
           <div class="space-y-2">
-            <Label>{{ t('config.configName') }} <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.configName" :placeholder="t('config.configNamePlaceholder')" :maxlength="50" />
+            <Label>
+              {{ t("config.configName") }}
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input
+              v-model.trim="formData.configName"
+              :placeholder="t('config.configNamePlaceholder')"
+              :maxlength="50"
+            />
           </div>
           <div class="space-y-2">
-            <Label>{{ t('config.configKey') }} <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.configKey" :placeholder="t('config.configKeyPlaceholder')" :maxlength="50" />
+            <Label>
+              {{ t("config.configKey") }}
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input
+              v-model.trim="formData.configKey"
+              :placeholder="t('config.configKeyPlaceholder')"
+              :maxlength="50"
+            />
           </div>
           <div class="space-y-2">
-            <Label>{{ t('config.configValue') }} <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.configValue" :placeholder="t('config.configValuePlaceholder')" :maxlength="100" />
+            <Label>
+              {{ t("config.configValue") }}
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input
+              v-model.trim="formData.configValue"
+              :placeholder="t('config.configValuePlaceholder')"
+              :maxlength="100"
+            />
           </div>
           <div class="space-y-2">
-            <Label>{{ t('config.remark') }}</Label>
-            <Textarea v-model="formData.remark" :placeholder="t('config.remarkPlaceholder')" rows="3" :maxlength="100" />
+            <Label>{{ t("config.remark") }}</Label>
+            <Textarea
+              v-model="formData.remark"
+              :placeholder="t('config.remarkPlaceholder')"
+              rows="3"
+              :maxlength="100"
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" @click="closeDialog">{{ t('config.cancel') }}</Button>
-          <Button @click="handleSubmit">{{ t('config.confirm') }}</Button>
+          <Button variant="outline" @click="closeDialog">{{ t("config.cancel") }}</Button>
+          <Button @click="handleSubmit">{{ t("config.confirm") }}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
 
     <!-- 删除确认 -->
-    <AlertDialog :open="deleteConfirmVisible" @update:open="(v) => deleteConfirmVisible = v">
+    <AlertDialog :open="deleteConfirmVisible" @update:open="(v) => (deleteConfirmVisible = v)">
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{{ t('config.deleteWarning') }}</AlertDialogTitle>
-          <AlertDialogDescription>{{ t('config.deleteConfirm') }}</AlertDialogDescription>
+          <AlertDialogTitle>{{ t("config.deleteWarning") }}</AlertDialogTitle>
+          <AlertDialogDescription>{{ t("config.deleteConfirm") }}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel @click="deleteConfirmVisible = false">{{ t('config.cancel') }}</AlertDialogCancel>
-          <AlertDialogAction @click="confirmDelete">{{ t('config.confirm') }}</AlertDialogAction>
+          <AlertDialogCancel @click="deleteConfirmVisible = false">
+            {{ t("config.cancel") }}
+          </AlertDialogCancel>
+          <AlertDialogAction @click="confirmDelete">{{ t("config.confirm") }}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -158,15 +215,38 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import ConfigAPI from "@/api/system/config";
 import {
-  getConfigPage, getConfigFormData, createConfig,
-  updateConfig, deleteConfig, refreshConfigCache,
+
+
+
+
+  refreshConfigCache,
 } from "@/api/system/config";
 import type { ConfigItem, ConfigForm, ConfigQuery } from "@/api/system/config/types";
 
@@ -202,10 +282,10 @@ function goPage(page: number) {
   fetchList();
 }
 
-function fetchList() {
+async function fetchList() {
   loading.value = true;
   try {
-    const result = getConfigPage(queryParams);
+    const result = await ConfigAPI.getPage(queryParams);
     pageData.value = result.list;
     total.value = result.total;
   } finally {
@@ -254,23 +334,32 @@ function handleCreate() {
   dialogVisible.value = true;
 }
 
-function handleEdit(id: string) {
+async function handleEdit(id: string) {
   dialogTitle.value = t("config.editTitle");
-  const data = getConfigFormData(id);
+  const data = await ConfigAPI.getFormData(id);
   if (data) Object.assign(formData, data);
   dialogVisible.value = true;
 }
 
-function handleSubmit() {
-  if (!formData.configName) { toast.error(t("config.configNameRequired")); return; }
-  if (!formData.configKey) { toast.error(t("config.configKeyRequired")); return; }
-  if (!formData.configValue) { toast.error(t("config.configValueRequired")); return; }
+async function handleSubmit() {
+  if (!formData.configName) {
+    toast.error(t("config.configNameRequired"));
+    return;
+  }
+  if (!formData.configKey) {
+    toast.error(t("config.configKeyRequired"));
+    return;
+  }
+  if (!formData.configValue) {
+    toast.error(t("config.configValueRequired"));
+    return;
+  }
 
   if (formData.id) {
-    updateConfig(formData.id, formData);
+    await ConfigAPI.update(formData.id, formData);
     toast.success(t("config.editSuccess"));
   } else {
-    createConfig(formData);
+    await ConfigAPI.create(formData);
     toast.success(t("config.addSuccess"));
   }
   closeDialog();
@@ -287,8 +376,8 @@ function handleDelete(id: string) {
   deleteConfirmVisible.value = true;
 }
 
-function confirmDelete() {
-  deleteConfig(pendingDeleteId.value);
+async function confirmDelete() {
+  await ConfigAPI.deleteById(pendingDeleteId.value);
   toast.success(t("config.deleteSuccess"));
   deleteConfirmVisible.value = false;
   handleQuery();
@@ -296,8 +385,8 @@ function confirmDelete() {
 
 // ==================== 刷新缓存 ====================
 
-function handleRefreshCache() {
-  refreshConfigCache();
+async function handleRefreshCache() {
+  await ConfigAPI.refreshCache();
   toast.success(t("config.refreshSuccess"));
 }
 

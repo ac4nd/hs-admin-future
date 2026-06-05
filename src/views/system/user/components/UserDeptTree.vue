@@ -5,12 +5,10 @@
     </CardHeader>
     <CardContent>
       <div class="relative mb-3">
-        <SearchIcon class="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
-        <Input
-          v-model="keyword"
-          placeholder="搜索部门"
-          class="pl-8 h-8 text-sm"
+        <SearchIcon
+          class="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"
         />
+        <Input v-model="keyword" placeholder="搜索部门" class="pl-8 h-8 text-sm" />
       </div>
       <ScrollArea class="h-[calc(100vh-260px)]">
         <div class="space-y-0.5">

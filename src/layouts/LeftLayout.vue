@@ -39,7 +39,6 @@
 <script setup lang="ts">
 import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import { DeviceEnum } from "@/enums/settings";
 import { useLayout } from "./useLayout";
 import { useAppStore, useSettingsStore, useTagsViewStore, usePermissionStore } from "@/stores";
 import BaseLayout from "./BaseLayout.vue";
@@ -62,7 +61,7 @@ watch(
     if (isMobile.value) {
       appStore.closeSidebar();
     }
-  },
+  }
 );
 
 /** 初始化 affix 标签页 */
@@ -90,7 +89,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  transition: width 0.28s, background-color 0.3s, backdrop-filter 0.3s;
+  transition:
+    width 0.28s,
+    background-color 0.3s,
+    backdrop-filter 0.3s;
   position: relative;
   z-index: 1;
 }
@@ -109,7 +111,9 @@ onMounted(() => {
 }
 .mobile .layout-sidebar {
   width: var(--sidebar-width) !important;
-  transition: transform 0.28s, width 0s;
+  transition:
+    transform 0.28s,
+    width 0s;
 }
 .mobile.hideSidebar .layout-sidebar {
   transform: translateX(calc(-1 * var(--sidebar-width)));

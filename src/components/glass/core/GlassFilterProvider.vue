@@ -1,32 +1,3 @@
-<script lang="ts" setup>
-import { displacementMapStandard } from './displacementMaps'
-
-/**
- * SVG 滤镜提供者 (单例，挂载于 App.vue)
- *
- * 定义三个折射层级的 SVG filter：
- * - liq-high: 高透高折射 (displacementScale=25, aberration=2.5)
- * - liq-med:  中透平滑 (displacementScale=15, aberration=1.5)
- * - liq-clear: 高清晰展示 (displacementScale=8, aberration=0.8)
- *
- * 每个滤镜遵循完整的色散管线：
- * feImage → 灰度 → 边缘遮罩 → 三通道位移 → 通道分离 → screen 合成 → 高斯柔化 → 遮罩合成
- */
-
-interface FilterConfig {
-  id: string
-  displacementScale: number
-  aberrationIntensity: number
-  gaussianBlur: number
-}
-
-const filters: FilterConfig[] = [
-  { id: 'liq-high', displacementScale: 70, aberrationIntensity: 2, gaussianBlur: 0.3 },
-  { id: 'liq-med', displacementScale: 15, aberrationIntensity: 1.5, gaussianBlur: 0.35 },
-  { id: 'liq-clear', displacementScale: 8, aberrationIntensity: 0.8, gaussianBlur: 0.42 },
-]
-</script>
-
 <template>
   <!-- 隐藏 SVG，在 DOM 中注册滤镜定义 -->
   <svg style="position: absolute; width: 0; height: 0; overflow: hidden" aria-hidden="true">
@@ -34,8 +5,8 @@ const filters: FilterConfig[] = [
       <!-- 共享边缘渐变遮罩 -->
       <radialGradient
         v-for="f in filters"
-        :key="`${f.id}-edge-mask`"
         :id="`${f.id}-edge-mask`"
+        :key="`${f.id}-edge-mask`"
         cx="50%"
         cy="50%"
         r="50%"
@@ -52,8 +23,8 @@ const filters: FilterConfig[] = [
       <!-- 三个折射滤镜 -->
       <filter
         v-for="f in filters"
-        :key="f.id"
         :id="f.id"
+        :key="f.id"
         x="-35%"
         y="-35%"
         width="170%"
@@ -157,12 +128,7 @@ const filters: FilterConfig[] = [
         <feComponentTransfer in="EDGE_MASK" result="INVERTED_MASK">
           <feFuncA type="table" tableValues="1 0" />
         </feComponentTransfer>
-        <feComposite
-          in="CENTER_ORIGINAL"
-          in2="INVERTED_MASK"
-          operator="in"
-          result="CENTER_CLEAN"
-        />
+        <feComposite in="CENTER_ORIGINAL" in2="INVERTED_MASK" operator="in" result="CENTER_CLEAN" />
 
         <!-- 11. 边缘色散 + 清洁中心合成 -->
         <feComposite in="EDGE_ABERRATION" in2="CENTER_CLEAN" operator="over" />
@@ -170,3 +136,32 @@ const filters: FilterConfig[] = [
     </defs>
   </svg>
 </template>
+
+<script lang="ts" setup>
+import { displacementMapStandard } from "./displacementMaps";
+
+/**
+ * SVG 滤镜提供者 (单例，挂载于 App.vue)
+ *
+ * 定义三个折射层级的 SVG filter：
+ * - liq-high: 高透高折射 (displacementScale=25, aberration=2.5)
+ * - liq-med:  中透平滑 (displacementScale=15, aberration=1.5)
+ * - liq-clear: 高清晰展示 (displacementScale=8, aberration=0.8)
+ *
+ * 每个滤镜遵循完整的色散管线：
+ * feImage → 灰度 → 边缘遮罩 → 三通道位移 → 通道分离 → screen 合成 → 高斯柔化 → 遮罩合成
+ */
+
+interface FilterConfig {
+  id: string;
+  displacementScale: number;
+  aberrationIntensity: number;
+  gaussianBlur: number;
+}
+
+const filters: FilterConfig[] = [
+  { id: "liq-high", displacementScale: 70, aberrationIntensity: 2, gaussianBlur: 0.3 },
+  { id: "liq-med", displacementScale: 15, aberrationIntensity: 1.5, gaussianBlur: 0.35 },
+  { id: "liq-clear", displacementScale: 8, aberrationIntensity: 0.8, gaussianBlur: 0.42 },
+];
+</script>

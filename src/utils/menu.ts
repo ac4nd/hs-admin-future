@@ -27,10 +27,7 @@ export function generateMenus(routes: RouteRecordRaw[]): MenuItem[] {
   return menus;
 }
 
-function buildMenuItem(
-  route: RouteRecordRaw,
-  basePath: string
-): MenuItem | null {
+function buildMenuItem(route: RouteRecordRaw, basePath: string): MenuItem | null {
   const meta = route.meta as Record<string, any> | undefined;
   if (meta?.hidden) return null;
 

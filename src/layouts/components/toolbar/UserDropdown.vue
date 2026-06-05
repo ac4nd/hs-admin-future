@@ -16,12 +16,12 @@
     <DropdownMenuContent align="end" class="w-40">
       <DropdownMenuItem @click="handleProfile">
         <User class="mr-2 h-4 w-4" />
-        {{ t('navbar.profile') }}
+        {{ t("navbar.profile") }}
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem @click="handleLogout">
         <LogOut class="mr-2 h-4 w-4" />
-        {{ t('navbar.logout') }}
+        {{ t("navbar.logout") }}
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

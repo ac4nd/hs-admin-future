@@ -23,11 +23,14 @@ import { generateMenus } from "@/utils/menu";
 import type { MenuItem } from "@/utils/menu";
 import SidebarMenuItem from "./SidebarMenuItem.vue";
 
-withDefaults(defineProps<{
-  collapse?: boolean;
-}>(), {
-  collapse: false,
-});
+withDefaults(
+  defineProps<{
+    collapse?: boolean;
+  }>(),
+  {
+    collapse: false,
+  }
+);
 
 const route = useRoute();
 const router = useRouter();

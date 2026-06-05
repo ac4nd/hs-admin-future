@@ -22,7 +22,6 @@
 
 <script setup lang="ts">
 import { Check, Languages } from "@lucide/vue";
-import { useI18n } from "vue-i18n";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -33,7 +32,6 @@ import {
 import { useAppStore } from "@/stores";
 import i18n from "@/lang";
 
-const { t } = useI18n();
 const appStore = useAppStore();
 
 const langOptions = [

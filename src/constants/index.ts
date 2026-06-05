@@ -28,6 +28,7 @@ export const STORAGE_KEYS = {
   DEVICE: `${APP_PREFIX}:app:device`,
   SIDEBAR_STATUS: `${APP_PREFIX}:app:sidebar_status`,
   LANGUAGE: `${APP_PREFIX}:app:language`,
+  ACTIVE_TOP_MENU_PATH: `${APP_PREFIX}:app:active_top_menu_path`,
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

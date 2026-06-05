@@ -18,7 +18,7 @@
           <div class="space-y-1.5">
             <Label class="text-xs">关键字</Label>
             <Input
-              v-model="queryParams.keywords"
+              v-model.trim="queryParams.keywords"
               placeholder="字典标签/字典值"
               class="w-52 h-8 text-sm"
               @keyup.enter="handleQuery"
@@ -87,8 +87,8 @@
             </TableEmpty>
 
             <TableRow
-              v-else
               v-for="row in tableData"
+              v-else
               :key="row.id"
               :data-state="isChecked(row.id) ? 'selected' : undefined"
             >
@@ -106,10 +106,7 @@
               </TableCell>
               <TableCell class="text-sm text-muted-foreground">{{ row.sort }}</TableCell>
               <TableCell>
-                <Badge
-                  :variant="row.status === 1 ? 'default' : 'secondary'"
-                  class="text-[10px]"
-                >
+                <Badge :variant="row.status === 1 ? 'default' : 'secondary'" class="text-[10px]">
                   {{ row.status === 1 ? "启用" : "禁用" }}
                 </Badge>
               </TableCell>
@@ -145,16 +142,14 @@
           >
             <PaginationContent>
               <PaginationPrevious />
-              <PaginationItem
-                v-for="item in paginationItems"
-                :key="item"
-                :value="item"
-                as-child
-              >
+              <PaginationItem v-for="item in paginationItems" :key="item" :value="item" as-child>
                 <Button
                   variant="ghost"
                   size="icon-xs"
-                  :class="{ 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground': item === queryParams.pageNum }"
+                  :class="{
+                    'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground':
+                      item === queryParams.pageNum,
+                  }"
                 >
                   {{ item }}
                 </Button>
@@ -174,22 +169,28 @@
         </DialogHeader>
         <div class="space-y-4 py-2">
           <div class="space-y-1.5">
-            <Label>字典标签 <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.label" placeholder="请输入字典标签" />
+            <Label>
+              字典标签
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input v-model.trim="formData.label" placeholder="请输入字典标签" />
           </div>
           <div class="space-y-1.5">
-            <Label>字典值 <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.value" placeholder="请输入字典值" />
+            <Label>
+              字典值
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input v-model.trim="formData.value" placeholder="请输入字典值" />
           </div>
           <div class="space-y-1.5">
             <Label>状态</Label>
             <div class="flex items-center gap-3">
               <label class="flex items-center gap-1.5 cursor-pointer text-sm">
-                <input type="radio" :value="1" v-model="formData.status" class="accent-primary" />
+                <input v-model="formData.status" type="radio" :value="1" class="accent-primary" />
                 启用
               </label>
               <label class="flex items-center gap-1.5 cursor-pointer text-sm">
-                <input type="radio" :value="0" v-model="formData.status" class="accent-primary" />
+                <input v-model="formData.status" type="radio" :value="0" class="accent-primary" />
                 禁用
               </label>
             </div>
@@ -216,11 +217,7 @@
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">默认文本</SelectItem>
-                <SelectItem
-                  v-for="t in tagTypes"
-                  :key="t"
-                  :value="t"
-                >
+                <SelectItem v-for="t in tagTypes" :key="t" :value="t">
                   <div class="flex items-center gap-2">
                     <Badge :variant="tagVariant(t)" class="text-[10px]">
                       {{ formData.label || "预览" }}
@@ -277,20 +274,44 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableEmpty,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableEmpty,
 } from "@/components/ui/table";
 import {
-  Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 import {
-  Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -364,12 +385,16 @@ function isChecked(id: string) {
 
 function toggleRow(row: DictItem) {
   const s = new Set(checkedIds.value);
-  s.has(row.id) ? s.delete(row.id) : s.add(row.id);
+  if (s.has(row.id)) {
+    s.delete(row.id);
+  } else {
+    s.add(row.id);
+  }
   checkedIds.value = s;
 }
 
-const isAllSelected = computed(() =>
-  tableData.value.length > 0 && tableData.value.every((r) => checkedIds.value.has(r.id))
+const isAllSelected = computed(
+  () => tableData.value.length > 0 && tableData.value.every((r) => checkedIds.value.has(r.id))
 );
 
 function toggleAll(val: boolean | "indeterminate") {
@@ -404,8 +429,14 @@ function closeDialog() {
 }
 
 const handleSubmit = async () => {
-  if (!formData.label) { toast.error("请输入字典标签"); return; }
-  if (!formData.value) { toast.error("请输入字典值"); return; }
+  if (!formData.label) {
+    toast.error("请输入字典标签");
+    return;
+  }
+  if (!formData.value) {
+    toast.error("请输入字典值");
+    return;
+  }
 
   loading.value = true;
   try {
@@ -429,7 +460,10 @@ const deleteState = reactive({ visible: false, ids: "" });
 
 function handleDelete(id?: string) {
   const ids = id ?? [...checkedIds.value].join(",");
-  if (!ids) { toast.warning("请勾选删除项"); return; }
+  if (!ids) {
+    toast.warning("请勾选删除项");
+    return;
+  }
   deleteState.ids = ids;
   deleteState.visible = true;
 }
@@ -450,7 +484,10 @@ const paginationItems = computed(() => {
   const pages: number[] = [];
   const cur = queryParams.pageNum;
   const tp = totalPages.value;
-  if (tp <= 7) { for (let i = 1; i <= tp; i++) pages.push(i); return pages; }
+  if (tp <= 7) {
+    for (let i = 1; i <= tp; i++) pages.push(i);
+    return pages;
+  }
   pages.push(1);
   if (cur > 3) pages.push(-1);
   for (let i = Math.max(2, cur - 1); i <= Math.min(tp - 1, cur + 1); i++) pages.push(i);

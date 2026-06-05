@@ -5,13 +5,13 @@
       <CardContent class="pt-6">
         <div class="flex items-center gap-3 flex-wrap">
           <Input
-            v-model="queryParams.keywords"
+            v-model.trim="queryParams.keywords"
             :placeholder="t('role.keywordPlaceholder')"
             class="w-60"
             @keyup.enter="handleQuery"
           />
-          <Button @click="handleQuery">{{ t('role.search') }}</Button>
-          <Button variant="outline" @click="handleResetQuery">{{ t('role.reset') }}</Button>
+          <Button @click="handleQuery">{{ t("role.search") }}</Button>
+          <Button variant="outline" @click="handleResetQuery">{{ t("role.reset") }}</Button>
         </div>
       </CardContent>
     </Card>
@@ -21,13 +21,13 @@
       <CardContent class="pt-6">
         <!-- 工具栏 -->
         <div class="flex items-center gap-2 mb-4">
-          <Button @click="handleCreate">{{ t('role.add') }}</Button>
+          <Button @click="handleCreate">{{ t("role.add") }}</Button>
           <Button
             variant="destructive"
             :disabled="selectedIds.length === 0"
             @click="handleBatchDelete"
           >
-            {{ t('role.batchDelete') }}
+            {{ t("role.batchDelete") }}
           </Button>
         </div>
 
@@ -45,12 +45,12 @@
                     @change="toggleSelectAll"
                   />
                 </TableHead>
-                <TableHead>{{ t('role.name') }}</TableHead>
-                <TableHead>{{ t('role.code') }}</TableHead>
-                <TableHead class="text-center">{{ t('role.dataScope') }}</TableHead>
-                <TableHead class="text-center">{{ t('role.status') }}</TableHead>
-                <TableHead class="text-center w-20">{{ t('role.sort') }}</TableHead>
-                <TableHead class="text-center w-56">{{ t('role.action') }}</TableHead>
+                <TableHead>{{ t("role.name") }}</TableHead>
+                <TableHead>{{ t("role.code") }}</TableHead>
+                <TableHead class="text-center">{{ t("role.dataScope") }}</TableHead>
+                <TableHead class="text-center">{{ t("role.status") }}</TableHead>
+                <TableHead class="text-center w-20">{{ t("role.sort") }}</TableHead>
+                <TableHead class="text-center w-56">{{ t("role.action") }}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -64,11 +64,7 @@
                   暂无数据
                 </TableCell>
               </TableRow>
-              <TableRow
-                v-for="role in roleList"
-                :key="role.id"
-                class="hover:bg-muted/50"
-              >
+              <TableRow v-for="role in roleList" :key="role.id" class="hover:bg-muted/50">
                 <TableCell>
                   <input
                     type="checkbox"
@@ -84,20 +80,35 @@
                 <TableCell class="text-center">{{ role.dataScopeLabel }}</TableCell>
                 <TableCell class="text-center">
                   <Badge :variant="role.status === 1 ? 'default' : 'secondary'">
-                    {{ role.status === 1 ? t('role.statusEnabled') : t('role.statusDisabled') }}
+                    {{ role.status === 1 ? t("role.statusEnabled") : t("role.statusDisabled") }}
                   </Badge>
                 </TableCell>
                 <TableCell class="text-center">{{ role.sort }}</TableCell>
                 <TableCell class="text-center">
                   <div class="flex items-center justify-center gap-1">
-                    <Button variant="ghost" size="sm" class="h-7 text-xs" @click="handleAssignPerm(role)">
-                      {{ t('role.assignPerm') }}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      class="h-7 text-xs"
+                      @click="handleAssignPerm(role)"
+                    >
+                      {{ t("role.assignPerm") }}
                     </Button>
-                    <Button variant="ghost" size="sm" class="h-7 text-xs" @click="handleEdit(role.id)">
-                      {{ t('role.edit') }}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      class="h-7 text-xs"
+                      @click="handleEdit(role.id)"
+                    >
+                      {{ t("role.edit") }}
                     </Button>
-                    <Button variant="ghost" size="sm" class="h-7 text-xs text-destructive hover:text-destructive" @click="handleDelete(role.id)">
-                      {{ t('role.delete') }}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      class="h-7 text-xs text-destructive hover:text-destructive"
+                      @click="handleDelete(role.id)"
+                    >
+                      {{ t("role.delete") }}
                     </Button>
                   </div>
                 </TableCell>
@@ -110,7 +121,12 @@
         <div v-if="total > 0" class="flex items-center justify-between mt-4">
           <p class="text-sm text-muted-foreground">共 {{ total }} 条</p>
           <div class="flex items-center gap-1">
-            <Button variant="outline" size="sm" :disabled="queryParams.pageNum <= 1" @click="goPage(queryParams.pageNum - 1)">
+            <Button
+              variant="outline"
+              size="sm"
+              :disabled="queryParams.pageNum <= 1"
+              @click="goPage(queryParams.pageNum - 1)"
+            >
               &lt;
             </Button>
             <Button
@@ -123,7 +139,12 @@
             >
               {{ page }}
             </Button>
-            <Button variant="outline" size="sm" :disabled="queryParams.pageNum >= totalPages" @click="goPage(queryParams.pageNum + 1)">
+            <Button
+              variant="outline"
+              size="sm"
+              :disabled="queryParams.pageNum >= totalPages"
+              @click="goPage(queryParams.pageNum + 1)"
+            >
               &gt;
             </Button>
           </div>
@@ -132,38 +153,57 @@
     </Card>
 
     <!-- 新增/编辑弹窗 -->
-    <Dialog :open="dialogVisible" @update:open="(v) => { if (!v) closeDialog() }">
+    <Dialog
+      :open="dialogVisible"
+      @update:open="
+        (v) => {
+          if (!v) closeDialog();
+        }
+      "
+    >
       <DialogContent class="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{{ dialogTitle }}</DialogTitle>
         </DialogHeader>
         <div class="space-y-4 py-2">
           <div class="space-y-2">
-            <Label>{{ t('role.name') }} <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.name" :placeholder="t('role.namePlaceholder')" />
+            <Label>
+              {{ t("role.name") }}
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input v-model.trim="formData.name" :placeholder="t('role.namePlaceholder')" />
           </div>
           <div class="space-y-2">
-            <Label>{{ t('role.code') }} <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.code" :placeholder="t('role.codePlaceholder')" />
+            <Label>
+              {{ t("role.code") }}
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input v-model.trim="formData.code" :placeholder="t('role.codePlaceholder')" />
           </div>
           <div class="space-y-2">
-            <Label>{{ t('role.dataScope') }} <span class="text-destructive">*</span></Label>
-            <Select v-model="dataScopeStr" @update:model-value="(v) => formData.dataScope = Number(v)">
+            <Label>
+              {{ t("role.dataScope") }}
+              <span class="text-destructive">*</span>
+            </Label>
+            <Select
+              v-model="dataScopeStr"
+              @update:model-value="(v) => (formData.dataScope = Number(v))"
+            >
               <SelectTrigger>
                 <SelectValue :placeholder="t('role.dataScopePlaceholder')" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">{{ t('role.dataScopeAll') }}</SelectItem>
-                <SelectItem value="2">{{ t('role.dataScopeDeptAndSub') }}</SelectItem>
-                <SelectItem value="3">{{ t('role.dataScopeDept') }}</SelectItem>
-                <SelectItem value="4">{{ t('role.dataScopeSelf') }}</SelectItem>
-                <SelectItem value="5">{{ t('role.dataScopeCustom') }}</SelectItem>
+                <SelectItem value="1">{{ t("role.dataScopeAll") }}</SelectItem>
+                <SelectItem value="2">{{ t("role.dataScopeDeptAndSub") }}</SelectItem>
+                <SelectItem value="3">{{ t("role.dataScopeDept") }}</SelectItem>
+                <SelectItem value="4">{{ t("role.dataScopeSelf") }}</SelectItem>
+                <SelectItem value="5">{{ t("role.dataScopeCustom") }}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <!-- dataScope=5 自定义部门 -->
           <div v-if="formData.dataScope === 5" class="space-y-2">
-            <Label>{{ t('role.deptSelect') }}</Label>
+            <Label>{{ t("role.deptSelect") }}</Label>
             <div class="border rounded-md p-3 max-h-40 overflow-auto space-y-1">
               <DepartmentTree
                 v-for="dept in deptOptions"
@@ -176,49 +216,67 @@
             </div>
           </div>
           <div class="space-y-2">
-            <Label>{{ t('role.status') }}</Label>
+            <Label>{{ t("role.status") }}</Label>
             <div class="flex items-center gap-4">
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="1" v-model.number="formData.status" class="accent-primary" />
-                {{ t('role.statusEnabled') }}
+                <input
+                  v-model.number="formData.status"
+                  type="radio"
+                  :value="1"
+                  class="accent-primary"
+                />
+                {{ t("role.statusEnabled") }}
               </label>
               <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" :value="0" v-model.number="formData.status" class="accent-primary" />
-                {{ t('role.statusDisabled') }}
+                <input
+                  v-model.number="formData.status"
+                  type="radio"
+                  :value="0"
+                  class="accent-primary"
+                />
+                {{ t("role.statusDisabled") }}
               </label>
             </div>
           </div>
           <div class="space-y-2">
-            <Label>{{ t('role.sort') }}</Label>
+            <Label>{{ t("role.sort") }}</Label>
             <Input v-model.number="formData.sort" type="number" min="0" class="w-24" />
           </div>
           <div class="space-y-2">
-            <Label>{{ t('role.remark') }}</Label>
-            <Textarea v-model="formData.remark" :placeholder="t('role.remarkPlaceholder')" rows="3" />
+            <Label>{{ t("role.remark") }}</Label>
+            <Textarea
+              v-model="formData.remark"
+              :placeholder="t('role.remarkPlaceholder')"
+              rows="3"
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" @click="closeDialog">{{ t('role.cancel') }}</Button>
-          <Button @click="handleSubmit">{{ t('role.confirm') }}</Button>
+          <Button variant="outline" @click="closeDialog">{{ t("role.cancel") }}</Button>
+          <Button @click="handleSubmit">{{ t("role.confirm") }}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
 
     <!-- 分配权限抽屉 -->
-    <Sheet :open="assignVisible" @update:open="(v) => assignVisible = v">
+    <Sheet :open="assignVisible" @update:open="(v) => (assignVisible = v)">
       <SheetContent class="sm:max-w-lg overflow-auto">
         <SheetHeader>
-          <SheetTitle>{{ t('role.assignPermTitle', { name: checkedRoleName }) }}</SheetTitle>
+          <SheetTitle>{{ t("role.assignPermTitle", { name: checkedRoleName }) }}</SheetTitle>
         </SheetHeader>
         <div class="py-4 space-y-4">
           <div class="flex items-center gap-3 flex-wrap">
-            <Input v-model="permKeywords" :placeholder="t('role.permSearchPlaceholder')" class="w-40" />
+            <Input
+              v-model="permKeywords"
+              :placeholder="t('role.permSearchPlaceholder')"
+              class="w-40"
+            />
             <Button variant="outline" size="sm" @click="togglePermTree">
-              {{ permExpanded ? t('role.collapse') : t('role.expand') }}
+              {{ permExpanded ? t("role.collapse") : t("role.expand") }}
             </Button>
             <label class="flex items-center gap-1.5 text-sm cursor-pointer">
-              <input type="checkbox" v-model="parentChildLinked" class="size-4 rounded" />
-              {{ t('role.parentChildLinked') }}
+              <input v-model="parentChildLinked" type="checkbox" class="size-4 rounded" />
+              {{ t("role.parentChildLinked") }}
             </label>
           </div>
           <div class="border rounded-md p-3 space-y-1">
@@ -235,22 +293,24 @@
           </div>
         </div>
         <SheetFooter>
-          <Button variant="outline" @click="assignVisible = false">{{ t('role.cancel') }}</Button>
-          <Button @click="handleAssignPermSubmit">{{ t('role.confirm') }}</Button>
+          <Button variant="outline" @click="assignVisible = false">{{ t("role.cancel") }}</Button>
+          <Button @click="handleAssignPermSubmit">{{ t("role.confirm") }}</Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>
 
     <!-- 删除确认 -->
-    <AlertDialog :open="deleteConfirmVisible" @update:open="(v) => deleteConfirmVisible = v">
+    <AlertDialog :open="deleteConfirmVisible" @update:open="(v) => (deleteConfirmVisible = v)">
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{{ t('role.deleteWarning') }}</AlertDialogTitle>
-          <AlertDialogDescription>{{ t('role.deleteConfirm') }}</AlertDialogDescription>
+          <AlertDialogTitle>{{ t("role.deleteWarning") }}</AlertDialogTitle>
+          <AlertDialogDescription>{{ t("role.deleteConfirm") }}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel @click="deleteConfirmVisible = false">{{ t('role.cancel') }}</AlertDialogCancel>
-          <AlertDialogAction @click="confirmDelete">{{ t('role.confirm') }}</AlertDialogAction>
+          <AlertDialogCancel @click="deleteConfirmVisible = false">
+            {{ t("role.cancel") }}
+          </AlertDialogCancel>
+          <AlertDialogAction @click="confirmDelete">{{ t("role.confirm") }}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -267,23 +327,55 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  getRolePage, getRoleFormData, createRole, updateRole,
-  deleteRoleByIds, getRoleMenuIds, updateRoleMenuIds,
-  getMenuPermOptions, getDeptOptions,
-} from "@/api/role";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import RoleAPI from "@/api/system/role";
+import {
+  getPage,
+  getFormData,
+  create,
+  update,
+  deleteByIds,
+  getRoleMenuIds,
+  updateRoleMenus,
+  getRoleDeptIds,
+} from "@/api/system/role";
 import type { RoleItem, RoleForm, RoleQuery } from "@/api/role/types";
 import type { OptionItem } from "@/api/common";
 import PermTreeItem from "./PermTreeItem.vue";
 import DepartmentTree from "./DepartmentTree.vue";
+import { Award } from "@lucide/vue";
 
 const { t } = useI18n();
 
@@ -313,12 +405,12 @@ const displayedPages = computed(() => {
   return pages;
 });
 
-const isAllSelected = computed(() =>
-  roleList.value.length > 0 && roleList.value.every((r) => selectedIds.value.includes(r.id)),
+const isAllSelected = computed(
+  () => roleList.value.length > 0 && roleList.value.every((r) => selectedIds.value.includes(r.id))
 );
 
 const isPartialSelected = computed(
-  () => !isAllSelected.value && roleList.value.some((r) => selectedIds.value.includes(r.id)),
+  () => !isAllSelected.value && roleList.value.some((r) => selectedIds.value.includes(r.id))
 );
 
 function toggleSelectAll() {
@@ -336,10 +428,10 @@ function goPage(page: number) {
   fetchList();
 }
 
-function fetchList() {
+async function fetchList() {
   loading.value = true;
   try {
-    const result = getRolePage(queryParams);
+    const result = await RoleAPI.getPage(queryParams);
     roleList.value = result.list;
     total.value = result.total;
     selectedIds.value = [];
@@ -374,7 +466,9 @@ const formData = reactive<RoleForm>({
 
 const dataScopeStr = computed({
   get: () => String(formData.dataScope),
-  set: (v: string) => { formData.dataScope = Number(v); },
+  set: (v: string) => {
+    formData.dataScope = Number(v);
+  },
 });
 
 const deptOptions = ref<OptionItem[]>([]);
@@ -395,33 +489,39 @@ function closeDialog() {
   resetForm();
 }
 
-function handleCreate() {
+async function handleCreate() {
   dialogTitle.value = t("role.addTitle");
-  if (deptOptions.value.length === 0) deptOptions.value = getDeptOptions();
+  if (deptOptions.value.length === 0) deptOptions.value = RoleAPI.getRoleDeptIds();
   resetForm();
   dialogVisible.value = true;
 }
 
-function handleEdit(id: string) {
+async function handleEdit(id: string) {
   dialogTitle.value = t("role.editTitle");
-  if (deptOptions.value.length === 0) deptOptions.value = getDeptOptions();
-  const data = getRoleFormData(id);
+  if (deptOptions.value.length === 0) deptOptions.value = RoleAPI.getRoleDeptIds();
+  const data = await RoleAPI.getFormData(id);
   if (data) Object.assign(formData, data);
   dialogVisible.value = true;
 }
 
-function handleSubmit() {
-  if (!formData.name) { toast.error(t("role.nameRequired")); return; }
-  if (!formData.code) { toast.error(t("role.codeRequired")); return; }
+async function handleSubmit() {
+  if (!formData.name) {
+    toast.error(t("role.nameRequired"));
+    return;
+  }
+  if (!formData.code) {
+    toast.error(t("role.codeRequired"));
+    return;
+  }
 
   const submitData = { ...formData };
   if (submitData.dataScope !== 5) submitData.deptIds = undefined;
 
   if (formData.id) {
-    updateRole(formData.id, submitData);
+    RoleAPI.update(formData.id, submitData);
     toast.success(t("role.editSuccess"));
   } else {
-    createRole(submitData);
+    RoleAPI.create(submitData);
     toast.success(t("role.addSuccess"));
   }
   closeDialog();
@@ -435,7 +535,10 @@ const pendingDeleteIds = ref("");
 
 function handleDelete(id?: string) {
   const ids = id ?? selectedIds.value.join(",");
-  if (!ids) { toast.warning(t("role.selectDelete")); return; }
+  if (!ids) {
+    toast.warning(t("role.selectDelete"));
+    return;
+  }
   pendingDeleteIds.value = ids;
   deleteConfirmVisible.value = true;
 }
@@ -444,8 +547,8 @@ function handleBatchDelete() {
   handleDelete();
 }
 
-function confirmDelete() {
-  deleteRoleByIds(pendingDeleteIds.value);
+async function confirmDelete() {
+  RoleAPI.deleteByIds(pendingDeleteIds.value);
   toast.success(t("role.deleteSuccess"));
   deleteConfirmVisible.value = false;
   handleQuery();
@@ -457,7 +560,7 @@ const assignVisible = ref(false);
 const checkedRoleId = ref("");
 const checkedRoleName = ref("");
 const permOptions = ref<OptionItem[]>([]);
-const checkedMenuIds = ref<string[]>([]);
+const checkedMenuIds = ref<Number[]>([]);
 const permKeywords = ref("");
 const permExpanded = ref(true);
 const parentChildLinked = ref(true);
@@ -527,17 +630,17 @@ function collectIds(nodes: OptionItem[]): string[] {
   return ids;
 }
 
-function handleAssignPerm(role: RoleItem) {
+async function handleAssignPerm(role: RoleItem) {
   checkedRoleId.value = role.id;
   checkedRoleName.value = role.name;
-  permOptions.value = getMenuPermOptions();
-  checkedMenuIds.value = getRoleMenuIds(role.id);
+  permOptions.value = await RoleAPI.getRoleMenuIds(role.id);
+  checkedMenuIds.value = await RoleAPI.getRoleMenuIds(role.id);
   permKeywords.value = "";
   assignVisible.value = true;
 }
 
-function handleAssignPermSubmit() {
-  updateRoleMenuIds(checkedRoleId.value, [...checkedMenuIds.value]);
+async function handleAssignPermSubmit() {
+  RoleAPI.updateRoleMenus(checkedRoleId.value, [...checkedMenuIds.value]);
   toast.success(t("role.assignSuccess"));
   assignVisible.value = false;
 }

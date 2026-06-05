@@ -46,7 +46,7 @@ const router = useRouter();
 
 const breadcrumbs = computed(() =>
   route.matched
-    .filter((r) => r.meta?.title && !r.meta?.hidden)
+    .filter((r) => r.meta?.title && !r.meta?.hidden && !r.meta?.hideInBreadcrumb)
     .map((r) => ({
       title: r.meta.title as string,
       icon: r.meta.icon as string | undefined,

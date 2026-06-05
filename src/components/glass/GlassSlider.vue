@@ -1,44 +1,3 @@
-<script lang="ts" setup>
-import { computed, type HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = withDefaults(
-  defineProps<{
-    class?: HTMLAttributes['class']
-    modelValue?: number
-    min?: number
-    max?: number
-    step?: number
-    disabled?: boolean
-  }>(),
-  {
-    modelValue: 0,
-    min: 0,
-    max: 100,
-    step: 1,
-    disabled: false,
-  },
-)
-
-const emit = defineEmits<{
-  'update:modelValue': [value: number]
-}>()
-
-const { isEnabled } = useGlassFilter('slider')
-
-const percentage = computed(() => {
-  const range = props.max - props.min
-  return range === 0 ? 0 : ((props.modelValue - props.min) / range) * 100
-})
-
-function handleInput(e: Event) {
-  const value = Number((e.target as HTMLInputElement).value)
-  emit('update:modelValue', value)
-}
-</script>
-
 <template>
   <GlassSurface
     v-if="isEnabled"
@@ -86,3 +45,44 @@ function handleInput(e: Event) {
     />
   </div>
 </template>
+
+<script lang="ts" setup>
+import { computed, type HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = withDefaults(
+  defineProps<{
+    class?: HTMLAttributes["class"];
+    modelValue?: number;
+    min?: number;
+    max?: number;
+    step?: number;
+    disabled?: boolean;
+  }>(),
+  {
+    modelValue: 0,
+    min: 0,
+    max: 100,
+    step: 1,
+    disabled: false,
+  }
+);
+
+const emit = defineEmits<{
+  "update:modelValue": [value: number];
+}>();
+
+const { isEnabled } = useGlassFilter("slider");
+
+const percentage = computed(() => {
+  const range = props.max - props.min;
+  return range === 0 ? 0 : ((props.modelValue - props.min) / range) * 100;
+});
+
+function handleInput(e: Event) {
+  const value = Number((e.target as HTMLInputElement).value);
+  emit("update:modelValue", value);
+}
+</script>

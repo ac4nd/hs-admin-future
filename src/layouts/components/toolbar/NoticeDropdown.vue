@@ -8,19 +8,19 @@
           variant="destructive"
           class="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 text-[10px] leading-none"
         >
-          {{ unreadCount > 99 ? '99+' : unreadCount }}
+          {{ unreadCount > 99 ? "99+" : unreadCount }}
         </Badge>
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="w-72">
       <DropdownMenuLabel class="flex items-center justify-between">
-        <span>{{ t('navbar.notification') }}</span>
+        <span>{{ t("navbar.notification") }}</span>
         <span
           v-if="unreadCount > 0"
           class="text-xs text-primary cursor-pointer hover:underline"
           @click="readAll"
         >
-          {{ t('navbar.notificationReadAll') }}
+          {{ t("navbar.notificationReadAll") }}
         </span>
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
@@ -41,7 +41,7 @@
         </DropdownMenuItem>
       </template>
       <div v-else class="py-6 text-center text-sm text-muted-foreground">
-        {{ t('navbar.notificationEmpty') }}
+        {{ t("navbar.notificationEmpty") }}
       </div>
       <DropdownMenuSeparator v-if="notifications.length > 0" />
       <DropdownMenuItem
@@ -49,7 +49,7 @@
         class="justify-center text-primary"
         @click="handleViewMore"
       >
-        {{ t('navbar.notificationMore') }}
+        {{ t("navbar.notificationMore") }}
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
@@ -84,7 +84,13 @@ const router = useRouter();
 
 // Mock 数据 — 未来替换为 API/SSE
 const notifications = ref<Notice[]>([
-  { id: 1, title: "系统升级通知：将于本周六凌晨进行系统维护", type: "通知", time: "10分钟前", read: false },
+  {
+    id: 1,
+    title: "系统升级通知：将于本周六凌晨进行系统维护",
+    type: "通知",
+    time: "10分钟前",
+    read: false,
+  },
   { id: 2, title: "新用户注册审核待处理", type: "待办", time: "1小时前", read: false },
   { id: 3, title: "服务器 CPU 使用率超过 80%", type: "告警", time: "2小时前", read: false },
 ]);
@@ -107,9 +113,12 @@ function handleViewMore() {
 
 function getBadgeVariant(type: string) {
   switch (type) {
-    case "告警": return "destructive";
-    case "待办": return "outline";
-    default: return "secondary";
+    case "告警":
+      return "destructive";
+    case "待办":
+      return "outline";
+    default:
+      return "secondary";
   }
 }
 </script>

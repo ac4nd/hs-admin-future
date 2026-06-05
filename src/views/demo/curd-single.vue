@@ -6,7 +6,12 @@
         <div class="flex flex-wrap items-end gap-3">
           <div class="space-y-1.5">
             <Label class="text-xs">关键字</Label>
-            <Input v-model="queryParams.keywords" placeholder="姓名/地址" class="w-52 h-8 text-sm" @keyup.enter="handleQuery" />
+            <Input
+              v-model="queryParams.keywords"
+              placeholder="姓名/地址"
+              class="w-52 h-8 text-sm"
+              @keyup.enter="handleQuery"
+            />
           </div>
           <div class="space-y-1.5">
             <Label class="text-xs">状态</Label>
@@ -33,7 +38,14 @@
         <div class="flex items-center justify-between">
           <div class="flex gap-2">
             <Button size="sm" @click="openAdd">新增</Button>
-            <Button variant="destructive" size="sm" :disabled="checkedIds.size === 0" @click="handleBatchDelete">批量删除</Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              :disabled="checkedIds.size === 0"
+              @click="handleBatchDelete"
+            >
+              批量删除
+            </Button>
           </div>
         </div>
       </CardHeader>
@@ -42,7 +54,9 @@
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead class="w-10"><Checkbox :checked="isAllSelected" @update:checked="toggleAll" /></TableHead>
+                <TableHead class="w-10">
+                  <Checkbox :checked="isAllSelected" @update:checked="toggleAll" />
+                </TableHead>
                 <TableHead class="w-12">#</TableHead>
                 <TableHead>姓名</TableHead>
                 <TableHead>年龄</TableHead>
@@ -55,29 +69,48 @@
             </TableHeader>
             <TableBody>
               <TableRow v-if="paginatedList.length === 0">
-                <TableCell :colspan="9" class="h-20 text-center text-muted-foreground">暂无数据</TableCell>
+                <TableCell :colspan="9" class="h-20 text-center text-muted-foreground">
+                  暂无数据
+                </TableCell>
               </TableRow>
-              <TableRow v-for="(row, idx) in paginatedList" :key="row.id" :data-state="checkedIds.has(row.id) ? 'selected' : undefined">
-                <TableCell><Checkbox :checked="checkedIds.has(row.id)" @update:checked="toggleRow(row)" /></TableCell>
-                <TableCell class="text-muted-foreground text-xs">{{ (currentPage - 1) * pageSize + idx + 1 }}</TableCell>
+              <TableRow
+                v-for="(row, idx) in paginatedList"
+                :key="row.id"
+                :data-state="checkedIds.has(row.id) ? 'selected' : undefined"
+              >
+                <TableCell>
+                  <Checkbox :checked="checkedIds.has(row.id)" @update:checked="toggleRow(row)" />
+                </TableCell>
+                <TableCell class="text-muted-foreground text-xs">
+                  {{ (currentPage - 1) * pageSize + idx + 1 }}
+                </TableCell>
                 <TableCell class="font-medium">{{ row.name }}</TableCell>
                 <TableCell>{{ row.age }}</TableCell>
                 <TableCell>
                   <Badge :variant="row.gender === 1 ? 'default' : 'secondary'" class="text-[10px]">
-                    {{ row.gender === 1 ? '男' : '女' }}
+                    {{ row.gender === 1 ? "男" : "女" }}
                   </Badge>
                 </TableCell>
                 <TableCell class="text-sm">{{ row.phone }}</TableCell>
-                <TableCell class="text-sm text-muted-foreground max-w-[200px] truncate">{{ row.address }}</TableCell>
+                <TableCell class="text-sm text-muted-foreground max-w-[200px] truncate">
+                  {{ row.address }}
+                </TableCell>
                 <TableCell>
                   <Badge :variant="row.status === 1 ? 'default' : 'outline'" class="text-[10px]">
-                    {{ row.status === 1 ? '正常' : '停用' }}
+                    {{ row.status === 1 ? "正常" : "停用" }}
                   </Badge>
                 </TableCell>
                 <TableCell class="text-right">
                   <div class="flex justify-end gap-1">
                     <Button variant="ghost" size="sm" @click="openEdit(row)">编辑</Button>
-                    <Button variant="ghost" size="sm" class="text-destructive" @click="handleDelete(row.id)">删除</Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      class="text-destructive"
+                      @click="handleDelete(row.id)"
+                    >
+                      删除
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -89,8 +122,12 @@
         <div class="flex items-center justify-between mt-4">
           <div class="text-xs text-muted-foreground">共 {{ filteredList.length }} 条</div>
           <div class="flex items-center gap-2">
-            <span class="text-xs text-muted-foreground">第 {{ currentPage }} / {{ totalPages }} 页</span>
-            <Button variant="outline" size="sm" :disabled="currentPage <= 1" @click="currentPage--">&lt;</Button>
+            <span class="text-xs text-muted-foreground">
+              第 {{ currentPage }} / {{ totalPages }} 页
+            </span>
+            <Button variant="outline" size="sm" :disabled="currentPage <= 1" @click="currentPage--">
+              &lt;
+            </Button>
             <Button
               v-for="p in displayedPages"
               :key="p"
@@ -101,7 +138,14 @@
             >
               {{ p }}
             </Button>
-            <Button variant="outline" size="sm" :disabled="currentPage >= totalPages" @click="currentPage++">&gt;</Button>
+            <Button
+              variant="outline"
+              size="sm"
+              :disabled="currentPage >= totalPages"
+              @click="currentPage++"
+            >
+              &gt;
+            </Button>
           </div>
         </div>
       </CardContent>
@@ -111,12 +155,15 @@
     <Dialog :open="dialogOpen" @update:open="dialogOpen = $event">
       <DialogContent class="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>{{ isEdit ? '编辑' : '新增' }}</DialogTitle>
+          <DialogTitle>{{ isEdit ? "编辑" : "新增" }}</DialogTitle>
         </DialogHeader>
         <div class="space-y-4 py-2">
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-1.5">
-              <Label>姓名 <span class="text-destructive">*</span></Label>
+              <Label>
+                姓名
+                <span class="text-destructive">*</span>
+              </Label>
               <Input v-model="formData.name" placeholder="请输入姓名" />
             </div>
             <div class="space-y-1.5">
@@ -127,7 +174,10 @@
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-1.5">
               <Label>性别</Label>
-              <Select :model-value="String(formData.gender)" @update:model-value="(v: any) => formData.gender = Number(v)">
+              <Select
+                :model-value="String(formData.gender)"
+                @update:model-value="(v: any) => (formData.gender = Number(v))"
+              >
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="1">男</SelectItem>
@@ -146,7 +196,10 @@
           </div>
           <div class="flex items-center justify-between">
             <Label>状态</Label>
-            <Switch :checked="formData.status === 1" @update:checked="(v: boolean) => formData.status = v ? 1 : 0" />
+            <Switch
+              :checked="formData.status === 1"
+              @update:checked="(v: boolean) => (formData.status = v ? 1 : 0)"
+            />
           </div>
         </div>
         <DialogFooter>
@@ -161,7 +214,9 @@
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>确认删除</AlertDialogTitle>
-          <AlertDialogDescription>确定要删除选中的数据项吗？此操作不可撤销。</AlertDialogDescription>
+          <AlertDialogDescription>
+            确定要删除选中的数据项吗？此操作不可撤销。
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>取消</AlertDialogCancel>
@@ -182,12 +237,37 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
 interface Row {
@@ -201,14 +281,78 @@ interface Row {
 }
 
 const mockData: Row[] = [
-  { id: "1", name: "张三", age: 28, gender: 1, phone: "18112345678", address: "北京市朝阳区建国路88号", status: 1 },
-  { id: "2", name: "李四", age: 35, gender: 1, phone: "13987654321", address: "上海市浦东新区陆家嘴环路1000号", status: 1 },
-  { id: "3", name: "王五", age: 22, gender: 2, phone: "15011223344", address: "广州市天河区珠江新城花城大道", status: 0 },
-  { id: "4", name: "赵六", age: 30, gender: 1, phone: "13799887766", address: "深圳市南山区科技园南区", status: 1 },
-  { id: "5", name: "孙七", age: 26, gender: 2, phone: "18666778899", address: "杭州市西湖区文三路138号", status: 1 },
-  { id: "6", name: "周八", age: 40, gender: 1, phone: "13555667788", address: "成都市武侯区天府大道中段688号", status: 0 },
-  { id: "7", name: "吴九", age: 33, gender: 2, phone: "18900112233", address: "武汉市洪山区光谷大道77号", status: 1 },
-  { id: "8", name: "郑十", age: 29, gender: 1, phone: "13122334455", address: "南京市鼓楼区汉中路100号", status: 1 },
+  {
+    id: "1",
+    name: "张三",
+    age: 28,
+    gender: 1,
+    phone: "18112345678",
+    address: "北京市朝阳区建国路88号",
+    status: 1,
+  },
+  {
+    id: "2",
+    name: "李四",
+    age: 35,
+    gender: 1,
+    phone: "13987654321",
+    address: "上海市浦东新区陆家嘴环路1000号",
+    status: 1,
+  },
+  {
+    id: "3",
+    name: "王五",
+    age: 22,
+    gender: 2,
+    phone: "15011223344",
+    address: "广州市天河区珠江新城花城大道",
+    status: 0,
+  },
+  {
+    id: "4",
+    name: "赵六",
+    age: 30,
+    gender: 1,
+    phone: "13799887766",
+    address: "深圳市南山区科技园南区",
+    status: 1,
+  },
+  {
+    id: "5",
+    name: "孙七",
+    age: 26,
+    gender: 2,
+    phone: "18666778899",
+    address: "杭州市西湖区文三路138号",
+    status: 1,
+  },
+  {
+    id: "6",
+    name: "周八",
+    age: 40,
+    gender: 1,
+    phone: "13555667788",
+    address: "成都市武侯区天府大道中段688号",
+    status: 0,
+  },
+  {
+    id: "7",
+    name: "吴九",
+    age: 33,
+    gender: 2,
+    phone: "18900112233",
+    address: "武汉市洪山区光谷大道77号",
+    status: 1,
+  },
+  {
+    id: "8",
+    name: "郑十",
+    age: 29,
+    gender: 1,
+    phone: "13122334455",
+    address: "南京市鼓楼区汉中路100号",
+    status: 1,
+  },
 ];
 
 const dataList = ref<Row[]>([...mockData]);
@@ -247,7 +391,10 @@ const displayedPages = computed(() => {
   return pages;
 });
 
-const isAllSelected = computed(() => paginatedList.value.length > 0 && paginatedList.value.every((r) => checkedIds.value.has(r.id)));
+const isAllSelected = computed(
+  () =>
+    paginatedList.value.length > 0 && paginatedList.value.every((r) => checkedIds.value.has(r.id))
+);
 
 function toggleRow(row: Row) {
   const s = new Set(checkedIds.value);
@@ -261,18 +408,45 @@ function toggleAll(val: boolean | "indeterminate") {
   checkedIds.value = s;
 }
 
-function handleQuery() { currentPage.value = 1; }
-function handleReset() { queryParams.keywords = ""; queryParams.status = "all"; currentPage.value = 1; }
+function handleQuery() {
+  currentPage.value = 1;
+}
+function handleReset() {
+  queryParams.keywords = "";
+  queryParams.status = "all";
+  currentPage.value = 1;
+}
 
 const dialogOpen = ref(false);
 const isEdit = ref(false);
-const formData = reactive<{ id?: string; name: string; age: number; gender: number; phone: string; address: string; status: number }>({
-  name: "", age: 25, gender: 1, phone: "", address: "", status: 1,
+const formData = reactive<{
+  id?: string;
+  name: string;
+  age: number;
+  gender: number;
+  phone: string;
+  address: string;
+  status: number;
+}>({
+  name: "",
+  age: 25,
+  gender: 1,
+  phone: "",
+  address: "",
+  status: 1,
 });
 
 function openAdd() {
   isEdit.value = false;
-  Object.assign(formData, { id: undefined, name: "", age: 25, gender: 1, phone: "", address: "", status: 1 });
+  Object.assign(formData, {
+    id: undefined,
+    name: "",
+    age: 25,
+    gender: 1,
+    phone: "",
+    address: "",
+    status: 1,
+  });
   dialogOpen.value = true;
 }
 
@@ -283,7 +457,10 @@ function openEdit(row: Row) {
 }
 
 function handleSubmit() {
-  if (!formData.name) { toast.error("请输入姓名"); return; }
+  if (!formData.name) {
+    toast.error("请输入姓名");
+    return;
+  }
   if (isEdit.value && formData.id) {
     const idx = dataList.value.findIndex((r) => r.id === formData.id);
     if (idx >= 0) dataList.value[idx] = { ...formData } as Row;

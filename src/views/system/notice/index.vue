@@ -8,7 +8,7 @@
           <div class="space-y-1.5">
             <Label class="text-xs">标题</Label>
             <Input
-              v-model="queryParams.title"
+              v-model.trim="queryParams.title"
               placeholder="通知标题"
               class="w-52 h-8 text-sm"
               @keyup.enter="handleQuery"
@@ -94,8 +94,8 @@
             </TableEmpty>
 
             <TableRow
-              v-else
               v-for="(row, index) in tableData"
+              v-else
               :key="row.id"
               :data-state="isChecked(row.id) ? 'selected' : undefined"
               class="cursor-pointer"
@@ -119,8 +119,12 @@
                 </Badge>
               </TableCell>
               <TableCell>
-                <Badge v-if="row.targetType === 1" variant="warning" class="text-[10px]">全体</Badge>
-                <Badge v-else-if="row.targetType === 2" variant="success" class="text-[10px]">指定</Badge>
+                <Badge v-if="row.targetType === 1" variant="warning" class="text-[10px]">
+                  全体
+                </Badge>
+                <Badge v-else-if="row.targetType === 2" variant="success" class="text-[10px]">
+                  指定
+                </Badge>
                 <span v-else class="text-muted-foreground">-</span>
               </TableCell>
               <TableCell>
@@ -131,13 +135,16 @@
               <TableCell>
                 <div class="text-xs space-y-0.5">
                   <div>
-                    <span class="text-muted-foreground">创建：</span>{{ row.createTime || "-" }}
+                    <span class="text-muted-foreground">创建：</span>
+                    {{ row.createTime || "-" }}
                   </div>
                   <div v-if="row.publishStatus === 1">
-                    <span class="text-muted-foreground">发布：</span>{{ row.publishTime || "-" }}
+                    <span class="text-muted-foreground">发布：</span>
+                    {{ row.publishTime || "-" }}
                   </div>
                   <div v-else-if="row.publishStatus === -1">
-                    <span class="text-muted-foreground">撤回：</span>{{ row.revokeTime || "-" }}
+                    <span class="text-muted-foreground">撤回：</span>
+                    {{ row.revokeTime || "-" }}
                   </div>
                 </div>
               </TableCell>
@@ -201,16 +208,14 @@
           >
             <PaginationContent>
               <PaginationPrevious />
-              <PaginationItem
-                v-for="item in paginationItems"
-                :key="item"
-                :value="item"
-                as-child
-              >
+              <PaginationItem v-for="item in paginationItems" :key="item" :value="item" as-child>
                 <Button
                   variant="ghost"
                   size="icon-xs"
-                  :class="{ 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground': item === queryParams.pageNum }"
+                  :class="{
+                    'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground':
+                      item === queryParams.pageNum,
+                  }"
                 >
                   {{ item }}
                 </Button>
@@ -230,12 +235,18 @@
         </DialogHeader>
         <div class="space-y-4 py-2">
           <div class="space-y-1.5">
-            <Label>通知标题 <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.title" placeholder="请输入通知标题" />
+            <Label>
+              通知标题
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input v-model.trim="formData.title" placeholder="请输入通知标题" />
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-1.5">
-              <Label>通知类型 <span class="text-destructive">*</span></Label>
+              <Label>
+                通知类型
+                <span class="text-destructive">*</span>
+              </Label>
               <Select v-model="formData.type">
                 <SelectTrigger class="h-8 text-sm">
                   <SelectValue placeholder="请选择" />
@@ -248,7 +259,10 @@
               </Select>
             </div>
             <div class="space-y-1.5">
-              <Label>通知等级 <span class="text-destructive">*</span></Label>
+              <Label>
+                通知等级
+                <span class="text-destructive">*</span>
+              </Label>
               <Select v-model="formData.level">
                 <SelectTrigger class="h-8 text-sm">
                   <SelectValue placeholder="请选择" />
@@ -265,11 +279,21 @@
             <Label>目标类型</Label>
             <div class="flex items-center gap-3">
               <label class="flex items-center gap-1.5 cursor-pointer text-sm">
-                <input type="radio" :value="1" v-model="formData.targetType" class="accent-primary" />
+                <input
+                  v-model="formData.targetType"
+                  type="radio"
+                  :value="1"
+                  class="accent-primary"
+                />
                 全体
               </label>
               <label class="flex items-center gap-1.5 cursor-pointer text-sm">
-                <input type="radio" :value="2" v-model="formData.targetType" class="accent-primary" />
+                <input
+                  v-model="formData.targetType"
+                  type="radio"
+                  :value="2"
+                  class="accent-primary"
+                />
                 指定用户
               </label>
             </div>
@@ -292,7 +316,10 @@
             </Select>
           </div>
           <div class="space-y-1.5">
-            <Label>通知内容 <span class="text-destructive">*</span></Label>
+            <Label>
+              通知内容
+              <span class="text-destructive">*</span>
+            </Label>
             <WangEditor v-model="formData.content" height="350px" />
           </div>
         </div>
@@ -318,7 +345,10 @@
             <div>
               <span class="text-xs text-muted-foreground">发布状态</span>
               <div class="mt-0.5">
-                <Badge :variant="getStatusBadgeVariant(currentNotice.publishStatus)" class="text-[10px]">
+                <Badge
+                  :variant="getStatusBadgeVariant(currentNotice.publishStatus)"
+                  class="text-[10px]"
+                >
                   {{ getStatusLabel(currentNotice.publishStatus) }}
                 </Badge>
               </div>
@@ -381,20 +411,44 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableEmpty,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableEmpty,
 } from "@/components/ui/table";
 import {
-  Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 import {
-  Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 
 import NoticeAPI from "@/api/system/notice";
@@ -494,12 +548,16 @@ function isChecked(id: string) {
 
 function toggleRow(row: NoticeItem) {
   const s = new Set(checkedIds.value);
-  s.has(row.id) ? s.delete(row.id) : s.add(row.id);
+  if (s.has(row.id)) {
+    s.delete(row.id);
+  } else {
+    s.add(row.id);
+  }
   checkedIds.value = s;
 }
 
-const isAllSelected = computed(() =>
-  tableData.value.length > 0 && tableData.value.every((r) => checkedIds.value.has(r.id))
+const isAllSelected = computed(
+  () => tableData.value.length > 0 && tableData.value.every((r) => checkedIds.value.has(r.id))
 );
 
 function toggleAll(val: boolean | "indeterminate") {
@@ -551,9 +609,18 @@ function closeDialog() {
 }
 
 const handleSubmit = async () => {
-  if (!formData.title?.trim()) { toast.error("请输入通知标题"); return; }
-  if (formData.type === undefined || formData.type === null) { toast.error("请选择通知类型"); return; }
-  if (!formData.content?.trim()) { toast.error("请输入通知内容"); return; }
+  if (!formData.title?.trim()) {
+    toast.error("请输入通知标题");
+    return;
+  }
+  if (formData.type === undefined || formData.type === null) {
+    toast.error("请选择通知类型");
+    return;
+  }
+  if (!formData.content?.trim()) {
+    toast.error("请输入通知内容");
+    return;
+  }
 
   loading.value = true;
   try {
@@ -587,8 +654,14 @@ function normalizeTargetUsers(value?: unknown): number[] {
     try {
       const parsed = JSON.parse(value);
       if (Array.isArray(parsed)) return toNumberArray(parsed);
-    } catch { /* fall through */ }
-    return value.split(",").filter(Boolean).map((v) => Number(v)).filter((v) => Number.isFinite(v));
+    } catch {
+      /* fall through */
+    }
+    return value
+      .split(",")
+      .filter(Boolean)
+      .map((v) => Number(v))
+      .filter((v) => Number.isFinite(v));
   }
   return [];
 }
@@ -623,7 +696,10 @@ const deleteState = reactive({ visible: false, ids: "" });
 
 function handleDelete(id?: string) {
   const ids = id ?? [...checkedIds.value].join(",");
-  if (!ids) { toast.warning("请勾选删除项"); return; }
+  if (!ids) {
+    toast.warning("请勾选删除项");
+    return;
+  }
   deleteState.ids = ids;
   deleteState.visible = true;
 }
@@ -644,7 +720,10 @@ const paginationItems = computed(() => {
   const pages: number[] = [];
   const cur = queryParams.pageNum;
   const tp = totalPages.value;
-  if (tp <= 7) { for (let i = 1; i <= tp; i++) pages.push(i); return pages; }
+  if (tp <= 7) {
+    for (let i = 1; i <= tp; i++) pages.push(i);
+    return pages;
+  }
   pages.push(1);
   if (cur > 3) pages.push(-1);
   for (let i = Math.max(2, cur - 1); i <= Math.min(tp - 1, cur + 1); i++) pages.push(i);

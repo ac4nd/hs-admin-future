@@ -1,23 +1,3 @@
-<script lang="ts" setup>
-import { ref, type HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-  title: string
-  description?: string
-  closable?: boolean
-}>()
-
-const emit = defineEmits<{
-  close: []
-}>()
-
-const { isEnabled } = useGlassFilter('notification')
-</script>
-
 <template>
   <GlassSurface
     v-if="isEnabled"
@@ -31,7 +11,13 @@ const { isEnabled } = useGlassFilter('notification')
         <div v-if="description" class="text-xs text-muted-foreground mt-1">{{ description }}</div>
         <div class="mt-2"><slot /></div>
       </div>
-      <button v-if="closable" class="text-muted-foreground hover:text-foreground text-sm shrink-0" @click="emit('close')">✕</button>
+      <button
+        v-if="closable"
+        class="text-muted-foreground hover:text-foreground text-sm shrink-0"
+        @click="emit('close')"
+      >
+        ✕
+      </button>
     </div>
   </GlassSurface>
 
@@ -45,7 +31,33 @@ const { isEnabled } = useGlassFilter('notification')
         <div v-if="description" class="text-xs text-muted-foreground mt-1">{{ description }}</div>
         <div class="mt-2"><slot /></div>
       </div>
-      <button v-if="closable" class="text-muted-foreground hover:text-foreground text-sm shrink-0" @click="emit('close')">✕</button>
+      <button
+        v-if="closable"
+        class="text-muted-foreground hover:text-foreground text-sm shrink-0"
+        @click="emit('close')"
+      >
+        ✕
+      </button>
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { type HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = defineProps<{
+  class?: HTMLAttributes["class"];
+  title: string;
+  description?: string;
+  closable?: boolean;
+}>();
+
+const emit = defineEmits<{
+  close: [];
+}>();
+
+const { isEnabled } = useGlassFilter("notification");
+</script>

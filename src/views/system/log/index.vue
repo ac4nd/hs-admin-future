@@ -5,28 +5,18 @@
       <CardContent class="pt-6">
         <div class="flex items-center gap-3 flex-wrap">
           <Input
-            v-model="queryParams.keywords"
+            v-model.trim="queryParams.keywords"
             :placeholder="t('log.keywordPlaceholder')"
             class="w-60"
             @keyup.enter="handleQuery"
           />
           <div class="flex items-center gap-1.5">
-            <Input
-              v-model="startDate"
-              type="date"
-              class="w-40"
-              :placeholder="t('log.startDate')"
-            />
+            <Input v-model="startDate" type="date" class="w-40" :placeholder="t('log.startDate')" />
             <span class="text-muted-foreground">~</span>
-            <Input
-              v-model="endDate"
-              type="date"
-              class="w-40"
-              :placeholder="t('log.endDate')"
-            />
+            <Input v-model="endDate" type="date" class="w-40" :placeholder="t('log.endDate')" />
           </div>
-          <Button @click="handleQuery">{{ t('log.search') }}</Button>
-          <Button variant="outline" @click="handleResetQuery">{{ t('log.reset') }}</Button>
+          <Button @click="handleQuery">{{ t("log.search") }}</Button>
+          <Button variant="outline" @click="handleResetQuery">{{ t("log.reset") }}</Button>
         </div>
       </CardContent>
     </Card>
@@ -38,81 +28,88 @@
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead class="min-w-[180px]">{{ t('log.logTitle') }}</TableHead>
-                <TableHead class="w-20 text-center">{{ t('log.status') }}</TableHead>
-                <TableHead class="w-32">{{ t('log.ipAddress') }}</TableHead>
-                <TableHead class="min-w-[180px]">{{ t('log.requestUri') }}</TableHead>
-                <TableHead class="w-24 text-center">{{ t('log.requestMethod') }}</TableHead>
-                <TableHead class="w-28 text-center">{{ t('log.executionTime') }}</TableHead>
-                <TableHead class="w-24">{{ t('log.operator') }}</TableHead>
-                <TableHead class="w-44">{{ t('log.createTime') }}</TableHead>
-                <TableHead class="w-20 text-center">{{ t('log.action') }}</TableHead>
+                <TableHead class="min-w-[180px]">{{ t("log.logTitle") }}</TableHead>
+                <TableHead class="w-20 text-center">{{ t("log.status") }}</TableHead>
+                <TableHead class="w-32">{{ t("log.ipAddress") }}</TableHead>
+                <TableHead class="min-w-[180px]">{{ t("log.requestUri") }}</TableHead>
+                <TableHead class="w-24 text-center">{{ t("log.requestMethod") }}</TableHead>
+                <TableHead class="w-28 text-center">{{ t("log.executionTime") }}</TableHead>
+                <TableHead class="w-24">{{ t("log.operator") }}</TableHead>
+                <TableHead class="w-44">{{ t("log.createTime") }}</TableHead>
+                <TableHead class="w-20 text-center">{{ t("log.action") }}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               <TableRow v-if="loading">
                 <TableCell :colspan="9" class="h-24 text-center text-muted-foreground">
-                  {{ t('log.loading') }}
+                  {{ t("log.loading") }}
                 </TableCell>
               </TableRow>
               <TableRow v-else-if="logList.length === 0">
                 <TableCell :colspan="9" class="h-24 text-center text-muted-foreground">
-                  {{ t('log.noData') }}
+                  {{ t("log.noData") }}
                 </TableCell>
               </TableRow>
-              <TableRow
-                v-for="log in logList"
-                :key="log.id"
-                class="hover:bg-muted/50"
-              >
+              <TableRow v-for="log in logList" :key="log.id" class="hover:bg-muted/50">
                 <!-- 操作标题 -->
                 <TableCell>
                   <span class="truncate block max-w-[260px]" :title="log.title">
-                    {{ log.title || '-' }}
+                    {{ log.title || "-" }}
                   </span>
                 </TableCell>
 
                 <!-- 状态 -->
                 <TableCell class="text-center">
                   <Badge :variant="log.status === 1 ? 'default' : 'destructive'">
-                    {{ log.status === 1 ? t('log.statusSuccess') : t('log.statusFail') }}
+                    {{ log.status === 1 ? t("log.statusSuccess") : t("log.statusFail") }}
                   </Badge>
                 </TableCell>
 
                 <!-- IP地址 -->
-                <TableCell class="text-sm text-muted-foreground">{{ log.ip || '-' }}</TableCell>
+                <TableCell class="text-sm text-muted-foreground">{{ log.ip || "-" }}</TableCell>
 
                 <!-- 请求路径 -->
                 <TableCell>
-                  <span class="truncate block max-w-[260px] font-mono text-xs text-muted-foreground" :title="log.requestUri">
-                    {{ log.requestUri || '-' }}
+                  <span
+                    class="truncate block max-w-[260px] font-mono text-xs text-muted-foreground"
+                    :title="log.requestUri"
+                  >
+                    {{ log.requestUri || "-" }}
                   </span>
                 </TableCell>
 
                 <!-- 请求方法 -->
                 <TableCell class="text-center">
                   <Badge :variant="getMethodVariant(log.requestMethod)" class="font-mono text-xs">
-                    {{ log.requestMethod || '-' }}
+                    {{ log.requestMethod || "-" }}
                   </Badge>
                 </TableCell>
 
                 <!-- 执行时间 -->
                 <TableCell class="text-center text-sm">
-                  <span :class="log.executionTime && log.executionTime > 1000 ? 'text-destructive font-medium' : 'text-muted-foreground'">
-                    {{ log.executionTime ?? '-' }}
+                  <span
+                    :class="
+                      log.executionTime && log.executionTime > 1000
+                        ? 'text-destructive font-medium'
+                        : 'text-muted-foreground'
+                    "
+                  >
+                    {{ log.executionTime ?? "-" }}
                   </span>
                 </TableCell>
 
                 <!-- 操作人 -->
-                <TableCell class="text-sm">{{ log.operatorName || '-' }}</TableCell>
+                <TableCell class="text-sm">{{ log.operatorName || "-" }}</TableCell>
 
                 <!-- 操作时间 -->
-                <TableCell class="text-sm text-muted-foreground">{{ log.createTime || '-' }}</TableCell>
+                <TableCell class="text-sm text-muted-foreground">
+                  {{ log.createTime || "-" }}
+                </TableCell>
 
                 <!-- 操作 -->
                 <TableCell class="text-center">
                   <Button variant="ghost" size="sm" class="h-7 text-xs" @click="handleDetail(log)">
-                    {{ t('log.detail') }}
+                    {{ t("log.detail") }}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -122,9 +119,14 @@
 
         <!-- 分页 -->
         <div v-if="total > 0" class="flex items-center justify-between mt-4">
-          <p class="text-sm text-muted-foreground">{{ t('log.total', { count: total }) }}</p>
+          <p class="text-sm text-muted-foreground">{{ t("log.total", { count: total }) }}</p>
           <div class="flex items-center gap-1">
-            <Button variant="outline" size="sm" :disabled="queryParams.pageNum <= 1" @click="goPage(queryParams.pageNum - 1)">
+            <Button
+              variant="outline"
+              size="sm"
+              :disabled="queryParams.pageNum <= 1"
+              @click="goPage(queryParams.pageNum - 1)"
+            >
               &lt;
             </Button>
             <Button
@@ -137,7 +139,12 @@
             >
               {{ page }}
             </Button>
-            <Button variant="outline" size="sm" :disabled="queryParams.pageNum >= totalPages" @click="goPage(queryParams.pageNum + 1)">
+            <Button
+              variant="outline"
+              size="sm"
+              :disabled="queryParams.pageNum >= totalPages"
+              @click="goPage(queryParams.pageNum + 1)"
+            >
               &gt;
             </Button>
           </div>
@@ -146,28 +153,35 @@
     </Card>
 
     <!-- 详情弹窗 -->
-    <Dialog :open="detailVisible" @update:open="(v) => { if (!v) detailVisible = false }">
+    <Dialog
+      :open="detailVisible"
+      @update:open="
+        (v) => {
+          if (!v) detailVisible = false;
+        }
+      "
+    >
       <DialogContent class="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{{ t('log.detailTitle') }}</DialogTitle>
+          <DialogTitle>{{ t("log.detailTitle") }}</DialogTitle>
         </DialogHeader>
         <div v-if="detailData" class="space-y-3 py-2">
           <!-- 操作标题 -->
           <div class="grid grid-cols-[100px_1fr] gap-2 items-start">
-            <span class="text-sm text-muted-foreground">{{ t('log.logTitle') }}</span>
-            <span class="text-sm font-medium">{{ detailData.title || '-' }}</span>
+            <span class="text-sm text-muted-foreground">{{ t("log.logTitle") }}</span>
+            <span class="text-sm font-medium">{{ detailData.title || "-" }}</span>
           </div>
 
           <!-- 状态 + 执行时间 -->
           <div class="grid grid-cols-2 gap-4">
             <div class="grid grid-cols-[100px_1fr] gap-2 items-center">
-              <span class="text-sm text-muted-foreground">{{ t('log.status') }}</span>
+              <span class="text-sm text-muted-foreground">{{ t("log.status") }}</span>
               <Badge :variant="detailData.status === 1 ? 'default' : 'destructive'">
-                {{ detailData.status === 1 ? t('log.statusSuccess') : t('log.statusFail') }}
+                {{ detailData.status === 1 ? t("log.statusSuccess") : t("log.statusFail") }}
               </Badge>
             </div>
             <div class="grid grid-cols-[100px_1fr] gap-2 items-center">
-              <span class="text-sm text-muted-foreground">{{ t('log.executionTime') }}</span>
+              <span class="text-sm text-muted-foreground">{{ t("log.executionTime") }}</span>
               <span class="text-sm">{{ detailData.executionTime }}ms</span>
             </div>
           </div>
@@ -175,62 +189,69 @@
           <!-- 操作人 + 操作时间 -->
           <div class="grid grid-cols-2 gap-4">
             <div class="grid grid-cols-[100px_1fr] gap-2 items-center">
-              <span class="text-sm text-muted-foreground">{{ t('log.operator') }}</span>
-              <span class="text-sm">{{ detailData.operatorName || '-' }}</span>
+              <span class="text-sm text-muted-foreground">{{ t("log.operator") }}</span>
+              <span class="text-sm">{{ detailData.operatorName || "-" }}</span>
             </div>
             <div class="grid grid-cols-[100px_1fr] gap-2 items-center">
-              <span class="text-sm text-muted-foreground">{{ t('log.createTime') }}</span>
-              <span class="text-sm">{{ detailData.createTime || '-' }}</span>
+              <span class="text-sm text-muted-foreground">{{ t("log.createTime") }}</span>
+              <span class="text-sm">{{ detailData.createTime || "-" }}</span>
             </div>
           </div>
 
           <!-- IP + 请求方法 -->
           <div class="grid grid-cols-2 gap-4">
             <div class="grid grid-cols-[100px_1fr] gap-2 items-center">
-              <span class="text-sm text-muted-foreground">{{ t('log.ipAddress') }}</span>
-              <span class="text-sm">{{ detailData.ip || '-' }}</span>
+              <span class="text-sm text-muted-foreground">{{ t("log.ipAddress") }}</span>
+              <span class="text-sm">{{ detailData.ip || "-" }}</span>
             </div>
             <div class="grid grid-cols-[100px_1fr] gap-2 items-center">
-              <span class="text-sm text-muted-foreground">{{ t('log.requestMethod') }}</span>
-              <Badge :variant="getMethodVariant(detailData.requestMethod)" class="font-mono text-xs">
-                {{ detailData.requestMethod || '-' }}
+              <span class="text-sm text-muted-foreground">{{ t("log.requestMethod") }}</span>
+              <Badge
+                :variant="getMethodVariant(detailData.requestMethod)"
+                class="font-mono text-xs"
+              >
+                {{ detailData.requestMethod || "-" }}
               </Badge>
             </div>
           </div>
 
           <!-- 请求路径 -->
           <div class="grid grid-cols-[100px_1fr] gap-2 items-center">
-            <span class="text-sm text-muted-foreground">{{ t('log.requestUri') }}</span>
-            <span class="text-sm font-mono">{{ detailData.requestUri || '-' }}</span>
+            <span class="text-sm text-muted-foreground">{{ t("log.requestUri") }}</span>
+            <span class="text-sm font-mono">{{ detailData.requestUri || "-" }}</span>
           </div>
 
           <!-- 浏览器 + 操作系统 -->
           <div class="grid grid-cols-2 gap-4">
             <div class="grid grid-cols-[100px_1fr] gap-2 items-center">
-              <span class="text-sm text-muted-foreground">{{ t('log.browser') }}</span>
-              <span class="text-sm">{{ detailData.browser || '-' }}</span>
+              <span class="text-sm text-muted-foreground">{{ t("log.browser") }}</span>
+              <span class="text-sm">{{ detailData.browser || "-" }}</span>
             </div>
             <div class="grid grid-cols-[100px_1fr] gap-2 items-center">
-              <span class="text-sm text-muted-foreground">{{ t('log.os') }}</span>
-              <span class="text-sm">{{ detailData.os || '-' }}</span>
+              <span class="text-sm text-muted-foreground">{{ t("log.os") }}</span>
+              <span class="text-sm">{{ detailData.os || "-" }}</span>
             </div>
           </div>
 
           <!-- 自定义内容 -->
           <div class="grid grid-cols-[100px_1fr] gap-2 items-start">
-            <span class="text-sm text-muted-foreground">{{ t('log.content') }}</span>
-            <div v-if="detailData.content" class="text-sm whitespace-pre-wrap">{{ detailData.content }}</div>
-            <span v-else class="text-sm text-muted-foreground">{{ t('log.contentEmpty') }}</span>
+            <span class="text-sm text-muted-foreground">{{ t("log.content") }}</span>
+            <div v-if="detailData.content" class="text-sm whitespace-pre-wrap">
+              {{ detailData.content }}
+            </div>
+            <span v-else class="text-sm text-muted-foreground">{{ t("log.contentEmpty") }}</span>
           </div>
 
           <!-- 错误信息 -->
           <div v-if="detailData.errorMsg" class="grid grid-cols-[100px_1fr] gap-2 items-start">
-            <span class="text-sm text-muted-foreground">{{ t('log.errorMsg') }}</span>
+            <span class="text-sm text-muted-foreground">{{ t("log.errorMsg") }}</span>
             <span class="text-sm text-destructive">{{ detailData.errorMsg }}</span>
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" @click="detailVisible = false">{{ t('log.close', '关闭') }}</Button>
+          <Button variant="outline" @click="detailVisible = false">
+            {{ t("log.close", "关闭") }}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -244,16 +265,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { getLogPage } from "@/api/log";
-import type { LogItem, LogQuery } from "@/api/log/types";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import LogAPI from "@/api/system/log";
+import type { LogItem, LogQueryParams } from "@/api/log";
 
 const { t } = useI18n();
 
 // ==================== 查询参数 ====================
 
-const queryParams = reactive<LogQuery>({
+const queryParams = reactive<LogQueryParams>({
   pageNum: 1,
   pageSize: 10,
   keywords: "",
@@ -286,17 +320,16 @@ function goPage(page: number) {
   fetchList();
 }
 
-function fetchList() {
+async function fetchList() {
   loading.value = true;
   try {
-    // 构建查询参数
-    const params: LogQuery = { ...queryParams };
+    const params: LogQueryParams = { ...queryParams };
     if (startDate.value && endDate.value) {
       params.createTime = [startDate.value, endDate.value];
     }
-    const result = getLogPage(params);
-    logList.value = result.list;
-    total.value = result.total;
+    const result = await LogAPI.getPage(params);
+    logList.value = result.list ?? [];
+    total.value = result.total ?? 0;
   } finally {
     loading.value = false;
   }

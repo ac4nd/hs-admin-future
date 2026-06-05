@@ -21,9 +21,7 @@ export const useTagsViewStore = defineStore("tagsView", () => {
 
   /** 关闭其他标签 */
   function deleteOthersViews(view: TagView) {
-    visitedViews.value = visitedViews.value.filter(
-      (v) => v.affix || v.path === view.path
-    );
+    visitedViews.value = visitedViews.value.filter((v) => v.affix || v.path === view.path);
     cachedViews.value = cachedViews.value.filter((name) =>
       visitedViews.value.some((v) => v.name === name)
     );
@@ -57,9 +55,7 @@ export const useTagsViewStore = defineStore("tagsView", () => {
   function deleteAllViews() {
     const affixTags = visitedViews.value.filter((tag) => tag.affix);
     visitedViews.value = [...affixTags];
-    cachedViews.value = affixTags
-      .filter((tag) => tag.keepAlive)
-      .map((tag) => tag.name);
+    cachedViews.value = affixTags.filter((tag) => tag.keepAlive).map((tag) => tag.name);
   }
 
   /** 删除指定标签的缓存 */
@@ -125,9 +121,7 @@ export const useTagsViewStore = defineStore("tagsView", () => {
     }
     walk(routes);
     visitedViews.value = affixViews;
-    cachedViews.value = affixViews
-      .filter((v) => v.keepAlive)
-      .map((v) => v.name);
+    cachedViews.value = affixViews.filter((v) => v.keepAlive).map((v) => v.name);
   }
 
   return {

@@ -18,12 +18,9 @@
             variant="ghost"
             :size="isDesktop ? 'sm' : 'icon'"
             class="h-8"
-            :class="[
-              isDesktop ? 'gap-1.5 text-sm' : 'w-8',
-              itemClass(item),
-            ]"
+            :class="[isDesktop ? 'gap-1.5 text-sm' : 'w-8', itemClass(item)]"
           >
-            <span :class="{ 'text-base': !isDesktop }">{{ item.icon || '📄' }}</span>
+            <span :class="{ 'text-base': !isDesktop }">{{ item.icon || "📄" }}</span>
             <template v-if="isDesktop">
               <span>{{ translateRouteTitle(item.title) }}</span>
               <ChevronDown class="h-3 w-3 opacity-50" />
@@ -41,7 +38,7 @@
           <template v-for="child in item.children" :key="child.fullPath">
             <DropdownMenuSub v-if="child.children?.length">
               <DropdownMenuSubTrigger class="gap-2">
-                <span>{{ child.icon || '📄' }}</span>
+                <span>{{ child.icon || "📄" }}</span>
                 <span>{{ translateRouteTitle(child.title) }}</span>
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
@@ -51,13 +48,13 @@
                   class="gap-2"
                   @click="handleSelect(grand)"
                 >
-                  <span>{{ grand.icon || '📄' }}</span>
+                  <span>{{ grand.icon || "📄" }}</span>
                   <span>{{ translateRouteTitle(grand.title) }}</span>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             <DropdownMenuItem v-else class="gap-2" @click="handleSelect(child)">
-              <span>{{ child.icon || '📄' }}</span>
+              <span>{{ child.icon || "📄" }}</span>
               <span>{{ translateRouteTitle(child.title) }}</span>
             </DropdownMenuItem>
           </template>
@@ -74,7 +71,7 @@
           :class="itemClass(item)"
           @click="handleSelect(item)"
         >
-          <span>{{ item.icon || '📄' }}</span>
+          <span>{{ item.icon || "📄" }}</span>
           <span>{{ translateRouteTitle(item.title) }}</span>
         </Button>
         <Tooltip v-else>
@@ -86,7 +83,7 @@
               :class="itemClass(item)"
               @click="handleSelect(item)"
             >
-              <span class="text-base">{{ item.icon || '📄' }}</span>
+              <span class="text-base">{{ item.icon || "📄" }}</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom" :side-offset="4">
@@ -119,7 +116,7 @@
                 class="gap-2"
                 :class="{ 'text-primary font-medium': isItemActive(item) }"
               >
-                <span>{{ item.icon || '📄' }}</span>
+                <span>{{ item.icon || "📄" }}</span>
                 <span>{{ translateRouteTitle(item.title) }}</span>
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
@@ -129,13 +126,13 @@
                   class="gap-2"
                   @click="handleSelect(child)"
                 >
-                  <span>{{ child.icon || '📄' }}</span>
+                  <span>{{ child.icon || "📄" }}</span>
                   <span>{{ translateRouteTitle(child.title) }}</span>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             <DropdownMenuItem v-else class="gap-2" @click="handleSelect(item)">
-              <span>{{ item.icon || '📄' }}</span>
+              <span>{{ item.icon || "📄" }}</span>
               <span>{{ translateRouteTitle(item.title) }}</span>
             </DropdownMenuItem>
           </template>
@@ -180,14 +177,10 @@ const navRef = ref<HTMLElement>();
 const visibleCount = ref(999);
 
 /** 溢出的菜单项 */
-const hiddenItems = computed(() =>
-  menuTree.value.slice(visibleCount.value)
-);
+const hiddenItems = computed(() => menuTree.value.slice(visibleCount.value));
 
 /** 溢出项中是否有激活项 */
-const hasActiveHidden = computed(() =>
-  hiddenItems.value.some((item) => isItemActive(item))
-);
+const hasActiveHidden = computed(() => hiddenItems.value.some((item) => isItemActive(item)));
 
 /** "..." 按钮预留宽度 */
 const MORE_BTN_WIDTH = 44;
@@ -203,8 +196,7 @@ function isItemActive(item: MenuItem): boolean {
 function matchDescendant(children: MenuItem[], path: string): boolean {
   for (const child of children) {
     if (child.fullPath === path) return true;
-    if (child.children?.length && matchDescendant(child.children, path))
-      return true;
+    if (child.children?.length && matchDescendant(child.children, path)) return true;
   }
   return false;
 }

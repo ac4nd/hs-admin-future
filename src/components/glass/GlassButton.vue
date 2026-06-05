@@ -1,41 +1,3 @@
-<script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { Button, buttonVariants } from '@/components/ui/button'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = withDefaults(
-  defineProps<{
-    class?: HTMLAttributes['class']
-    variant?: NonNullable<Parameters<typeof buttonVariants>[0]>['variant']
-    size?: NonNullable<Parameters<typeof buttonVariants>[0]>['size']
-    disabled?: boolean
-    type?: 'button' | 'submit' | 'reset'
-    as?: string
-    asChild?: boolean
-  }>(),
-  {
-    variant: 'ghost',
-    size: 'default',
-    disabled: false,
-    type: 'button',
-    as: 'button',
-    asChild: false,
-  },
-)
-
-const emit = defineEmits<{
-  click: []
-}>()
-
-const { isEnabled } = useGlassFilter('button')
-
-const handleClick = () => {
-  if (!props.disabled) emit('click')
-}
-</script>
-
 <template>
   <!-- glassEffect 关闭时直接渲染原生 Button -->
   <Button
@@ -70,3 +32,41 @@ const handleClick = () => {
     </Button>
   </GlassSurface>
 </template>
+
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = withDefaults(
+  defineProps<{
+    class?: HTMLAttributes["class"];
+    variant?: NonNullable<Parameters<typeof buttonVariants>[0]>["variant"];
+    size?: NonNullable<Parameters<typeof buttonVariants>[0]>["size"];
+    disabled?: boolean;
+    type?: "button" | "submit" | "reset";
+    as?: string;
+    asChild?: boolean;
+  }>(),
+  {
+    variant: "ghost",
+    size: "default",
+    disabled: false,
+    type: "button",
+    as: "button",
+    asChild: false,
+  }
+);
+
+const emit = defineEmits<{
+  click: [];
+}>();
+
+const { isEnabled } = useGlassFilter("button");
+
+const handleClick = () => {
+  if (!props.disabled) emit("click");
+};
+</script>
