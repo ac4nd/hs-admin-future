@@ -281,7 +281,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import LogAPI from "@/api/system/log";
-import type { LogItem, LogQueryParams } from "@/api/log";
+import type { LogItem, LogQueryParams } from "@/api/system/log/types";
 
 const { t } = useI18n();
 

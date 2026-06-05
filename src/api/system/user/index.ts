@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 import type { UserInfo, UserForm, UserQueryParams, UserItem } from "./types";
-import type { OptionItem } from "@/api/common";
+import type { OptionItem, PageResult } from "@/api/common";
 
 const USER_BASE_URL = "/api/v1/users";
 

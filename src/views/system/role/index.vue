@@ -68,9 +68,9 @@
                 <TableCell>
                   <input
                     type="checkbox"
-                    :checked="selectedIds.includes(role.id)"
+                    :checked="selectedIds.includes(role.id ?? '')"
                     class="size-4 rounded border-border"
-                    @change="toggleSelect(role.id)"
+                    @change="toggleSelect(role.id ?? '')"
                   />
                 </TableCell>
                 <TableCell class="font-medium">{{ role.name }}</TableCell>
@@ -98,7 +98,7 @@
                       variant="ghost"
                       size="sm"
                       class="h-7 text-xs"
-                      @click="handleEdit(role.id)"
+                      @click="handleEdit(role.id ?? '')"
                     >
                       {{ t("role.edit") }}
                     </Button>
@@ -361,21 +361,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import RoleAPI from "@/api/system/role";
-import {
-  getPage,
-  getFormData,
-  create,
-  update,
-  deleteByIds,
-  getRoleMenuIds,
-  updateRoleMenus,
-  getRoleDeptIds,
-} from "@/api/system/role";
-import type { RoleItem, RoleForm, RoleQuery } from "@/api/role/types";
+import DeptAPI from "@/api/system/dept";
+import MenuAPI from "@/api/system/menu";
+import type { RoleItem, RoleForm, RoleQueryParams } from "@/api/system/role/types";
 import type { OptionItem } from "@/api/common";
 import PermTreeItem from "./PermTreeItem.vue";
 import DepartmentTree from "./DepartmentTree.vue";
-import { Award } from "@lucide/vue";
 
 const { t } = useI18n();
 
@@ -386,7 +377,7 @@ const roleList = ref<RoleItem[]>([]);
 const total = ref(0);
 const selectedIds = ref<string[]>([]);
 
-const queryParams = reactive<RoleQuery>({
+const queryParams = reactive<RoleQueryParams>({
   pageNum: 1,
   pageSize: 10,
   keywords: "",
@@ -406,15 +397,16 @@ const displayedPages = computed(() => {
 });
 
 const isAllSelected = computed(
-  () => roleList.value.length > 0 && roleList.value.every((r) => selectedIds.value.includes(r.id))
+  () =>
+    roleList.value.length > 0 && roleList.value.every((r) => selectedIds.value.includes(r.id ?? ""))
 );
 
 const isPartialSelected = computed(
-  () => !isAllSelected.value && roleList.value.some((r) => selectedIds.value.includes(r.id))
+  () => !isAllSelected.value && roleList.value.some((r) => selectedIds.value.includes(r.id ?? ""))
 );
 
 function toggleSelectAll() {
-  selectedIds.value = isAllSelected.value ? [] : roleList.value.map((r) => r.id);
+  selectedIds.value = isAllSelected.value ? [] : roleList.value.map((r) => r.id ?? "");
 }
 
 function toggleSelect(id: string) {
@@ -491,14 +483,14 @@ function closeDialog() {
 
 async function handleCreate() {
   dialogTitle.value = t("role.addTitle");
-  if (deptOptions.value.length === 0) deptOptions.value = RoleAPI.getRoleDeptIds();
+  if (deptOptions.value.length === 0) deptOptions.value = await DeptAPI.getOptions();
   resetForm();
   dialogVisible.value = true;
 }
 
 async function handleEdit(id: string) {
   dialogTitle.value = t("role.editTitle");
-  if (deptOptions.value.length === 0) deptOptions.value = RoleAPI.getRoleDeptIds();
+  if (deptOptions.value.length === 0) deptOptions.value = await DeptAPI.getOptions();
   const data = await RoleAPI.getFormData(id);
   if (data) Object.assign(formData, data);
   dialogVisible.value = true;
@@ -560,7 +552,7 @@ const assignVisible = ref(false);
 const checkedRoleId = ref("");
 const checkedRoleName = ref("");
 const permOptions = ref<OptionItem[]>([]);
-const checkedMenuIds = ref<Number[]>([]);
+const checkedMenuIds = ref<string[]>([]);
 const permKeywords = ref("");
 const permExpanded = ref(true);
 const parentChildLinked = ref(true);
@@ -631,16 +623,17 @@ function collectIds(nodes: OptionItem[]): string[] {
 }
 
 async function handleAssignPerm(role: RoleItem) {
-  checkedRoleId.value = role.id;
-  checkedRoleName.value = role.name;
-  permOptions.value = await RoleAPI.getRoleMenuIds(role.id);
-  checkedMenuIds.value = await RoleAPI.getRoleMenuIds(role.id);
+  checkedRoleId.value = role.id ?? "";
+  checkedRoleName.value = role.name ?? "";
+
+  permOptions.value = await MenuAPI.getOptions();
+  checkedMenuIds.value = await RoleAPI.getRoleMenuIds(role.id ?? "");
   permKeywords.value = "";
   assignVisible.value = true;
 }
 
 async function handleAssignPermSubmit() {
-  RoleAPI.updateRoleMenus(checkedRoleId.value, [...checkedMenuIds.value]);
+  RoleAPI.updateRoleMenus(checkedRoleId.value, checkedMenuIds.value.map(Number));
   toast.success(t("role.assignSuccess"));
   assignVisible.value = false;
 }

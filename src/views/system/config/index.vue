@@ -241,24 +241,18 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import ConfigAPI from "@/api/system/config";
-import {
-
-
-
-
-  refreshConfigCache,
-} from "@/api/system/config";
-import type { ConfigItem, ConfigForm, ConfigQuery } from "@/api/system/config/types";
+import type { ConfigItem, ConfigForm, ConfigQueryParams } from "@/api/system/config/types";
+type ConfigItemWithRemark = ConfigItem & { remark?: string };
 
 const { t } = useI18n();
 
 // ==================== 列表 ====================
 
 const loading = ref(false);
-const pageData = ref<ConfigItem[]>([]);
+const pageData = ref<ConfigItemWithRemark[]>([]);
 const total = ref(0);
 
-const queryParams = reactive<ConfigQuery>({
+const queryParams = reactive<ConfigQueryParams>({
   pageNum: 1,
   pageSize: 10,
   keywords: "",
@@ -334,7 +328,8 @@ function handleCreate() {
   dialogVisible.value = true;
 }
 
-async function handleEdit(id: string) {
+async function handleEdit(id?: string) {
+  if (!id) return;
   dialogTitle.value = t("config.editTitle");
   const data = await ConfigAPI.getFormData(id);
   if (data) Object.assign(formData, data);
@@ -371,7 +366,8 @@ async function handleSubmit() {
 const deleteConfirmVisible = ref(false);
 const pendingDeleteId = ref("");
 
-function handleDelete(id: string) {
+function handleDelete(id?: string) {
+  if (!id) return;
   pendingDeleteId.value = id;
   deleteConfirmVisible.value = true;
 }
