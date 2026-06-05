@@ -64,7 +64,7 @@ const props = withDefaults(
     placeholder: "请选择",
     topLevelLabel: "顶级菜单",
     searchPlaceholder: "搜索...",
-  },
+  }
 );
 
 const emit = defineEmits<{

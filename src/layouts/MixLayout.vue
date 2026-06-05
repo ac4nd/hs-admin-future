@@ -1,6 +1,7 @@
 <template>
   <BaseLayout>
     <div class="layout-mix">
+      <!-- 顶部导航栏：Logo + 一级菜单 + 工具栏 -->
       <header
         v-show="!appStore.contentFullscreen"
         class="layout-mix__header"
@@ -13,12 +14,18 @@
         <div class="layout-mix__header-logo">
           <LayoutLogo :collapse="false" />
         </div>
-        <LayoutNavbar :show-sidebar-toggle="false" />
+
+        <!-- 一级水平菜单 -->
+        <MixTopMenu />
+
+        <!-- 工具栏（隐藏折叠按钮和面包屑） -->
+        <LayoutNavbar :show-sidebar-toggle="false" :show-breadcrumb="false" />
       </header>
 
       <div class="layout-mix__body">
+        <!-- 侧边栏：当前激活一级菜单的子菜单 -->
         <div
-          v-show="!appStore.contentFullscreen"
+          v-show="!appStore.contentFullscreen && hasSideMenus"
           class="layout-mix__sidebar"
           :class="[
             isMobile ? 'layout-mix__sidebar--mobile' : '',
@@ -28,7 +35,7 @@
               : 'bg-[var(--menu-bg)] border-r border-[var(--card-border)]',
           ]"
         >
-          <LayoutSidebar />
+          <MixSidebar />
         </div>
         <div class="layout-mix__content">
           <LayoutTagsView v-if="showTagsView" />
@@ -43,28 +50,55 @@
 import { computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useLayout } from "./useLayout";
-import { useAppStore, useSettingsStore } from "@/stores";
+import { useAppStore, useSettingsStore, usePermissionStore } from "@/stores";
 import BaseLayout from "./BaseLayout.vue";
 import LayoutLogo from "./components/LayoutLogo.vue";
 import LayoutNavbar from "./components/LayoutNavbar.vue";
 import LayoutTagsView from "./components/LayoutTagsView.vue";
 import LayoutMain from "./components/LayoutMain.vue";
-import LayoutSidebar from "./components/LayoutSidebar.vue";
+import MixTopMenu from "./components/MixTopMenu.vue";
+import MixSidebar from "./components/MixSidebar.vue";
 
 const { showTagsView, isMobile, isSidebarOpen } = useLayout();
 const appStore = useAppStore();
 const settingsStore = useSettingsStore();
+const permissionStore = usePermissionStore();
 const route = useRoute();
 const glassEffect = computed(() => settingsStore.glassEffect);
 
-/** 移动端路由切换后自动收起侧边栏 */
+/** 当前激活一级菜单是否有子菜单 */
+const hasSideMenus = computed(() => permissionStore.mixLayoutSideMenus.length > 0);
+
+/**
+ * 从当前路由路径提取一级菜单路径
+ * 例: /system/user → /system, /codegen/codegen → /codegen
+ */
+function extractTopMenuPath(path: string): string {
+  // 查找动态路由中哪个一级路径匹配当前路由
+  const dynamicRoute = permissionStore.routes.find(
+    (r) => r.path !== "/" && (path === r.path || path.startsWith(r.path + "/"))
+  );
+  return dynamicRoute?.path ?? "";
+}
+
+// 路由变化时同步一级菜单和侧边栏
 watch(
   () => route.path,
-  () => {
+  (newPath) => {
+    const topPath = extractTopMenuPath(newPath);
+    if (!topPath) return;
+
+    if (topPath !== appStore.activeTopMenuPath) {
+      appStore.setActiveTopMenuPath(topPath);
+      permissionStore.setMixLayoutSideMenus(topPath);
+    }
+
+    // 移动端自动收起侧边栏
     if (isMobile.value) {
       appStore.closeSidebar();
     }
   },
+  { immediate: true }
 );
 </script>
 
@@ -79,13 +113,16 @@ watch(
   display: flex;
   align-items: center;
   height: var(--navbar-height);
-  transition: background-color 0.3s, backdrop-filter 0.3s;
+  transition:
+    background-color 0.3s,
+    backdrop-filter 0.3s;
 }
 .layout-mix__header-logo {
   display: flex;
   align-items: center;
   width: var(--sidebar-width);
   padding: 0 16px;
+  flex-shrink: 0;
 }
 .layout-mix__body {
   display: flex;
@@ -93,9 +130,12 @@ watch(
   overflow: hidden;
 }
 .layout-mix__sidebar {
+  display: flex;
+  flex-direction: column;
   width: var(--sidebar-width);
-  overflow-y: auto;
-  transition: background-color 0.3s, backdrop-filter 0.3s;
+  transition:
+    background-color 0.3s,
+    backdrop-filter 0.3s;
 }
 .layout-mix__sidebar--mobile {
   position: fixed;
@@ -103,7 +143,10 @@ watch(
   bottom: 0;
   left: 0;
   z-index: 1000;
-  transition: transform 0.28s, background-color 0.3s, backdrop-filter 0.3s;
+  transition:
+    transform 0.28s,
+    background-color 0.3s,
+    backdrop-filter 0.3s;
 }
 .layout-mix__sidebar--hidden {
   transform: translateX(calc(-1 * var(--sidebar-width)));

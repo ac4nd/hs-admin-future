@@ -6,7 +6,7 @@
       @click="hasChildren && (localExpanded = !localExpanded)"
     >
       <span v-if="hasChildren" class="text-muted-foreground text-xs w-4 shrink-0">
-        {{ localExpanded ? '▼' : '▶' }}
+        {{ localExpanded ? "▼" : "▶" }}
       </span>
       <span v-else class="w-4 shrink-0" />
 

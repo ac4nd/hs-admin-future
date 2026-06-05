@@ -10,6 +10,7 @@ export const useAppStore = defineStore("app", () => {
   const device = useStorage(STORAGE_KEYS.DEVICE, DeviceEnum.DESKTOP);
   const sidebarStatus = useStorage(STORAGE_KEYS.SIDEBAR_STATUS, SidebarStatus.CLOSED);
   const language = useStorage(STORAGE_KEYS.LANGUAGE, defaults.language);
+  const activeTopMenuPath = useStorage(STORAGE_KEYS.ACTIVE_TOP_MENU_PATH, "");
   const contentFullscreen = ref(false);
 
   const sidebar = reactive({
@@ -47,10 +48,15 @@ export const useAppStore = defineStore("app", () => {
     language.value = lang;
   }
 
+  function setActiveTopMenuPath(path: string) {
+    activeTopMenuPath.value = path;
+  }
+
   return {
     device,
     sidebar,
     language,
+    activeTopMenuPath,
     contentFullscreen,
     toggleSidebar,
     closeSidebar,
@@ -58,6 +64,7 @@ export const useAppStore = defineStore("app", () => {
     toggleContentFullscreen,
     setDevice,
     changeLanguage,
+    setActiveTopMenuPath,
   };
 });
 

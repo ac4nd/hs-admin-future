@@ -22,14 +22,14 @@ export const useSettingsStore = defineStore("setting", () => {
   const showWatermark = useStorage(STORAGE_KEYS.SHOW_WATERMARK, defaults.showWatermark);
   const pageSwitchingAnimation = useStorage(
     STORAGE_KEYS.PAGE_SWITCHING_ANIMATION,
-    defaults.pageSwitchingAnimation,
+    defaults.pageSwitchingAnimation
   );
 
   // 布局
   const layout = useStorage<LayoutMode>(STORAGE_KEYS.LAYOUT, defaults.layout as LayoutMode);
   const sidebarColorScheme = useStorage(
     STORAGE_KEYS.SIDEBAR_COLOR_SCHEME,
-    defaults.sidebarColorScheme,
+    defaults.sidebarColorScheme
   );
 
   // 主题
@@ -46,7 +46,10 @@ export const useSettingsStore = defineStore("setting", () => {
   const glassParams = useStorage(STORAGE_KEYS.GLASS_PARAMS, { ...defaults.glassParams });
 
   /** 更新单个玻璃参数（确保触发 useStorage 持久化） */
-  function setGlassParam<K extends keyof typeof defaults.glassParams>(key: K, value: (typeof defaults.glassParams)[K]) {
+  function setGlassParam<K extends keyof typeof defaults.glassParams>(
+    key: K,
+    value: (typeof defaults.glassParams)[K]
+  ) {
     glassParams.value = { ...glassParams.value, [key]: value };
   }
 
@@ -67,7 +70,7 @@ export const useSettingsStore = defineStore("setting", () => {
         stopWatchingSystemTheme = undefined;
       }
     },
-    { immediate: true },
+    { immediate: true }
   );
 
   watch(
@@ -76,7 +79,7 @@ export const useSettingsStore = defineStore("setting", () => {
       toggleDarkMode(t === ThemeMode.DARK);
       applyTheme(generateThemeColors(c, t));
     },
-    { immediate: true },
+    { immediate: true }
   );
 
   watch(sidebarColorScheme, (v) => toggleSidebarColor(v === SidebarColor.CLASSIC_BLUE), {
@@ -89,7 +92,7 @@ export const useSettingsStore = defineStore("setting", () => {
     (v) => {
       document.documentElement.classList.toggle("glass-effect", v);
     },
-    { immediate: true },
+    { immediate: true }
   );
 
   // 灰色模式
@@ -98,7 +101,7 @@ export const useSettingsStore = defineStore("setting", () => {
     (v) => {
       document.documentElement.style.filter = v ? "grayscale(100%)" : "";
     },
-    { immediate: true },
+    { immediate: true }
   );
 
   // 色弱模式
@@ -107,7 +110,7 @@ export const useSettingsStore = defineStore("setting", () => {
     (v) => {
       document.documentElement.classList.toggle("color-weak", v);
     },
-    { immediate: true },
+    { immediate: true }
   );
 
   function resetSettings() {

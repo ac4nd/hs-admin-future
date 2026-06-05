@@ -5,7 +5,7 @@
         <div class="flex items-center justify-between">
           <CardTitle class="text-sm">字典实时同步演示</CardTitle>
           <Badge :variant="syncConnected ? 'default' : 'destructive'" class="text-[10px]">
-            {{ syncConnected ? '已连接' : '未连接' }}
+            {{ syncConnected ? "已连接" : "未连接" }}
           </Badge>
         </div>
       </CardHeader>
@@ -29,7 +29,10 @@
                 <Input :model-value="dictForm.dictCode" disabled class="h-8 bg-muted" />
               </div>
               <div class="space-y-1.5">
-                <Label class="text-xs">字典标签 <span class="text-destructive">*</span></Label>
+                <Label class="text-xs">
+                  字典标签
+                  <span class="text-destructive">*</span>
+                </Label>
                 <Input v-model="dictForm.label" placeholder="请输入标签" class="h-8" />
               </div>
               <div class="space-y-1.5">
@@ -77,7 +80,12 @@
                     :key="item.value"
                     class="flex items-center gap-1.5 cursor-pointer text-sm"
                   >
-                    <input type="radio" :value="item.value" v-model="selectedValue" class="accent-primary" />
+                    <input
+                      v-model="selectedValue"
+                      type="radio"
+                      :value="item.value"
+                      class="accent-primary"
+                    />
                     {{ item.label }}
                   </label>
                 </div>
@@ -120,13 +128,14 @@
             <CardHeader class="pb-3">
               <div class="flex items-center justify-between">
                 <CardTitle class="text-sm">缓存数据</CardTitle>
-                <Badge variant="outline" class="text-[10px]">
-                  {{ dictItems.length }} 项
-                </Badge>
+                <Badge variant="outline" class="text-[10px]">{{ dictItems.length }} 项</Badge>
               </div>
             </CardHeader>
             <CardContent>
-              <pre class="p-3 rounded-lg bg-muted/50 text-xs font-mono overflow-auto max-h-[400px] whitespace-pre-wrap">{{ JSON.stringify(dictItems, null, 2) }}</pre>
+              <pre
+                class="p-3 rounded-lg bg-muted/50 text-xs font-mono overflow-auto max-h-[400px] whitespace-pre-wrap"
+                >{{ JSON.stringify(dictItems, null, 2) }}</pre
+              >
             </CardContent>
           </Card>
         </div>
@@ -143,7 +152,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface DictItem {
   value: string;

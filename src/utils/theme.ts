@@ -38,9 +38,7 @@ export function generateThemeColors(primary: string, theme: ThemeMode) {
   }
 
   colors["primary-dark-2"] =
-    resolvedTheme === ThemeMode.LIGHT
-      ? getLightColor(primary, 0.2)
-      : getDarkColor(primary, 0.3);
+    resolvedTheme === ThemeMode.LIGHT ? getLightColor(primary, 0.2) : getDarkColor(primary, 0.3);
 
   return colors;
 }

@@ -7,7 +7,7 @@
     >
       <!-- 展开/折叠图标 -->
       <span v-if="hasChildren" class="text-muted-foreground text-xs w-4 shrink-0">
-        {{ expanded ? '▼' : '▶' }}
+        {{ expanded ? "▼" : "▶" }}
       </span>
       <span v-else class="w-4 shrink-0" />
 

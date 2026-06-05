@@ -11,6 +11,8 @@
     "auto": "Follow System",
     "username": "Username",
     "password": "Password",
+    "usernameRequired": "Please enter username",
+    "passwordRequired": "Please enter password",
     "login": "Login",
     "captchaCode": "Verify Code",
     "rememberMe": "Remember Me",
@@ -376,6 +378,8 @@
     "download": "Download",
     "copyCode": "Copy Code",
     "copySuccess": "Copied successfully",
+    "downloadSuccess": "Download successful",
+    "downloadFailed": "Download failed",
     "scopeAll": "All",
     "scopeFrontend": "Frontend",
     "scopeBackend": "Backend",
@@ -430,6 +434,9 @@
     "downloadZip": "Download ZIP",
     "businessNameRequired": "Please enter business name",
     "entityNameRequired": "Please enter entity name"
+  },
+  "mixSidebar": {
+    "empty": "No sub menus"
   },
   "routeParam": {
     "title": "Route Parameters",

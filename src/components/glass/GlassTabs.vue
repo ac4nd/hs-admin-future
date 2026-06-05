@@ -1,23 +1,3 @@
-<script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-  defaultValue?: string
-  modelValue?: string
-}>()
-
-const emit = defineEmits<{
-  'update:modelValue': [value: string]
-}>()
-
-const { isEnabled } = useGlassFilter('tabs')
-</script>
-
 <template>
   <Tabs
     :default-value="defaultValue"
@@ -43,3 +23,23 @@ const { isEnabled } = useGlassFilter('tabs')
     <slot name="contents" />
   </Tabs>
 </template>
+
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { Tabs, TabsList } from "@/components/ui/tabs";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = defineProps<{
+  class?: HTMLAttributes["class"];
+  defaultValue?: string;
+  modelValue?: string;
+}>();
+
+const emit = defineEmits<{
+  "update:modelValue": [value: string];
+}>();
+
+const { isEnabled } = useGlassFilter("tabs");
+</script>

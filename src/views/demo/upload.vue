@@ -7,14 +7,32 @@
         <CardHeader><CardTitle class="text-sm">单图上传</CardTitle></CardHeader>
         <CardContent>
           <div class="space-y-3">
-            <div class="relative group w-40 h-40 rounded-lg border-2 border-dashed border-muted-foreground/25 overflow-hidden">
-              <img v-if="singleUrl" :src="singleUrl" alt="preview" class="w-full h-full object-cover" />
-              <div v-else class="flex flex-col items-center justify-center h-full text-muted-foreground">
+            <div
+              class="relative group w-40 h-40 rounded-lg border-2 border-dashed border-muted-foreground/25 overflow-hidden"
+            >
+              <img
+                v-if="singleUrl"
+                :src="singleUrl"
+                alt="preview"
+                class="w-full h-full object-cover"
+              />
+              <div
+                v-else
+                class="flex flex-col items-center justify-center h-full text-muted-foreground"
+              >
                 <ImageIcon class="size-8 mb-1" />
                 <span class="text-xs">点击上传</span>
               </div>
-              <input ref="singleInputRef" type="file" accept="image/*" class="hidden" @change="onSingleUpload" />
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+              <input
+                ref="singleInputRef"
+                type="file"
+                accept="image/*"
+                class="hidden"
+                @change="onSingleUpload"
+              />
+              <div
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2"
+              >
                 <Button variant="secondary" size="sm" @click="singleInputRef?.click()">选择</Button>
                 <Button v-if="singleUrl" variant="destructive" size="sm" @click="singleUrl = ''">
                   <TrashIcon class="size-3" />
@@ -31,7 +49,9 @@
         <CardHeader>
           <div class="flex items-center justify-between">
             <CardTitle class="text-sm">多图上传</CardTitle>
-            <span class="text-xs text-muted-foreground">{{ multiUrls.length }}/{{ multiLimit }}</span>
+            <span class="text-xs text-muted-foreground">
+              {{ multiUrls.length }}/{{ multiLimit }}
+            </span>
           </div>
         </CardHeader>
         <CardContent>
@@ -42,7 +62,9 @@
               class="relative group w-28 h-28 rounded-lg border overflow-hidden"
             >
               <img :src="url" alt="" class="w-full h-full object-cover" />
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <div
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+              >
                 <Button variant="destructive" size="icon-xs" @click="multiUrls.splice(idx, 1)">
                   <XIcon class="size-3" />
                 </Button>
@@ -94,9 +116,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { toast } from "vue-sonner";
-import {
-  ImageIcon, TrashIcon, XIcon, PlusIcon, FileIcon, UploadIcon,
-} from "@lucide/vue";
+import { ImageIcon, TrashIcon, XIcon, PlusIcon, FileIcon, UploadIcon } from "@lucide/vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -130,7 +150,9 @@ function onMultiUpload(e: Event) {
     if (multiUrls.value.length >= multiLimit) break;
     multiUrls.value.push(URL.createObjectURL(f));
   }
-  toast.success(`已上传 ${Math.min(files.length, multiLimit - multiUrls.value.length + files.length)} 张图片`);
+  toast.success(
+    `已上传 ${Math.min(files.length, multiLimit - multiUrls.value.length + files.length)} 张图片`
+  );
 }
 
 function onFileUpload(e: Event) {
@@ -139,7 +161,10 @@ function onFileUpload(e: Event) {
   for (const f of files) {
     fileList.value.push({
       name: f.name,
-      size: f.size > 1024 * 1024 ? `${(f.size / 1024 / 1024).toFixed(1)} MB` : `${(f.size / 1024).toFixed(0)} KB`,
+      size:
+        f.size > 1024 * 1024
+          ? `${(f.size / 1024 / 1024).toFixed(1)} MB`
+          : `${(f.size / 1024).toFixed(0)} KB`,
     });
   }
   toast.success(`已添加 ${files.length} 个文件`);

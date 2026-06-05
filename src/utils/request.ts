@@ -31,7 +31,7 @@ http.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 // 响应拦截器
@@ -104,7 +104,7 @@ http.interceptors.response.use(
 
     toast.error(msg || "请求失败");
     return Promise.reject(new Error(msg || "请求失败"));
-  },
+  }
 );
 
 /** Token 过期处理 */

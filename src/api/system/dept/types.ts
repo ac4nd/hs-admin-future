@@ -3,7 +3,7 @@
  */
 
 /** 部门查询参数 */
-export interface DeptQuery {
+export interface DeptQueryParams {
   /** 搜索关键字 */
   keywords?: string;
   /** 状态（1正常 0停用） */

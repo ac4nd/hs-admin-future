@@ -9,14 +9,22 @@
         <TextScroll type="warning" text="这是一条警告类型的滚动公告" />
         <TextScroll type="danger" text="这是一条危险类型的滚动公告" />
         <TextScroll type="info" text="这是一条信息类型的滚动公告" />
-        <TextScroll text="这是一条速度较慢、向右滚动的公告" :speed="30" direction="right" show-close />
+        <TextScroll
+          text="这是一条速度较慢、向右滚动的公告"
+          :speed="30"
+          direction="right"
+          show-close
+        />
       </CardContent>
     </Card>
 
     <Card>
       <CardHeader><CardTitle class="text-sm">打字机效果</CardTitle></CardHeader>
       <CardContent class="space-y-4">
-        <TextScroll text="欢迎使用 hs-admin-future 组件库，这里展示的是打字机逐字显示效果" typewriter />
+        <TextScroll
+          text="欢迎使用 hs-admin-future 组件库，这里展示的是打字机逐字显示效果"
+          typewriter
+        />
         <TextScroll text="支持自定义速度、方向和关闭按钮，可灵活配置" :speed="60" typewriter />
       </CardContent>
     </Card>

@@ -41,7 +41,10 @@
         <VueDraggable v-model="list2" target="tbody" :animation="150">
           <Table>
             <TableHeader>
-              <TableRow><TableHead>姓名</TableHead><TableHead>角色</TableHead></TableRow>
+              <TableRow>
+                <TableHead>姓名</TableHead>
+                <TableHead>角色</TableHead>
+              </TableRow>
             </TableHeader>
             <TableBody>
               <TableRow v-for="item in list2" :key="item.name">
@@ -60,7 +63,11 @@
         <VueDraggable v-model="list3" target="tbody" handle=".drag-handle" :animation="150">
           <Table>
             <TableHeader>
-              <TableRow><TableHead>姓名</TableHead><TableHead>角色</TableHead><TableHead class="w-20">操作</TableHead></TableRow>
+              <TableRow>
+                <TableHead>姓名</TableHead>
+                <TableHead>角色</TableHead>
+                <TableHead class="w-20">操作</TableHead>
+              </TableRow>
             </TableHeader>
             <TableBody>
               <TableRow v-for="item in list3" :key="item.name">
@@ -87,7 +94,14 @@ import { VueDraggable } from "vue-draggable-plus";
 import { GripVerticalIcon } from "@lucide/vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const crew = [
   { name: "路飞", role: "船长·格斗家" },
@@ -103,12 +117,17 @@ const list3 = ref([...crew]);
 </script>
 
 <style scoped>
-.fade-move, .fade-enter-active, .fade-leave-active {
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
   transition: all 0.4s cubic-bezier(0.55, 0, 0.1, 1);
 }
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
   transform: scaleY(0.01) translate(20px, 0);
 }
-.fade-leave-active { position: absolute; }
+.fade-leave-active {
+  position: absolute;
+}
 </style>

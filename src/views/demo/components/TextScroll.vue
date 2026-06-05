@@ -1,15 +1,15 @@
 <template>
-  <div
-    v-if="visible"
-    :class="['flex items-center gap-2 px-4 py-2 rounded-lg text-sm', typeClass]"
-  >
+  <div v-if="visible" :class="['flex items-center gap-2 px-4 py-2 rounded-lg text-sm', typeClass]">
     <button v-if="showClose" class="shrink-0 opacity-60 hover:opacity-100" @click="visible = false">
       <XIcon class="size-3.5" />
     </button>
 
     <!-- 打字机模式 -->
     <template v-if="typewriter">
-      <span class="whitespace-nowrap overflow-hidden">{{ displayedText }}<span class="animate-pulse">|</span></span>
+      <span class="whitespace-nowrap overflow-hidden">
+        {{ displayedText }}
+        <span class="animate-pulse">|</span>
+      </span>
     </template>
 
     <!-- 滚动模式 -->
@@ -91,12 +91,15 @@ function startTypewriter() {
   tick();
 }
 
-watch(() => props.text, () => {
-  if (props.typewriter) {
-    if (twTimer) clearTimeout(twTimer);
-    startTypewriter();
+watch(
+  () => props.text,
+  () => {
+    if (props.typewriter) {
+      if (twTimer) clearTimeout(twTimer);
+      startTypewriter();
+    }
   }
-});
+);
 
 onMounted(() => {
   if (props.typewriter) startTypewriter();
@@ -109,11 +112,19 @@ onUnmounted(() => {
 
 <style scoped>
 @keyframes scrollLeft {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 @keyframes scrollRight {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 </style>

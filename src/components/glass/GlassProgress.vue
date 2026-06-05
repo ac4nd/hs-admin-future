@@ -1,18 +1,3 @@
-<script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { Progress } from '@/components/ui/progress'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-  modelValue?: number
-}>()
-
-const { isEnabled } = useGlassFilter('progress')
-</script>
-
 <template>
   <GlassSurface
     v-if="isEnabled"
@@ -29,3 +14,18 @@ const { isEnabled } = useGlassFilter('progress')
 
   <Progress v-else :model-value="modelValue" :class="props.class" />
 </template>
+
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { Progress } from "@/components/ui/progress";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = defineProps<{
+  class?: HTMLAttributes["class"];
+  modelValue?: number;
+}>();
+
+const { isEnabled } = useGlassFilter("progress");
+</script>

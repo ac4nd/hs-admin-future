@@ -17,7 +17,9 @@ type DictTagTypeCode = "N" | "P" | "S" | "W" | "I" | "D";
 
 /** 后端标签类型码 → 前端标签类型 */
 const decodeTagType = (code?: unknown): TagType => {
-  const val = String(code ?? "").trim().toUpperCase();
+  const val = String(code ?? "")
+    .trim()
+    .toUpperCase();
   const map: Record<string, TagType> = {
     P: "primary",
     S: "success",
@@ -31,7 +33,9 @@ const decodeTagType = (code?: unknown): TagType => {
 
 /** 前端标签类型 → 后端标签类型码 */
 const encodeTagType = (tagType?: unknown): DictTagTypeCode => {
-  const val = String(tagType ?? "").trim().toLowerCase();
+  const val = String(tagType ?? "")
+    .trim()
+    .toLowerCase();
   const map: Record<string, DictTagTypeCode> = {
     primary: "P",
     success: "S",

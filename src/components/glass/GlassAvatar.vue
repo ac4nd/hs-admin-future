@@ -1,30 +1,3 @@
-<script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = withDefaults(
-  defineProps<{
-    class?: HTMLAttributes['class']
-    src?: string
-    alt?: string
-    fallback?: string
-    size?: 'sm' | 'default' | 'lg'
-  }>(),
-  {
-    alt: '',
-    fallback: '?',
-    size: 'default',
-  },
-)
-
-const { isEnabled } = useGlassFilter('avatar')
-
-const sizeMap: Record<string, number> = { sm: 32, default: 40, lg: 56 }
-</script>
-
 <template>
   <GlassSurface
     v-if="isEnabled"
@@ -44,3 +17,30 @@ const sizeMap: Record<string, number> = { sm: 32, default: 40, lg: 56 }
     <AvatarFallback>{{ fallback }}</AvatarFallback>
   </Avatar>
 </template>
+
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = withDefaults(
+  defineProps<{
+    class?: HTMLAttributes["class"];
+    src?: string;
+    alt?: string;
+    fallback?: string;
+    size?: "sm" | "default" | "lg";
+  }>(),
+  {
+    alt: "",
+    fallback: "?",
+    size: "default",
+  }
+);
+
+const { isEnabled } = useGlassFilter("avatar");
+
+const sizeMap: Record<string, number> = { sm: 32, default: 40, lg: 56 };
+</script>

@@ -1,5 +1,4 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap");
 
 @import "tailwindcss";
 
@@ -12,7 +11,8 @@
 /* ============================================
    全局根容器尺寸
    ============================================ */
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -160,7 +160,8 @@ html.dark {
   --glass-saturate: 150%;
   --glass-border: rgba(255, 255, 255, 0.06);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --glass-inner-glow: inset 0 0.5px 0 rgba(255, 255, 255, 0.04), inset 0 0 20px rgba(255, 255, 255, 0.02);
+  --glass-inner-glow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.04), inset 0 0 20px rgba(255, 255, 255, 0.02);
   --glass-btn-bg: rgba(30, 30, 35, 0.6);
   --glass-btn-border: rgba(255, 255, 255, 0.08);
   --glass-btn-hover: rgba(40, 40, 48, 0.7);
@@ -201,7 +202,7 @@ html.color-weak {
 @variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --font-sans: 'Geist Variable', sans-serif;
+  --font-sans: "Geist Variable", sans-serif;
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -321,15 +322,28 @@ html.glass-effect .layout-glass-bg {
 html.glass-effect .layout-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #005ec0 0%, #2a8ade 30%, #7ec8e3 55%, #f5d76e 80%, #fee070 100%);
+  background: linear-gradient(
+    180deg,
+    #005ec0 0%,
+    #2a8ade 30%,
+    #7ec8e3 55%,
+    #f5d76e 80%,
+    #fee070 100%
+  );
   background-size: 100% 300%;
   animation: layoutGradientShift 8s ease-in-out infinite alternate;
 }
 
 @keyframes layoutGradientShift {
-  0%   { background-position: 0% 0%; }
-  50%  { background-position: 0% 60%; }
-  100% { background-position: 0% 100%; }
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 0% 60%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
 }
 
 /* 装饰浮动圆 — 与登录页 .deco 一致 */
@@ -370,13 +384,21 @@ html.glass-effect .layout-deco--3 {
 }
 
 @keyframes layoutFloatA {
-  0%   { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(30px, -40px) scale(1.1); }
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(30px, -40px) scale(1.1);
+  }
 }
 
 @keyframes layoutFloatB {
-  0%   { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(-20px, 30px) scale(1.08); }
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-20px, 30px) scale(1.08);
+  }
 }
 
 /* 暗色：宇宙背景图 */

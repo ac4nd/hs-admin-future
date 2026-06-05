@@ -1,72 +1,72 @@
-import type { CSSProperties } from 'vue'
+import type { CSSProperties } from "vue";
 
 /** 液态玻璃折射层级 */
-export type GlassLayer = 'liq-high' | 'liq-med' | 'liq-clear'
+export type GlassLayer = "liq-high" | "liq-med" | "liq-clear";
 
 /** 重导出 CSSProperties 方便内部使用 */
-export type { CSSProperties }
+export type { CSSProperties };
 
 /** 位移模式 */
-export type GlassMode = 'standard' | 'polar' | 'prominent'
+export type GlassMode = "standard" | "polar" | "prominent";
 
 /** 组件预设名称 */
 export type GlassPreset =
-  | 'button'
-  | 'badge'
-  | 'icon'
-  | 'text'
-  | 'avatar'
-  | 'navbar'
-  | 'breadcrumb'
-  | 'dropdown'
-  | 'tabs'
-  | 'carousel'
-  | 'steps'
-  | 'pagination'
-  | 'input'
-  | 'textarea'
-  | 'radio'
-  | 'checkbox'
-  | 'select'
-  | 'switch'
-  | 'slider'
-  | 'date-picker'
-  | 'card'
-  | 'table'
-  | 'accordion'
-  | 'list'
-  | 'timeline'
-  | 'divider'
-  | 'modal'
-  | 'drawer'
-  | 'alert'
-  | 'toast'
-  | 'notification'
-  | 'loading'
-  | 'popconfirm'
-  | 'tooltip'
-  | 'progress'
+  | "button"
+  | "badge"
+  | "icon"
+  | "text"
+  | "avatar"
+  | "navbar"
+  | "breadcrumb"
+  | "dropdown"
+  | "tabs"
+  | "carousel"
+  | "steps"
+  | "pagination"
+  | "input"
+  | "textarea"
+  | "radio"
+  | "checkbox"
+  | "select"
+  | "switch"
+  | "slider"
+  | "date-picker"
+  | "card"
+  | "table"
+  | "accordion"
+  | "list"
+  | "timeline"
+  | "divider"
+  | "modal"
+  | "drawer"
+  | "alert"
+  | "toast"
+  | "notification"
+  | "loading"
+  | "popconfirm"
+  | "tooltip"
+  | "progress";
 
 /** 预设配置 */
 export interface GlassPresetConfig {
   /** 所属折射层级 */
-  layer: GlassLayer
+  layer: GlassLayer;
   /** 背景模糊 (px) */
-  blur: number
+  blur: number;
   /** 饱和度 (%) */
-  saturate: number
+  saturate: number;
   /** 圆角 (px) */
-  cornerRadius: number
+  cornerRadius: number;
   /** SVG feDisplacementMap scale */
-  displacementScale: number
+  displacementScale: number;
   /** 色差强度 */
-  aberrationIntensity: number
+  aberrationIntensity: number;
   /** 弹性系数 (0 = 无弹性) */
-  elasticity: number
+  elasticity: number;
   /** 是否启用鼠标追踪 */
-  mouseTracking: boolean
+  mouseTracking: boolean;
   /** 位移模式 */
-  mode: GlassMode
+  mode: GlassMode;
   /** 是否使用 SVG 滤镜（false = 纯 CSS 毛玻璃，性能更优） */
-  useSvgFilter: boolean
+  useSvgFilter: boolean;
 }

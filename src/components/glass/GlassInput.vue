@@ -1,43 +1,5 @@
-<script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { Input } from '@/components/ui/input'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = withDefaults(
-  defineProps<{
-    class?: HTMLAttributes['class']
-    modelValue?: string | number
-    placeholder?: string
-    disabled?: boolean
-    type?: string
-  }>(),
-  {
-    modelValue: '',
-    placeholder: '',
-    disabled: false,
-    type: 'text',
-  },
-)
-
-const emit = defineEmits<{
-  'update:modelValue': [value: string]
-}>()
-
-const { isEnabled } = useGlassFilter('input')
-
-const handleInput = (e: Event) => {
-  emit('update:modelValue', (e.target as HTMLInputElement).value)
-}
-</script>
-
 <template>
-  <GlassSurface
-    v-if="isEnabled"
-    preset="input"
-    :class="cn('w-full', props.class)"
-  >
+  <GlassSurface v-if="isEnabled" preset="input" :class="cn('w-full', props.class)">
     <input
       :value="modelValue"
       :placeholder="placeholder"
@@ -58,3 +20,37 @@ const handleInput = (e: Event) => {
     @update:model-value="(v: string) => emit('update:modelValue', v)"
   />
 </template>
+
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = withDefaults(
+  defineProps<{
+    class?: HTMLAttributes["class"];
+    modelValue?: string | number;
+    placeholder?: string;
+    disabled?: boolean;
+    type?: string;
+  }>(),
+  {
+    modelValue: "",
+    placeholder: "",
+    disabled: false,
+    type: "text",
+  }
+);
+
+const emit = defineEmits<{
+  "update:modelValue": [value: string];
+}>();
+
+const { isEnabled } = useGlassFilter("input");
+
+const handleInput = (e: Event) => {
+  emit("update:modelValue", (e.target as HTMLInputElement).value);
+};
+</script>

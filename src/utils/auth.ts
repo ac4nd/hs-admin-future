@@ -9,15 +9,15 @@ export const AuthStorage = {
   getAccessToken(): string {
     const isRememberMe = localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === "true";
     return isRememberMe
-      ? localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ?? ""
-      : sessionStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ?? "";
+      ? (localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ?? "")
+      : (sessionStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ?? "");
   },
 
   getRefreshToken(): string {
     const isRememberMe = localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === "true";
     return isRememberMe
-      ? localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN) ?? ""
-      : sessionStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN) ?? "";
+      ? (localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN) ?? "")
+      : (sessionStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN) ?? "");
   },
 
   setTokens(accessToken: string, refreshToken: string, rememberMe: boolean): void {

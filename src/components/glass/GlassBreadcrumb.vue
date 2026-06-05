@@ -1,24 +1,3 @@
-<script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-}>()
-
-const { isEnabled } = useGlassFilter('breadcrumb')
-</script>
-
 <template>
   <GlassSurface
     v-if="isEnabled"
@@ -38,3 +17,17 @@ const { isEnabled } = useGlassFilter('breadcrumb')
     </BreadcrumbList>
   </Breadcrumb>
 </template>
+
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { Breadcrumb, BreadcrumbList } from "@/components/ui/breadcrumb";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = defineProps<{
+  class?: HTMLAttributes["class"];
+}>();
+
+const { isEnabled } = useGlassFilter("breadcrumb");
+</script>

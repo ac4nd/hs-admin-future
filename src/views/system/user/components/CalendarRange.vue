@@ -32,9 +32,7 @@
       <span class="text-xs text-muted-foreground">
         <template v-if="modelValue?.start">
           {{ modelValue.start.toLocaleDateString() }}
-          <template v-if="modelValue.end">
-            ~ {{ modelValue.end.toLocaleDateString() }}
-          </template>
+          <template v-if="modelValue.end">~ {{ modelValue.end.toLocaleDateString() }}</template>
         </template>
         <template v-else>选择日期范围</template>
       </span>

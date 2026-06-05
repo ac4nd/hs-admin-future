@@ -1,25 +1,13 @@
-<script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import GlassSurface from './GlassSurface.vue'
-import { useGlassFilter } from './core/useGlassFilter'
-
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-  modelValue?: boolean
-  disabled?: boolean
-  label?: string
-}>()
-
-const emit = defineEmits<{
-  'update:modelValue': [value: boolean]
-}>()
-
-const { isEnabled } = useGlassFilter('checkbox')
-</script>
-
 <template>
-  <label :class="cn('inline-flex items-center gap-2 cursor-pointer', disabled && 'cursor-not-allowed opacity-50', props.class)">
+  <label
+    :class="
+      cn(
+        'inline-flex items-center gap-2 cursor-pointer',
+        disabled && 'cursor-not-allowed opacity-50',
+        props.class
+      )
+    "
+  >
     <GlassSurface
       v-if="isEnabled"
       preset="checkbox"
@@ -52,3 +40,23 @@ const { isEnabled } = useGlassFilter('checkbox')
     <span v-if="label" class="text-sm">{{ label }}</span>
   </label>
 </template>
+
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import GlassSurface from "./GlassSurface.vue";
+import { useGlassFilter } from "./core/useGlassFilter";
+
+const props = defineProps<{
+  class?: HTMLAttributes["class"];
+  modelValue?: boolean;
+  disabled?: boolean;
+  label?: string;
+}>();
+
+const emit = defineEmits<{
+  "update:modelValue": [value: boolean];
+}>();
+
+const { isEnabled } = useGlassFilter("checkbox");
+</script>

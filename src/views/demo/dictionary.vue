@@ -47,7 +47,7 @@
               :key="item.value"
               class="flex items-center gap-1.5 cursor-pointer text-sm"
             >
-              <input type="radio" :value="item.value" v-model="radioValue" class="accent-primary" />
+              <input v-model="radioValue" type="radio" :value="item.value" class="accent-primary" />
               {{ item.label }}
             </label>
           </div>
@@ -99,7 +99,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface DictOption {
   value: number;

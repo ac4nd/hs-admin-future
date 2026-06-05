@@ -11,6 +11,8 @@
     "auto": "跟随系统",
     "username": "用户名",
     "password": "密码",
+    "usernameRequired": "请输入用户名",
+    "passwordRequired": "请输入密码",
     "login": "登 录",
     "captchaCode": "验证码",
     "rememberMe": "记住我",
@@ -376,6 +378,8 @@
     "download": "下载代码",
     "copyCode": "复制代码",
     "copySuccess": "复制成功",
+    "downloadSuccess": "下载成功",
+    "downloadFailed": "下载失败",
     "scopeAll": "全部",
     "scopeFrontend": "前端",
     "scopeBackend": "后端",
@@ -430,6 +434,9 @@
     "downloadZip": "下载 ZIP",
     "businessNameRequired": "请输入业务名",
     "entityNameRequired": "请输入实体名"
+  },
+  "mixSidebar": {
+    "empty": "暂无子菜单"
   },
   "routeParam": {
     "title": "路由参数",

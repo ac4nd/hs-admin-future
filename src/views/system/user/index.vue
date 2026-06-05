@@ -15,7 +15,7 @@
             <div class="space-y-1.5">
               <Label class="text-xs">关键字</Label>
               <Input
-                v-model="queryParams.keywords"
+                v-model.trim="queryParams.keywords"
                 placeholder="用户名/昵称/手机号"
                 class="w-52 h-8 text-sm"
                 @keyup.enter="handleQuery"
@@ -39,7 +39,10 @@
               <Label class="text-xs">创建时间</Label>
               <Popover>
                 <PopoverTrigger as-child>
-                  <Button variant="outline" class="w-56 h-8 text-sm justify-start font-normal text-muted-foreground">
+                  <Button
+                    variant="outline"
+                    class="w-56 h-8 text-sm justify-start font-normal text-muted-foreground"
+                  >
                     <CalendarIcon class="mr-1.5 size-3.5" />
                     {{ dateRangeLabel || "选择日期范围" }}
                   </Button>
@@ -97,10 +100,7 @@
               <TableHeader>
                 <TableRow>
                   <TableHead class="w-10">
-                    <Checkbox
-                      :checked="isAllSelected"
-                      @update:checked="toggleAll"
-                    />
+                    <Checkbox :checked="isAllSelected" @update:checked="toggleAll" />
                   </TableHead>
                   <TableHead>用户名</TableHead>
                   <TableHead>昵称</TableHead>
@@ -131,16 +131,13 @@
 
                 <!-- 数据行 -->
                 <TableRow
-                  v-else
                   v-for="row in userList"
+                  v-else
                   :key="row.id"
                   :data-state="isChecked(row.id) ? 'selected' : undefined"
                 >
                   <TableCell>
-                    <Checkbox
-                      :checked="isChecked(row.id)"
-                      @update:checked="toggleRow(row)"
-                    />
+                    <Checkbox :checked="isChecked(row.id)" @update:checked="toggleRow(row)" />
                   </TableCell>
                   <TableCell class="font-medium">{{ row.username }}</TableCell>
                   <TableCell>{{ row.nickname }}</TableCell>
@@ -203,16 +200,14 @@
             >
               <PaginationContent>
                 <PaginationPrevious />
-                <PaginationItem
-                  v-for="item in paginationItems"
-                  :key="item"
-                  :value="item"
-                  as-child
-                >
+                <PaginationItem v-for="item in paginationItems" :key="item" :value="item" as-child>
                   <Button
                     variant="ghost"
                     size="icon-xs"
-                    :class="{ 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground': item === queryParams.pageNum }"
+                    :class="{
+                      'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground':
+                        item === queryParams.pageNum,
+                    }"
                   >
                     {{ item }}
                   </Button>
@@ -234,31 +229,36 @@
 
         <div class="px-4 py-2 space-y-4">
           <div class="space-y-1.5">
-            <Label>用户名 <span class="text-destructive">*</span></Label>
+            <Label>
+              用户名
+              <span class="text-destructive">*</span>
+            </Label>
             <Input
-              v-model="formData.username"
+              v-model.trim="formData.username"
               :readonly="!!formData.id"
               placeholder="请输入用户名"
             />
           </div>
 
           <div class="space-y-1.5">
-            <Label>用户昵称 <span class="text-destructive">*</span></Label>
-            <Input v-model="formData.nickname" placeholder="请输入用户昵称" />
+            <Label>
+              用户昵称
+              <span class="text-destructive">*</span>
+            </Label>
+            <Input v-model.trim="formData.nickname" placeholder="请输入用户昵称" />
           </div>
 
           <div class="space-y-1.5">
-            <Label>所属部门 <span class="text-destructive">*</span></Label>
+            <Label>
+              所属部门
+              <span class="text-destructive">*</span>
+            </Label>
             <Select v-model="formData.deptId">
               <SelectTrigger>
                 <SelectValue placeholder="请选择所属部门" />
               </SelectTrigger>
               <SelectContent>
-                <DeptSelectOption
-                  v-for="opt in deptOptions"
-                  :key="opt.value"
-                  :option="opt"
-                />
+                <DeptSelectOption v-for="opt in deptOptions" :key="opt.value" :option="opt" />
               </SelectContent>
             </Select>
           </div>
@@ -278,7 +278,10 @@
           </div>
 
           <div class="space-y-1.5">
-            <Label>角色 <span class="text-destructive">*</span></Label>
+            <Label>
+              角色
+              <span class="text-destructive">*</span>
+            </Label>
             <Popover>
               <PopoverTrigger as-child>
                 <Button variant="outline" class="w-full justify-start font-normal h-8 text-sm">
@@ -308,12 +311,12 @@
 
           <div class="space-y-1.5">
             <Label>手机号码</Label>
-            <Input v-model="formData.mobile" placeholder="请输入手机号码" maxlength="11" />
+            <Input v-model.trim="formData.mobile" placeholder="请输入手机号码" maxlength="11" />
           </div>
 
           <div class="space-y-1.5">
             <Label>邮箱</Label>
-            <Input v-model="formData.email" placeholder="请输入邮箱" maxlength="50" />
+            <Input v-model.trim="formData.email" placeholder="请输入邮箱" maxlength="50" />
           </div>
 
           <div class="flex items-center justify-between">
@@ -324,7 +327,10 @@
               </span>
               <Switch
                 :checked="formData.status === CommonStatus.ENABLED"
-                @update:checked="(v: boolean) => formData.status = v ? CommonStatus.ENABLED : CommonStatus.DISABLED"
+                @update:checked="
+                  (v: boolean) =>
+                    (formData.status = v ? CommonStatus.ENABLED : CommonStatus.DISABLED)
+                "
               />
             </div>
           </div>
@@ -367,9 +373,7 @@
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>确认删除</AlertDialogTitle>
-          <AlertDialogDescription>
-            确认删除选中的用户吗？此操作不可撤销。
-          </AlertDialogDescription>
+          <AlertDialogDescription>确认删除选中的用户吗？此操作不可撤销。</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>取消</AlertDialogCancel>
@@ -427,13 +431,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Sheet,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import {
   Dialog,
   DialogContent,
@@ -459,11 +457,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 // 业务依赖
 import UserAPI from "@/api/system/user";
@@ -547,7 +541,7 @@ function handleResetQuery() {
 
 // ==================== 选择 ====================
 
-const { selectedIds, hasSelection, handleSelectionChange } = useTableSelection<UserItem>();
+const { selectedIds, hasSelection } = useTableSelection<UserItem>();
 
 // 手动管理 checked 状态（shadcn Table 没有内置 selection）
 const checkedIds = ref<Set<string>>(new Set());

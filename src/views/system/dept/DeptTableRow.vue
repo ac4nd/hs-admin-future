@@ -16,7 +16,7 @@
           class="inline-flex items-center justify-center w-5 h-5 rounded hover:bg-muted text-muted-foreground text-xs shrink-0"
           @click="$emit('toggleExpand', dept.id)"
         >
-          {{ isExpanded ? '▼' : '▶' }}
+          {{ isExpanded ? "▼" : "▶" }}
         </button>
         <span v-else class="w-5 shrink-0" />
         <span class="font-medium text-sm">{{ dept.name }}</span>
@@ -36,7 +36,12 @@
         <Button variant="ghost" size="sm" class="h-7 text-xs" @click="$emit('edit', dept.id)">
           {{ editText }}
         </Button>
-        <Button variant="ghost" size="sm" class="h-7 text-xs text-destructive hover:text-destructive" @click="$emit('delete', dept.id)">
+        <Button
+          variant="ghost"
+          size="sm"
+          class="h-7 text-xs text-destructive hover:text-destructive"
+          @click="$emit('delete', dept.id)"
+        >
           {{ deleteText }}
         </Button>
       </div>
