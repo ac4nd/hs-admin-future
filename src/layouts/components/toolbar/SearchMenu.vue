@@ -14,7 +14,7 @@
           :value="item.title"
           @select="handleSelect(item)"
         >
-          <span class="mr-2">{{ item.icon || "📄" }}</span>
+          <MenuIcon :icon="item.icon" class="mr-2 size-3.5" />
           <span>{{ translateRouteTitle(item.title) }}</span>
         </CommandItem>
       </CommandGroup>

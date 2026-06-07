@@ -2,12 +2,15 @@ import { store } from "@/stores";
 
 import AuthAPI from "@/api/auth";
 import type { LoginRequest } from "@/api/auth";
+import UserAPI from "@/api/system/user";
+import type { UserInfo } from "@/api/system/user";
 
 import { AuthStorage } from "@/utils/auth";
+import { usePermissionStoreHook } from "@/stores/permission";
 
 export const useUserStore = defineStore("user", () => {
   // 用户信息
-  const userInfo = ref<Record<string, any>>({});
+  const userInfo = ref<UserInfo>({} as UserInfo);
   // 记住我状态
   const rememberMe = ref(AuthStorage.getRememberMe());
 
@@ -38,6 +41,18 @@ export const useUserStore = defineStore("user", () => {
   }
 
   /**
+   * 获取当前登录用户信息（roles, perms 等）
+   */
+  async function getUserInfo(): Promise<UserInfo> {
+    const data = await UserAPI.getInfo();
+    if (!data) {
+      throw new Error("Verification failed, please Login again.");
+    }
+    Object.assign(userInfo.value, data);
+    return data;
+  }
+
+  /**
    * 登出
    */
   async function logout(): Promise<void> {
@@ -50,6 +65,7 @@ export const useUserStore = defineStore("user", () => {
    */
   function resetAllState(): void {
     resetUserState();
+    usePermissionStoreHook().resetRoutes();
   }
 
   /**
@@ -57,7 +73,7 @@ export const useUserStore = defineStore("user", () => {
    */
   function resetUserState(): void {
     AuthStorage.clearAuth();
-    userInfo.value = {};
+    userInfo.value = {} as UserInfo;
   }
 
   /**
@@ -81,6 +97,7 @@ export const useUserStore = defineStore("user", () => {
     isLoggedIn: () => !!AuthStorage.getAccessToken(),
     login,
     logout,
+    getUserInfo,
     resetAllState,
     resetUserState,
     refreshToken: doRefreshToken,

@@ -1,8 +1,8 @@
 <template>
-  <ScrollArea v-if="menuTree.length > 0" class="flex-1 min-h-0 overflow-hidden px-2 py-1">
+  <ScrollArea v-if="menuItems.length > 0" class="flex-1 min-h-0 overflow-hidden px-2 py-1">
     <div class="space-y-0.5">
       <SidebarMenuItem
-        v-for="item in menuTree"
+        v-for="item in menuItems"
         :key="item.fullPath"
         :item="item"
         :collapse="false"
@@ -24,7 +24,6 @@ import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePermissionStore } from "@/stores";
-import { generateMenus } from "@/utils/menu";
 import type { MenuItem } from "@/utils/menu";
 import SidebarMenuItem from "./SidebarMenuItem.vue";
 
@@ -33,8 +32,8 @@ const route = useRoute();
 const router = useRouter();
 const permissionStore = usePermissionStore();
 
-/** 从混合布局侧边栏路由生成菜单树 */
-const menuTree = computed(() => generateMenus(permissionStore.mixLayoutSideMenus));
+/** 已解析好路径的侧边栏菜单项（响应式） */
+const menuItems = computed(() => permissionStore.mixLayoutSideMenus);
 
 function handleSelect(item: MenuItem) {
   if (item.params && Object.keys(item.params).length > 0) {

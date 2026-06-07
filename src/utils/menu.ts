@@ -18,10 +18,10 @@ export interface MenuItem {
  * 从路由配置中递归提取菜单树
  * 过滤 meta.hidden 路由，构建 MenuItem 树
  */
-export function generateMenus(routes: RouteRecordRaw[]): MenuItem[] {
+export function generateMenus(routes: RouteRecordRaw[], basePath = ""): MenuItem[] {
   const menus: MenuItem[] = [];
   for (const route of routes) {
-    const item = buildMenuItem(route, "");
+    const item = buildMenuItem(route, basePath);
     if (item) menus.push(item);
   }
   return menus;

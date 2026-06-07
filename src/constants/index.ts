@@ -4,6 +4,9 @@
 
 export const APP_PREFIX = "hsf";
 
+/** 超级管理员角色标识 */
+export const ROLE_ROOT = "ROOT";
+
 export const STORAGE_KEYS = {
   // ===== 认证相关 =====
   ACCESS_TOKEN: `${APP_PREFIX}:auth:access_token`,

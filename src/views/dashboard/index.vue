@@ -78,7 +78,7 @@
             class="h-8 text-xs"
             @click="router.push(menu.path)"
           >
-            {{ menu.icon }} {{ menu.title }}
+            <MenuIcon :icon="menu.icon" class="size-3.5 mr-1" /> {{ menu.title }}
           </Button>
         </div>
         <p v-else class="text-sm text-muted-foreground">{{ t("dashboard.recentVisit.empty") }}</p>

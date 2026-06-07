@@ -71,14 +71,26 @@ const hasSideMenus = computed(() => permissionStore.mixLayoutSideMenus.length > 
 
 /**
  * 从当前路由路径提取一级菜单路径
- * 例: /system/user → /system, /codegen/codegen → /codegen
+ * 例: /system/user → /system, /dashboard → /
  */
 function extractTopMenuPath(path: string): string {
-  // 查找动态路由中哪个一级路径匹配当前路由
-  const dynamicRoute = permissionStore.routes.find(
+  // 优先匹配非根的一级路由
+  const match = permissionStore.routes.find(
     (r) => r.path !== "/" && (path === r.path || path.startsWith(r.path + "/"))
   );
-  return dynamicRoute?.path ?? "";
+  if (match) return match.path;
+
+  // 检查是否属于根路由（首页、错误页）
+  const rootRoute = permissionStore.routes.find((r) => r.path === "/");
+  if (rootRoute?.children?.length) {
+    const belongsToRoot = rootRoute.children.some((child) => {
+      const childPath = child.path.startsWith("/") ? child.path : `/${child.path}`;
+      return path === childPath || path.startsWith(childPath + "/");
+    });
+    if (belongsToRoot) return "/";
+  }
+
+  return "";
 }
 
 // 路由变化时同步一级菜单和侧边栏
@@ -88,10 +100,9 @@ watch(
     const topPath = extractTopMenuPath(newPath);
     if (!topPath) return;
 
-    if (topPath !== appStore.activeTopMenuPath) {
-      appStore.setActiveTopMenuPath(topPath);
-      permissionStore.setMixLayoutSideMenus(topPath);
-    }
+    // 始终设置（确保模式切换后也能初始化侧边栏）
+    appStore.setActiveTopMenuPath(topPath);
+    permissionStore.setMixLayoutSideMenus(topPath);
 
     // 移动端自动收起侧边栏
     if (isMobile.value) {
