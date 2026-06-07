@@ -19,7 +19,8 @@
     "resolveJsonModule": true,
 
     // 调试和兼容性相关配置
-    "sourceMap": false,
+    "sourceMap": true,
+    "noEmit": true,
     "useDefineForClassFields": true,
     "allowJs": true,
 

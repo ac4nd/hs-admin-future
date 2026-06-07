@@ -68,6 +68,18 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         name: "Notice",
         meta: { title: "通知公告", icon: "📢" },
       },
+      {
+        path: "tenant-plan",
+        component: () => import("@/views/system/tenant-plan/index.vue"),
+        name: "TenantPlan",
+        meta: { title: "租户套餐", icon: "📦", keepAlive: true },
+      },
+      {
+        path: "tenant",
+        component: () => import("@/views/system/tenant/index.vue"),
+        name: "Tenant",
+        meta: { title: "租户管理", icon: "🏢", keepAlive: true },
+      },
     ],
   },
   {
@@ -110,11 +122,6 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/demo/internal-doc.vue"),
         name: "InternalDoc",
         meta: { title: "document", icon: "📄" },
-      },
-      {
-        path: "https://juejin.cn/post/7228990409909108793",
-        name: "ExternalDoc",
-        meta: { title: "平台文档(外链)", icon: "🔗" },
       },
     ],
   },
