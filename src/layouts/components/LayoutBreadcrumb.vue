@@ -5,8 +5,7 @@
         <BreadcrumbItem>
           <BreadcrumbLink
             v-if="idx < breadcrumbs.length - 1"
-            class="cursor-pointer text-muted-foreground text-sm inline-flex items-center"
-            @click="router.push(crumb.path)"
+            class="text-muted-foreground text-sm inline-flex items-center"
           >
             <MenuIcon v-if="crumb.icon" :icon="crumb.icon" class="mr-1" />
             {{ translateRouteTitle(crumb.title) }}
