@@ -1,0 +1,30 @@
+import request from "@/utils/request";
+const LOG_BASE_URL = "/api/v1/logs";
+const LogAPI = {
+    /** 获取日志分页列表 */
+    getPage(queryParams) {
+        return request({
+            url: LOG_BASE_URL,
+            method: "get",
+            params: queryParams,
+        });
+    },
+    /** 获取访问趋势统计 */
+    getVisitTrend(queryParams) {
+        return request({
+            url: `${LOG_BASE_URL}/analytics/trend`,
+            method: "get",
+            params: queryParams,
+        });
+    },
+    /** 获取访问概览统计 */
+    getVisitOverview() {
+        return request({
+            url: `${LOG_BASE_URL}/analytics/overview`,
+            method: "get",
+        });
+    },
+};
+export default LogAPI;
+export * from "./types";
+//# sourceMappingURL=index.js.map
