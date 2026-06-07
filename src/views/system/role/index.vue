@@ -427,6 +427,8 @@ async function fetchList() {
     roleList.value = result.list;
     total.value = result.total;
     selectedIds.value = [];
+  } catch (error) {
+    console.error("[Role] 获取角色列表失败:", error);
   } finally {
     loading.value = false;
   }
@@ -509,15 +511,23 @@ async function handleSubmit() {
   const submitData = { ...formData };
   if (submitData.dataScope !== 5) submitData.deptIds = undefined;
 
-  if (formData.id) {
-    RoleAPI.update(formData.id, submitData);
-    toast.success(t("role.editSuccess"));
-  } else {
-    RoleAPI.create(submitData);
-    toast.success(t("role.addSuccess"));
+  loading.value = true;
+  try {
+    const roleId = formData.id;
+    if (roleId) {
+      await RoleAPI.update(roleId, submitData);
+      toast.success(t("role.editSuccess"));
+    } else {
+      await RoleAPI.create(submitData);
+      toast.success(t("role.addSuccess"));
+    }
+    closeDialog();
+    handleResetQuery();
+  } catch (error) {
+    console.error("[Role] 提交表单失败:", error);
+  } finally {
+    loading.value = false;
   }
-  closeDialog();
-  handleQuery();
 }
 
 // ==================== 删除 ====================
@@ -540,10 +550,17 @@ function handleBatchDelete() {
 }
 
 async function confirmDelete() {
-  RoleAPI.deleteByIds(pendingDeleteIds.value);
-  toast.success(t("role.deleteSuccess"));
-  deleteConfirmVisible.value = false;
-  handleQuery();
+  loading.value = true;
+  try {
+    await RoleAPI.deleteByIds(pendingDeleteIds.value);
+    toast.success(t("role.deleteSuccess"));
+    deleteConfirmVisible.value = false;
+    handleResetQuery();
+  } catch (error) {
+    console.error("[Role] 删除角色失败:", error);
+  } finally {
+    loading.value = false;
+  }
 }
 
 // ==================== 分配权限 ====================
@@ -633,9 +650,17 @@ async function handleAssignPerm(role: RoleItem) {
 }
 
 async function handleAssignPermSubmit() {
-  RoleAPI.updateRoleMenus(checkedRoleId.value, checkedMenuIds.value.map(Number));
-  toast.success(t("role.assignSuccess"));
-  assignVisible.value = false;
+  loading.value = true;
+  try {
+    await RoleAPI.updateRoleMenus(checkedRoleId.value, checkedMenuIds.value.map(Number));
+    toast.success(t("role.assignSuccess"));
+    assignVisible.value = false;
+    handleResetQuery();
+  } catch (error) {
+    console.error("[Role] 分配权限失败:", error);
+  } finally {
+    loading.value = false;
+  }
 }
 
 // ==================== 部门选择 ====================
@@ -643,8 +668,31 @@ async function handleAssignPermSubmit() {
 function toggleDept(deptId: string) {
   if (!formData.deptIds) formData.deptIds = [];
   const idx = formData.deptIds.indexOf(deptId);
-  if (idx >= 0) formData.deptIds.splice(idx, 1);
-  else formData.deptIds.push(deptId);
+  if (idx >= 0) {
+    formData.deptIds.splice(idx, 1);
+  } else {
+    formData.deptIds.push(deptId);
+    // 自动勾选所有祖先节点
+    const ancestors = findAncestors(deptOptions.value, deptId);
+    for (const id of ancestors) {
+      if (!formData.deptIds.includes(id)) {
+        formData.deptIds.push(id);
+      }
+    }
+  }
+}
+
+/** 在选项树中查找目标节点的祖先 ID 路径 */
+function findAncestors(nodes: OptionItem[], targetId: string, path: string[] = []): string[] {
+  for (const node of nodes) {
+    const nodeId = String(node.value);
+    if (nodeId === targetId) return path;
+    if (node.children) {
+      const result = findAncestors(node.children, targetId, [...path, nodeId]);
+      if (result.length > 0) return result;
+    }
+  }
+  return [];
 }
 
 // ==================== 初始化 ====================

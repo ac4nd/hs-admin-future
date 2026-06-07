@@ -163,7 +163,8 @@
     "dataScopeDeptAndSub": "部门及子部门",
     "dataScopeDept": "本部门数据",
     "dataScopeSelf": "本人数据",
-    "dataScopeCustom": "自定义部门"
+    "dataScopeCustom": "自定义部门",
+    "operationFailed": "操作失败，请稍后重试"
   },
   "menu": {
     "title": "菜单管理",

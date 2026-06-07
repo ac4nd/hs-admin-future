@@ -1,5 +1,10 @@
-import { toast } from "vue-sonner";
+import { toast, type ExternalToast } from "vue-sonner";
 import { useSettingsStore } from "@/stores";
+
+interface ToastOptions {
+  description?: string;
+  duration?: number;
+}
 
 /** 玻璃效果 Toast composable（需在 setup 中调用） */
 export function useGlassToast() {
@@ -16,17 +21,32 @@ export function useGlassToast() {
     };
   }
 
-  function show(message: string, options?: { description?: string; duration?: number }) {
+  function show(message: string, options?: ToastOptions) {
     toast(message, { ...options, style: getGlassStyle() });
   }
 
-  function success(message: string, options?: { description?: string }) {
+  function success(message: string, options?: ToastOptions) {
     toast.success(message, { ...options, style: getGlassStyle() });
   }
 
-  function error(message: string, options?: { description?: string }) {
+  function error(message: string, options?: ToastOptions) {
     toast.error(message, { ...options, style: getGlassStyle() });
   }
 
-  return { show, success, error };
+  function warning(message: string, options?: ToastOptions) {
+    toast.warning(message, { ...options, style: getGlassStyle() });
+  }
+
+  function info(message: string, options?: ToastOptions) {
+    toast.info(message, { ...options, style: getGlassStyle() });
+  }
+
+  function promise<T>(p: Promise<T>, data: ExternalToast & { loading?: string; success?: string; error?: string }) {
+    return toast.promise(p, {
+      ...data,
+      style: getGlassStyle(),
+    });
+  }
+
+  return { show, success, error, warning, info, promise };
 }

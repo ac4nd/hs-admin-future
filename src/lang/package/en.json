@@ -163,7 +163,8 @@
     "dataScopeDeptAndSub": "Dept & Sub-dept",
     "dataScopeDept": "Department Only",
     "dataScopeSelf": "Self Only",
-    "dataScopeCustom": "Custom Departments"
+    "dataScopeCustom": "Custom Departments",
+    "operationFailed": "Operation failed, please try again"
   },
   "menu": {
     "title": "Menu Management",
