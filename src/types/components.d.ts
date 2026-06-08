@@ -211,5 +211,6 @@ declare module 'vue' {
     UserDeptTree: typeof import('./../views/system/user/components/UserDeptTree.vue')['default']
     UserDropdown: typeof import('./../layouts/components/toolbar/UserDropdown.vue')['default']
     WangEditor: typeof import('./../components/WangEditor/index.vue')['default']
+    Watermark: typeof import('./../components/ui/watermark/Watermark.vue')['default']
   }
 }
