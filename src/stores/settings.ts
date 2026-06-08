@@ -129,7 +129,9 @@ export const useSettingsStore = defineStore("setting", () => {
   }
 
   // 显式 setter：直接操作 useStorage ref 的 .value，绕过 Pinia 代理
-  const toggle = (ref: Ref<boolean>, val: boolean) => { ref.value = val; };
+  const toggle = (ref: Ref<boolean>, val: boolean) => {
+    ref.value = val;
+  };
   const setShowTagsView = (v: boolean) => toggle(showTagsView, v);
   const setShowAppLogo = (v: boolean) => toggle(showAppLogo, v);
   const setShowWatermark = (v: boolean) => toggle(showWatermark, v);

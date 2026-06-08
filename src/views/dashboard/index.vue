@@ -46,7 +46,11 @@
             <Badge
               v-if="stat.growth !== 0"
               :variant="stat.growth > 0 ? 'secondary' : 'outline'"
-              :class="stat.growth > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'"
+              :class="
+                stat.growth > 0
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-500 dark:text-red-400'
+              "
             >
               {{ stat.growth > 0 ? "+" : "" }}{{ stat.growth }}%
             </Badge>
@@ -84,7 +88,8 @@
             class="h-8 text-xs"
             @click="router.push(menu.path)"
           >
-            <MenuIcon :icon="menu.icon" class="size-3.5 mr-1" /> {{ menu.title }}
+            <MenuIcon :icon="menu.icon" class="size-3.5 mr-1" />
+            {{ menu.title }}
           </Button>
         </div>
         <p v-else class="text-sm text-muted-foreground">{{ t("dashboard.recentVisit.empty") }}</p>
@@ -140,7 +145,11 @@
           <p class="text-sm text-muted-foreground">{{ t("dashboard.trend.loading") }}</p>
         </div>
         <!-- 无数据 -->
-        <div v-else-if="!trendData.dates.length" class="flex items-center justify-center" style="height: 220px">
+        <div
+          v-else-if="!trendData.dates.length"
+          class="flex items-center justify-center"
+          style="height: 220px"
+        >
           <p class="text-sm text-muted-foreground">{{ t("dashboard.trend.noData") }}</p>
         </div>
         <!-- SVG 曲线图 -->
@@ -200,7 +209,10 @@
           </svg>
         </div>
         <!-- 日期标签 -->
-        <div v-if="trendData.dates.length" class="flex justify-between mt-1 text-xs text-muted-foreground overflow-hidden">
+        <div
+          v-if="trendData.dates.length"
+          class="flex justify-between mt-1 text-xs text-muted-foreground overflow-hidden"
+        >
           <span>{{ trendData.dates[0] }}</span>
           <span>{{ trendData.dates[trendData.dates.length - 1] }}</span>
         </div>
@@ -245,7 +257,10 @@
           <div v-if="logLoading" class="text-sm text-muted-foreground text-center py-4">
             {{ t("dashboard.activity.loading") }}
           </div>
-          <div v-else-if="activities.length === 0" class="text-sm text-muted-foreground text-center py-4">
+          <div
+            v-else-if="activities.length === 0"
+            class="text-sm text-muted-foreground text-center py-4"
+          >
             {{ t("dashboard.activity.noData") }}
           </div>
           <div v-else class="space-y-3">
@@ -267,7 +282,7 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: "Dashboard", inheritAttrs: false });
+defineOptions({ name: "Dashboard" });
 
 import { computed, ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -287,7 +302,9 @@ const userStore = useUserStore();
 
 // ==================== 问候区 ====================
 
-const displayName = computed(() => userStore.userInfo.nickname || userStore.userInfo.username || "Admin");
+const displayName = computed(
+  () => userStore.userInfo.nickname || userStore.userInfo.username || "Admin"
+);
 
 const greetingEmoji = computed(() => {
   const hour = new Date().getHours();
@@ -315,12 +332,14 @@ const greetingText = computed(() => {
 
 const currentDate = computed(() => {
   const now = new Date();
-  const days = ["日", "一", "二", "三", "四", "五", "六"];
-  const enDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const days = t("dashboard.date.weekdays") as unknown as string[];
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
   if (locale.value === "zh-cn") {
-    return `${now.getFullYear()}年${String(now.getMonth() + 1).padStart(2, "0")}月${String(now.getDate()).padStart(2, "0")}日 星期${days[now.getDay()]}`;
+    return `${y}年${m}月${d}日 星期${days[now.getDay()]}`;
   }
-  return `${enDays[now.getDay()]}, ${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  return `${days[now.getDay()]}, ${y}-${m}-${d}`;
 });
 
 const shortcutLinks = computed(() => [
@@ -360,7 +379,7 @@ async function fetchOverview() {
 }
 
 function formatGrowthRate(rate: number): number {
-  if (!rate && rate !== 0) return 0;
+  if (rate == null || Number.isNaN(rate)) return 0;
   return Math.round(rate * 10000) / 100;
 }
 
@@ -476,9 +495,13 @@ const chartHeight = svgHeight - paddingTop - paddingBottom;
 
 function toPoints(data: number[]) {
   if (data.length < 2) return [];
-  const max = Math.max(...data);
-  const min = Math.min(...data);
-  const range = (max - min) || 1;
+  let max = data[0];
+  let min = data[0];
+  for (let i = 1; i < data.length; i++) {
+    if (data[i] > max) max = data[i];
+    if (data[i] < min) min = data[i];
+  }
+  const range = max - min || 1;
   // 上下留 10% 余量，避免贝塞尔控制点溢出
   const margin = range * 0.1;
   const adjustedRange = range + margin * 2;
@@ -489,8 +512,8 @@ function toPoints(data: number[]) {
 }
 
 // Catmull-Rom → 三次贝塞尔曲线，生成平滑 path
-function toSmoothPath(data: number[]): string {
-  const pts = toPoints(data);
+function toSmoothPath(data: number[], precomputedPts?: { x: number; y: number }[]): string {
+  const pts = precomputedPts ?? toPoints(data);
   if (pts.length < 2) return "";
   if (pts.length === 2) {
     return `M${pts[0].x},${pts[0].y} L${pts[1].x},${pts[1].y}`;
@@ -516,12 +539,11 @@ function toSmoothPath(data: number[]): string {
 }
 
 function toSmoothAreaPath(data: number[]): string {
-  const curve = toSmoothPath(data);
-  if (!curve) return "";
+  const pts = toPoints(data);
+  if (pts.length < 2) return "";
+  const curve = toSmoothPath(data, pts);
   const baseY = paddingTop + chartHeight;
-  const lastPt = toPoints(data).at(-1)!;
-  const firstPt = toPoints(data)[0];
-  return `${curve} L${lastPt.x},${baseY} L${firstPt.x},${baseY} Z`;
+  return `${curve} L${pts[pts.length - 1].x},${baseY} L${pts[0].x},${baseY} Z`;
 }
 
 const pvCurvePath = computed(() => toSmoothPath(trendData.value.pvList));
@@ -532,11 +554,31 @@ const uvAreaPath = computed(() => toSmoothAreaPath(trendData.value.uvList));
 // ==================== 待办事项（保留静态） ====================
 
 const todos = computed(() => [
-  { text: "审批 - 用户权限申请", priority: "紧急", priorityVariant: "destructive" as const },
-  { text: "审核 - 角色变更请求", priority: "高", priorityVariant: "default" as const },
-  { text: "通知 - 系统维护通知", priority: "中", priorityVariant: "secondary" as const },
-  { text: "工单 - 数据库优化", priority: "低", priorityVariant: "outline" as const },
-  { text: "配置 - 缓存策略更新", priority: "低", priorityVariant: "outline" as const },
+  {
+    text: t("dashboard.todo.item1"),
+    priority: t("dashboard.todo.urgent"),
+    priorityVariant: "destructive" as const,
+  },
+  {
+    text: t("dashboard.todo.item2"),
+    priority: t("dashboard.todo.high"),
+    priorityVariant: "default" as const,
+  },
+  {
+    text: t("dashboard.todo.item3"),
+    priority: t("dashboard.todo.medium"),
+    priorityVariant: "secondary" as const,
+  },
+  {
+    text: t("dashboard.todo.item4"),
+    priority: t("dashboard.todo.low"),
+    priorityVariant: "outline" as const,
+  },
+  {
+    text: t("dashboard.todo.item5"),
+    priority: t("dashboard.todo.low"),
+    priorityVariant: "outline" as const,
+  },
 ]);
 
 // ==================== 系统动态（API 数据） ====================
@@ -547,15 +589,16 @@ const activities = ref<{ text: string; time: string; dotColor: string }[]>([]);
 function formatTime(timeStr?: string): string {
   if (!timeStr) return "";
   const date = new Date(timeStr);
+  if (Number.isNaN(date.getTime())) return timeStr;
   const now = new Date();
   const diff = now.getTime() - date.getTime();
   const minutes = Math.floor(diff / 60000);
-  if (minutes < 1) return "刚刚";
-  if (minutes < 60) return `${minutes} 分钟前`;
+  if (minutes < 1) return t("dashboard.activity.justNow");
+  if (minutes < 60) return t("dashboard.activity.minutesAgo", { n: minutes });
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} 小时前`;
+  if (hours < 24) return t("dashboard.activity.hoursAgo", { n: hours });
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${days} 天前`;
+  if (days < 30) return t("dashboard.activity.daysAgo", { n: days });
   return timeStr;
 }
 
@@ -570,7 +613,7 @@ async function fetchRecentLogs() {
     });
     if (result?.list) {
       activities.value = result.list.map((log: LogItem, idx: number) => ({
-        text: `${log.operatorName || "系统"} ${log.title || log.content || "操作"}`,
+        text: `${log.operatorName || t("dashboard.activity.systemOperator")} ${log.title || log.content || t("dashboard.activity.defaultAction")}`,
         time: formatTime(log.createTime),
         dotColor: dotColors[idx % dotColors.length],
       }));

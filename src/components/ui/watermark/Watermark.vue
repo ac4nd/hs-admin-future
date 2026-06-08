@@ -1,3 +1,17 @@
+<template>
+  <div
+    v-if="enabled"
+    ref="containerRef"
+    class="fixed inset-0 pointer-events-none"
+    :style="{
+      zIndex: 9999,
+      backgroundImage: watermarkUrl ? `url(${watermarkUrl})` : 'none',
+      backgroundRepeat: 'repeat',
+      backgroundSize: '240px 160px',
+    }"
+  />
+</template>
+
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted, computed } from "vue";
 import { useSettingsStore } from "@/stores";
@@ -10,7 +24,7 @@ const enabled = computed(() => settingsStore.showWatermark);
 const fontColor = computed(() =>
   settingsStore.resolvedTheme === ThemeMode.DARK
     ? "rgba(255, 255, 255, 0.12)"
-    : "rgba(0, 0, 0, 0.12)",
+    : "rgba(0, 0, 0, 0.12)"
 );
 
 const watermarkUrl = ref("");
@@ -19,7 +33,8 @@ const containerRef = ref<HTMLElement>();
 
 function generateWatermark(text: string, color: string): string {
   const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d")!;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return "";
   const fontSize = 14;
   const gapX = 120;
   const gapY = 80;
@@ -47,9 +62,7 @@ function generateWatermark(text: string, color: string): string {
 }
 
 function updateWatermark() {
-  watermarkUrl.value = enabled.value
-    ? generateWatermark(appConfig.title, fontColor.value)
-    : "";
+  watermarkUrl.value = enabled.value ? generateWatermark(appConfig.title, fontColor.value) : "";
 }
 
 watch([enabled, fontColor], updateWatermark);
@@ -62,6 +75,7 @@ onMounted(() => {
     for (const m of mutations) {
       if (m.type === "attributes" && m.target === containerRef.value) {
         updateWatermark();
+        break;
       }
     }
   });
@@ -69,17 +83,3 @@ onMounted(() => {
 });
 onUnmounted(() => observer?.disconnect());
 </script>
-
-<template>
-  <div
-    v-if="enabled"
-    ref="containerRef"
-    class="fixed inset-0 pointer-events-none"
-    :style="{
-      zIndex: 9999,
-      backgroundImage: watermarkUrl ? `url(${watermarkUrl})` : 'none',
-      backgroundRepeat: 'repeat',
-      backgroundSize: '240px 160px',
-    }"
-  />
-</template>

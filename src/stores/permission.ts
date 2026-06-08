@@ -18,7 +18,10 @@ const Layout = () => import("@/layouts/index.vue");
  * 支持路径格式：system/role/index, /system/role/index, system/role/index.vue
  */
 function resolveViewComponent(componentPath: string) {
-  const normalized = componentPath.trim().replace(/^\/+/, "").replace(/\.vue$/i, "");
+  const normalized = componentPath
+    .trim()
+    .replace(/^\/+/, "")
+    .replace(/\.vue$/i, "");
   return (
     modules[`../views/${normalized}.vue`] ||
     modules[`../views/${normalized}/index.vue`] ||
@@ -89,9 +92,7 @@ export const usePermissionStore = defineStore("permission", () => {
    */
   function resetRoutes() {
     // 移除动态添加的路由
-    const constantRouteNames = new Set(
-      constantRoutes.map((route) => route.name).filter(Boolean),
-    );
+    const constantRouteNames = new Set(constantRoutes.map((route) => route.name).filter(Boolean));
     routes.value.forEach((route) => {
       if (route.name && !constantRouteNames.has(route.name)) {
         router.removeRoute(route.name);

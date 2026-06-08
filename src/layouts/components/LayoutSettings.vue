@@ -46,10 +46,7 @@
             </div>
             <div class="flex items-center justify-between">
               <span class="text-xs text-muted-foreground">页面动画</span>
-              <Select
-                :model-value="settingsStore.pageSwitchingAnimation"
-                @update:model-value="settingsStore.pageSwitchingAnimation = $event as string"
-              >
+              <Select v-model="pageSwitchingAnimation">
                 <SelectTrigger class="w-32 h-7 text-xs">
                   <SelectValue />
                 </SelectTrigger>
@@ -200,12 +197,12 @@ import {
 } from "@/components/ui/sheet";
 
 const settingsStore = useSettingsStore();
-const { showTagsView, showAppLogo, showWatermark, grayMode, colorWeak } =
+const { showTagsView, showAppLogo, showWatermark, grayMode, colorWeak, pageSwitchingAnimation } =
   storeToRefs(settingsStore);
 
 const copyLoading = ref(false);
 
-const themeModes: { value: string; label: string; icon: Component }[] = [
+const themeModes: { value: ThemeMode; label: string; icon: Component }[] = [
   { value: ThemeMode.LIGHT, label: "亮色", icon: SunIcon },
   { value: ThemeMode.DARK, label: "暗色", icon: MoonIcon },
   { value: ThemeMode.AUTO, label: "自动", icon: MonitorIcon },
