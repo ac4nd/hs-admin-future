@@ -73,9 +73,13 @@
   },
   "dashboard": {
     "greeting": {
+      "dawn": "凌晨好",
       "morning": "上午好",
+      "noon": "中午好",
       "afternoon": "下午好",
+      "dusk": "傍晚好",
       "evening": "晚上好",
+      "midnight": "夜深了",
       "message": "{greeting}，{name}"
     },
     "shortcut": {
@@ -102,13 +106,17 @@
       "days7": "7天",
       "days30": "30天",
       "pv": "浏览量",
-      "uv": "访客数"
+      "uv": "访客数",
+      "loading": "加载中...",
+      "noData": "暂无数据"
     },
     "todo": {
       "title": "待办事项"
     },
     "activity": {
-      "title": "系统动态"
+      "title": "系统动态",
+      "loading": "加载中...",
+      "noData": "暂无动态"
     }
   },
   "role": {

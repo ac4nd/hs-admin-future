@@ -73,9 +73,13 @@
   },
   "dashboard": {
     "greeting": {
+      "dawn": "Good dawn",
       "morning": "Good morning",
+      "noon": "Good noon",
       "afternoon": "Good afternoon",
+      "dusk": "Good dusk",
       "evening": "Good evening",
+      "midnight": "Late night",
       "message": "{greeting}, {name}"
     },
     "shortcut": {
@@ -102,13 +106,17 @@
       "days7": "7 Days",
       "days30": "30 Days",
       "pv": "Page Views",
-      "uv": "Visitors"
+      "uv": "Visitors",
+      "loading": "Loading...",
+      "noData": "No data"
     },
     "todo": {
       "title": "To-Do Items"
     },
     "activity": {
-      "title": "System Activity"
+      "title": "System Activity",
+      "loading": "Loading...",
+      "noData": "No activity"
     }
   },
   "role": {
