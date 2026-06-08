@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { ref, watch, type Ref } from "vue";
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 import { SidebarColor, ThemeMode } from "@/enums/settings";
@@ -128,6 +128,14 @@ export const useSettingsStore = defineStore("setting", () => {
     theme.value = defaults.theme;
   }
 
+  // 显式 setter：直接操作 useStorage ref 的 .value，绕过 Pinia 代理
+  const toggle = (ref: Ref<boolean>, val: boolean) => { ref.value = val; };
+  const setShowTagsView = (v: boolean) => toggle(showTagsView, v);
+  const setShowAppLogo = (v: boolean) => toggle(showAppLogo, v);
+  const setShowWatermark = (v: boolean) => toggle(showWatermark, v);
+  const setGrayMode = (v: boolean) => toggle(grayMode, v);
+  const setColorWeak = (v: boolean) => toggle(colorWeak, v);
+
   return {
     settingsVisible,
     showTagsView,
@@ -145,5 +153,10 @@ export const useSettingsStore = defineStore("setting", () => {
     resolvedTheme,
     resetSettings,
     setGlassParam,
+    setShowTagsView,
+    setShowAppLogo,
+    setShowWatermark,
+    setGrayMode,
+    setColorWeak,
   };
 });

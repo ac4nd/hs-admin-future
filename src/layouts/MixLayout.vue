@@ -12,7 +12,7 @@
         "
       >
         <div class="layout-mix__header-logo">
-          <LayoutLogo :collapse="false" />
+          <LayoutLogo v-if="showLogo" :collapse="false" />
         </div>
 
         <!-- 一级水平菜单 -->
@@ -59,7 +59,7 @@ import LayoutMain from "./components/LayoutMain.vue";
 import MixTopMenu from "./components/MixTopMenu.vue";
 import MixSidebar from "./components/MixSidebar.vue";
 
-const { showTagsView, isMobile, isSidebarOpen } = useLayout();
+const { showTagsView, showLogo, isMobile, isSidebarOpen } = useLayout();
 const appStore = useAppStore();
 const settingsStore = useSettingsStore();
 const permissionStore = usePermissionStore();
