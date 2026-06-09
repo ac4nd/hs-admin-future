@@ -12,17 +12,26 @@
             <p class="text-sm text-muted-foreground mt-1">{{ currentDate }}</p>
           </div>
           <div class="flex items-center gap-3">
-            <a
-              v-for="link in shortcutLinks"
-              :key="link.label"
-              :href="link.url"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            >
-              <MenuIcon :icon="link.icon" class="size-3.5" />
-              <span>{{ link.label }}</span>
-            </a>
+            <template v-for="link in shortcutLinks" :key="link.label">
+              <a
+                v-if="link.external"
+                :href="link.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              >
+                <MenuIcon :icon="link.icon" class="size-3.5" />
+                <span>{{ link.label }}</span>
+              </a>
+              <button
+                v-else
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                @click="router.push(link.url)"
+              >
+                <MenuIcon :icon="link.icon" class="size-3.5" />
+                <span>{{ link.label }}</span>
+              </button>
+            </template>
           </div>
         </div>
       </CardContent>
@@ -343,9 +352,8 @@ const currentDate = computed(() => {
 });
 
 const shortcutLinks = computed(() => [
-  { icon: "GitBranch", label: t("dashboard.shortcut.repository"), url: "https://github.com" },
-  { icon: "FileText", label: t("dashboard.shortcut.document"), url: "https://github.com" },
-  { icon: "PlayCircle", label: t("dashboard.shortcut.video"), url: "https://github.com" },
+  { icon: "GitBranch", label: t("dashboard.shortcut.repository"), url: "https://github.com/ac4nd/hs-admin-future", external: true },
+  { icon: "FileText", label: t("dashboard.shortcut.document"), url: "/doc/frontend", external: false },
 ]);
 
 // ==================== 统计卡片（API 数据） ====================
