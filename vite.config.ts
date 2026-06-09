@@ -69,6 +69,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         "qs",
         "path-browserify",
         "path-to-regexp",
+        "vue-sonner",
       ],
     },
     build: {

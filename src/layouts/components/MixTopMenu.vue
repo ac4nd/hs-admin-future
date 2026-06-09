@@ -9,7 +9,7 @@
       :class="{ 'bg-accent text-accent-foreground': isActive(item.path) }"
       @click="handleSelect(item)"
     >
-      <span class="text-base">{{ item.icon }}</span>
+      <MenuIcon :icon="item.icon" />
       <span>{{ item.title }}</span>
     </Button>
   </nav>
@@ -21,6 +21,7 @@ import { useRoute, useRouter } from "vue-router";
 import { Button } from "@/components/ui/button";
 import { usePermissionStore } from "@/stores";
 import { translateRouteTitle } from "@/utils/i18n";
+import MenuIcon from "./MenuIcon.vue";
 
 interface TopMenuItem {
   path: string;
@@ -69,8 +70,12 @@ const topMenuItems = computed<TopMenuItem[]>(() => {
   });
 });
 
-/** 判断一级菜单是否激活（当前路由以该 path 开头） */
+/** 判断一级菜单是否激活 */
 function isActive(path: string) {
+  if (path === "/") {
+    // 根路由：仅当前路由实际匹配到根时激活
+    return route.matched.some((r) => r.path === "/");
+  }
   return route.path === path || route.path.startsWith(path + "/");
 }
 
@@ -101,7 +106,11 @@ function findFirstLeaf(
     const meta = child.meta as Record<string, any> | undefined;
     if (meta?.hidden) continue;
 
-    const fullPath = child.path.startsWith("/") ? child.path : `${basePath}/${child.path}`;
+    const fullPath = child.path.startsWith("/")
+      ? child.path
+      : basePath.endsWith("/")
+        ? `${basePath}${child.path}`
+        : `${basePath}/${child.path}`;
 
     if (child.children?.length) {
       const leaf = findFirstLeaf(child.children, fullPath);

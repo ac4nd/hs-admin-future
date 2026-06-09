@@ -1,5 +1,6 @@
 import request from "@/utils/request";
-import type { ConfigQueryParams, ConfigForm, ConfigItem } from "./types";
+import type { ConfigQueryParams, ConfigForm, ConfigItem } from "./types.ts";
+import type { PageResult } from "@/api/common";
 
 const CONFIG_BASE_URL = "/api/v1/configs";
 
@@ -40,4 +41,4 @@ const ConfigAPI = {
 export default ConfigAPI;
 
 // 重导出类型
-export * from "./types";
+export * from "./types.ts";

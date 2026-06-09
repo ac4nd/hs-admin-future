@@ -50,6 +50,7 @@ http.interceptors.response.use(
       return data as any;
     }
 
+    // 业务错误：显示错误消息
     toast.error(msg || "系统出错");
     return Promise.reject(new Error(msg || "系统出错"));
   },
@@ -57,6 +58,7 @@ http.interceptors.response.use(
   async (error) => {
     const { config, response } = error;
 
+    // 网络错误
     if (!response) {
       toast.error("网络连接失败");
       return Promise.reject(error);
@@ -102,6 +104,7 @@ http.interceptors.response.use(
       return Promise.reject(new Error(msg || "权限不足"));
     }
 
+    // 其他业务错误
     toast.error(msg || "请求失败");
     return Promise.reject(new Error(msg || "请求失败"));
   }

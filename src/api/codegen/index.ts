@@ -71,7 +71,7 @@ export function downloadZip(tableName: string, pageType?: "classic" | "curd", ty
     method: "get",
     params: buildCodegenParams(pageType, type),
     responseType: "blob",
-  }).then((response: any) => {
+  }).then((response) => {
     const disposition = response?.headers?.["content-disposition"] as string | undefined;
     let fileName = `${tableName}.zip`;
     if (disposition) {

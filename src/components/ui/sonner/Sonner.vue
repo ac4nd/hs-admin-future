@@ -1,62 +1,43 @@
 <template>
-  <Sonner
-    :class="cn('toaster group', props.class)"
-    :style="{
-      '--normal-bg': 'var(--popover)',
-      '--normal-text': 'var(--popover-foreground)',
-      '--normal-border': 'var(--border)',
-      '--border-radius': 'var(--radius)',
-      '--gray2': 'hsl(var(--popover) / 0.9)',
-      '--gray3': 'var(--border)',
-      '--gray4': 'var(--border)',
-      '--gray5': 'var(--border)',
-      '--gray12': 'var(--popover-foreground)',
-    }"
+  <ToasterLib
+    position="top-center"
+    :rich-colors="true"
+    :close-button="false"
+    :duration="2000"
+    :gap="8"
     :toast-options="{
       classes: {
-        toast: 'rounded-2xl',
+        toast: 'rounded-lg shadow-md',
+        description: 'text-xs',
       },
     }"
-    v-bind="delegatedProps"
   >
     <template #success-icon>
-      <CircleCheckIcon class="size-4" />
+      <CircleCheckIcon class="size-4 text-green-500" />
     </template>
     <template #info-icon>
-      <InfoIcon class="size-4" />
+      <InfoIcon class="size-4 text-blue-500" />
     </template>
     <template #warning-icon>
-      <TriangleAlertIcon class="size-4" />
+      <TriangleAlertIcon class="size-4 text-yellow-500" />
     </template>
     <template #error-icon>
-      <OctagonXIcon class="size-4" />
+      <CircleXIcon class="size-5 text-red-500" />
     </template>
     <template #loading-icon>
-      <div>
-        <Loader2Icon class="size-4 animate-spin" />
-      </div>
+      <Loader2Icon class="size-4 animate-spin" />
     </template>
-    <template #close-icon>
-      <XIcon class="size-4" />
-    </template>
-  </Sonner>
+  </ToasterLib>
 </template>
 
 <script lang="ts" setup>
-import type { ToasterProps } from "vue-sonner";
-
 import {
   CircleCheckIcon,
+  CircleXIcon,
   InfoIcon,
   Loader2Icon,
-  OctagonXIcon,
   TriangleAlertIcon,
-  XIcon,
 } from "@lucide/vue";
-import { Toaster as Sonner } from "vue-sonner";
-import { cn } from "@/lib/utils";
-import { reactiveOmit } from "@vueuse/core";
-
-const props = defineProps<ToasterProps>();
-const delegatedProps = reactiveOmit(props, "class", "toastOptions");
+import { Toaster as ToasterLib } from "vue-sonner";
+import "vue-sonner/style.css";
 </script>

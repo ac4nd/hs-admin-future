@@ -9,7 +9,7 @@ import type {
   DictItemOption,
   TagType,
 } from "./types";
-import type { OptionItem } from "@/api/common";
+import type { OptionItem, PageResult } from "@/api/common";
 
 const DICT_BASE_URL = "/api/v1/dicts";
 

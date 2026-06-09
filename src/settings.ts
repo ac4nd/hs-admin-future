@@ -29,6 +29,8 @@ export const defaults = {
   showWatermark: false,
   pageSwitchingAnimation: "fade-slide" as const,
   showSettings: true,
+  grayMode: false,
+  colorWeak: false,
   glassEffect: true,
   glassParams: {
     displacementScale: 70,

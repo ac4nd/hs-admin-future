@@ -68,9 +68,9 @@
                 <TableCell>
                   <input
                     type="checkbox"
-                    :checked="selectedIds.includes(role.id)"
+                    :checked="selectedIds.includes(role.id ?? '')"
                     class="size-4 rounded border-border"
-                    @change="toggleSelect(role.id)"
+                    @change="toggleSelect(role.id ?? '')"
                   />
                 </TableCell>
                 <TableCell class="font-medium">{{ role.name }}</TableCell>
@@ -98,7 +98,7 @@
                       variant="ghost"
                       size="sm"
                       class="h-7 text-xs"
-                      @click="handleEdit(role.id)"
+                      @click="handleEdit(role.id ?? '')"
                     >
                       {{ t("role.edit") }}
                     </Button>
@@ -361,21 +361,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import RoleAPI from "@/api/system/role";
-import {
-  getPage,
-  getFormData,
-  create,
-  update,
-  deleteByIds,
-  getRoleMenuIds,
-  updateRoleMenus,
-  getRoleDeptIds,
-} from "@/api/system/role";
-import type { RoleItem, RoleForm, RoleQuery } from "@/api/role/types";
+import DeptAPI from "@/api/system/dept";
+import MenuAPI from "@/api/system/menu";
+import type { RoleItem, RoleForm, RoleQueryParams } from "@/api/system/role/types";
 import type { OptionItem } from "@/api/common";
 import PermTreeItem from "./PermTreeItem.vue";
 import DepartmentTree from "./DepartmentTree.vue";
-import { Award } from "@lucide/vue";
 
 const { t } = useI18n();
 
@@ -386,7 +377,7 @@ const roleList = ref<RoleItem[]>([]);
 const total = ref(0);
 const selectedIds = ref<string[]>([]);
 
-const queryParams = reactive<RoleQuery>({
+const queryParams = reactive<RoleQueryParams>({
   pageNum: 1,
   pageSize: 10,
   keywords: "",
@@ -406,15 +397,16 @@ const displayedPages = computed(() => {
 });
 
 const isAllSelected = computed(
-  () => roleList.value.length > 0 && roleList.value.every((r) => selectedIds.value.includes(r.id))
+  () =>
+    roleList.value.length > 0 && roleList.value.every((r) => selectedIds.value.includes(r.id ?? ""))
 );
 
 const isPartialSelected = computed(
-  () => !isAllSelected.value && roleList.value.some((r) => selectedIds.value.includes(r.id))
+  () => !isAllSelected.value && roleList.value.some((r) => selectedIds.value.includes(r.id ?? ""))
 );
 
 function toggleSelectAll() {
-  selectedIds.value = isAllSelected.value ? [] : roleList.value.map((r) => r.id);
+  selectedIds.value = isAllSelected.value ? [] : roleList.value.map((r) => r.id ?? "");
 }
 
 function toggleSelect(id: string) {
@@ -435,6 +427,8 @@ async function fetchList() {
     roleList.value = result.list;
     total.value = result.total;
     selectedIds.value = [];
+  } catch (error) {
+    console.error("[Role] 获取角色列表失败:", error);
   } finally {
     loading.value = false;
   }
@@ -491,14 +485,14 @@ function closeDialog() {
 
 async function handleCreate() {
   dialogTitle.value = t("role.addTitle");
-  if (deptOptions.value.length === 0) deptOptions.value = RoleAPI.getRoleDeptIds();
+  if (deptOptions.value.length === 0) deptOptions.value = await DeptAPI.getOptions();
   resetForm();
   dialogVisible.value = true;
 }
 
 async function handleEdit(id: string) {
   dialogTitle.value = t("role.editTitle");
-  if (deptOptions.value.length === 0) deptOptions.value = RoleAPI.getRoleDeptIds();
+  if (deptOptions.value.length === 0) deptOptions.value = await DeptAPI.getOptions();
   const data = await RoleAPI.getFormData(id);
   if (data) Object.assign(formData, data);
   dialogVisible.value = true;
@@ -517,15 +511,23 @@ async function handleSubmit() {
   const submitData = { ...formData };
   if (submitData.dataScope !== 5) submitData.deptIds = undefined;
 
-  if (formData.id) {
-    RoleAPI.update(formData.id, submitData);
-    toast.success(t("role.editSuccess"));
-  } else {
-    RoleAPI.create(submitData);
-    toast.success(t("role.addSuccess"));
+  loading.value = true;
+  try {
+    const roleId = formData.id;
+    if (roleId) {
+      await RoleAPI.update(roleId, submitData);
+      toast.success(t("role.editSuccess"));
+    } else {
+      await RoleAPI.create(submitData);
+      toast.success(t("role.addSuccess"));
+    }
+    closeDialog();
+    handleResetQuery();
+  } catch (error) {
+    console.error("[Role] 提交表单失败:", error);
+  } finally {
+    loading.value = false;
   }
-  closeDialog();
-  handleQuery();
 }
 
 // ==================== 删除 ====================
@@ -548,10 +550,17 @@ function handleBatchDelete() {
 }
 
 async function confirmDelete() {
-  RoleAPI.deleteByIds(pendingDeleteIds.value);
-  toast.success(t("role.deleteSuccess"));
-  deleteConfirmVisible.value = false;
-  handleQuery();
+  loading.value = true;
+  try {
+    await RoleAPI.deleteByIds(pendingDeleteIds.value);
+    toast.success(t("role.deleteSuccess"));
+    deleteConfirmVisible.value = false;
+    handleResetQuery();
+  } catch (error) {
+    console.error("[Role] 删除角色失败:", error);
+  } finally {
+    loading.value = false;
+  }
 }
 
 // ==================== 分配权限 ====================
@@ -560,7 +569,7 @@ const assignVisible = ref(false);
 const checkedRoleId = ref("");
 const checkedRoleName = ref("");
 const permOptions = ref<OptionItem[]>([]);
-const checkedMenuIds = ref<Number[]>([]);
+const checkedMenuIds = ref<string[]>([]);
 const permKeywords = ref("");
 const permExpanded = ref(true);
 const parentChildLinked = ref(true);
@@ -631,18 +640,27 @@ function collectIds(nodes: OptionItem[]): string[] {
 }
 
 async function handleAssignPerm(role: RoleItem) {
-  checkedRoleId.value = role.id;
-  checkedRoleName.value = role.name;
-  permOptions.value = await RoleAPI.getRoleMenuIds(role.id);
-  checkedMenuIds.value = await RoleAPI.getRoleMenuIds(role.id);
+  checkedRoleId.value = role.id ?? "";
+  checkedRoleName.value = role.name ?? "";
+
+  permOptions.value = await MenuAPI.getOptions();
+  checkedMenuIds.value = await RoleAPI.getRoleMenuIds(role.id ?? "");
   permKeywords.value = "";
   assignVisible.value = true;
 }
 
 async function handleAssignPermSubmit() {
-  RoleAPI.updateRoleMenus(checkedRoleId.value, [...checkedMenuIds.value]);
-  toast.success(t("role.assignSuccess"));
-  assignVisible.value = false;
+  loading.value = true;
+  try {
+    await RoleAPI.updateRoleMenus(checkedRoleId.value, checkedMenuIds.value.map(Number));
+    toast.success(t("role.assignSuccess"));
+    assignVisible.value = false;
+    handleResetQuery();
+  } catch (error) {
+    console.error("[Role] 分配权限失败:", error);
+  } finally {
+    loading.value = false;
+  }
 }
 
 // ==================== 部门选择 ====================
@@ -650,8 +668,31 @@ async function handleAssignPermSubmit() {
 function toggleDept(deptId: string) {
   if (!formData.deptIds) formData.deptIds = [];
   const idx = formData.deptIds.indexOf(deptId);
-  if (idx >= 0) formData.deptIds.splice(idx, 1);
-  else formData.deptIds.push(deptId);
+  if (idx >= 0) {
+    formData.deptIds.splice(idx, 1);
+  } else {
+    formData.deptIds.push(deptId);
+    // 自动勾选所有祖先节点
+    const ancestors = findAncestors(deptOptions.value, deptId);
+    for (const id of ancestors) {
+      if (!formData.deptIds.includes(id)) {
+        formData.deptIds.push(id);
+      }
+    }
+  }
+}
+
+/** 在选项树中查找目标节点的祖先 ID 路径 */
+function findAncestors(nodes: OptionItem[], targetId: string, path: string[] = []): string[] {
+  for (const node of nodes) {
+    const nodeId = String(node.value);
+    if (nodeId === targetId) return path;
+    if (node.children) {
+      const result = findAncestors(node.children, targetId, [...path, nodeId]);
+      if (result.length > 0) return result;
+    }
+  }
+  return [];
 }
 
 // ==================== 初始化 ====================

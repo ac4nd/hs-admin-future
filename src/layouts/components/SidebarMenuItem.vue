@@ -9,7 +9,7 @@
           :class="{ 'text-primary font-medium': isParentActive }"
           :style="{ paddingLeft: `${(level + 1) * 12}px` }"
         >
-          <span class="text-base shrink-0">{{ item.icon || "📄" }}</span>
+          <MenuIcon :icon="item.icon" />
           <span class="flex-1 truncate">{{ translateRouteTitle(item.title) }}</span>
           <ChevronRight
             class="h-3.5 w-3.5 shrink-0 text-muted-foreground transition-transform duration-200"
@@ -40,7 +40,7 @@
       :style="{ paddingLeft: `${(level + 1) * 12}px` }"
       @click="handleClick"
     >
-      <span class="text-base shrink-0">{{ item.icon || "📄" }}</span>
+      <MenuIcon :icon="item.icon" />
       <span class="flex-1 truncate">{{ translateRouteTitle(item.title) }}</span>
     </div>
   </template>
@@ -54,7 +54,7 @@
           class="sidebar-menu-item-collapsed flex items-center justify-center h-10 w-full rounded-lg cursor-pointer transition-colors"
           :class="{ 'text-primary': isParentActive }"
         >
-          <span class="text-base">{{ item.icon || "📄" }}</span>
+          <MenuIcon :icon="item.icon" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="start" class="min-w-[180px]">
@@ -66,7 +66,7 @@
           <!-- 子级有子菜单：嵌套 Sub -->
           <DropdownMenuSub v-if="child.children?.length">
             <DropdownMenuSubTrigger class="gap-2">
-              <span>{{ child.icon || "📄" }}</span>
+              <MenuIcon :icon="child.icon" />
               <span>{{ translateRouteTitle(child.title) }}</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
@@ -76,14 +76,14 @@
                 class="gap-2"
                 @click="emit('select', grand)"
               >
-                <span>{{ grand.icon || "📄" }}</span>
+                <MenuIcon :icon="grand.icon" />
                 <span>{{ translateRouteTitle(grand.title) }}</span>
               </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuSub>
           <!-- 子级叶子 -->
           <DropdownMenuItem v-else class="gap-2" @click="emit('select', child)">
-            <span>{{ child.icon || "📄" }}</span>
+            <MenuIcon :icon="child.icon" />
             <span>{{ translateRouteTitle(child.title) }}</span>
           </DropdownMenuItem>
         </template>
@@ -98,7 +98,7 @@
           :class="{ active: isActive }"
           @click="handleClick"
         >
-          <span class="text-base">{{ item.icon || "📄" }}</span>
+          <MenuIcon :icon="item.icon" />
         </div>
       </TooltipTrigger>
       <TooltipContent side="right" :side-offset="8">
@@ -126,6 +126,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { translateRouteTitle } from "@/utils/i18n";
 import type { MenuItem } from "@/utils/menu";
+import MenuIcon from "./MenuIcon.vue";
 
 const props = defineProps<{
   item: MenuItem;

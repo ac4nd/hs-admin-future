@@ -35,41 +35,41 @@ const transitionName = computed(() => settingsStore.pageSwitchingAnimation ?? ""
   position: relative;
   overflow-y: auto;
 }
+</style>
 
-/* fade */
-.fade-enter-active,
-.fade-leave-active {
+<!-- transition CSS 必须非 scoped：Vue 的 transition 动态添加的 class 无法被 scoped 的 [data-v-xxx] 匹配 -->
+<style>
+.app-main .fade-enter-active,
+.app-main .fade-leave-active {
   transition: opacity 0.3s ease-in-out;
 }
-.fade-enter-from,
-.fade-leave-to {
+.app-main .fade-enter-from,
+.app-main .fade-leave-to {
   opacity: 0;
 }
 
-/* fade-slide */
-.fade-slide-leave-active,
-.fade-slide-enter-active {
+.app-main .fade-slide-enter-active,
+.app-main .fade-slide-leave-active {
   transition: all 0.3s;
 }
-.fade-slide-enter-from {
+.app-main .fade-slide-enter-from {
   opacity: 0;
   transform: translateX(-30px);
 }
-.fade-slide-leave-to {
+.app-main .fade-slide-leave-to {
   opacity: 0;
   transform: translateX(30px);
 }
 
-/* fade-scale */
-.fade-scale-leave-active,
-.fade-scale-enter-active {
+.app-main .fade-scale-enter-active,
+.app-main .fade-scale-leave-active {
   transition: all 0.28s;
 }
-.fade-scale-enter-from {
+.app-main .fade-scale-enter-from {
   opacity: 0;
   transform: scale(1.2);
 }
-.fade-scale-leave-to {
+.app-main .fade-scale-leave-to {
   opacity: 0;
   transform: scale(0.8);
 }

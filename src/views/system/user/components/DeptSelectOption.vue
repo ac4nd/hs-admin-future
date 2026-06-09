@@ -16,8 +16,13 @@
 import { SelectItem } from "@/components/ui/select";
 import type { OptionItem } from "@/api/common";
 
-defineProps<{
-  option: OptionItem;
-  depth?: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    option: OptionItem;
+    depth?: number;
+  }>(),
+  { depth: 0 }
+);
+
+const { option, depth } = props;
 </script>

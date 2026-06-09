@@ -254,7 +254,11 @@ const isAllSelected = computed(
 
 function toggleRow(row: Row) {
   const s = new Set(checkedIds.value);
-  s.has(row.id) ? s.delete(row.id) : s.add(row.id);
+  if (s.has(row.id)) {
+    s.delete(row.id);
+  } else {
+    s.add(row.id);
+  }
   checkedIds.value = s;
 }
 

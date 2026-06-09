@@ -20,7 +20,7 @@
             class="h-8"
             :class="[isDesktop ? 'gap-1.5 text-sm' : 'w-8', itemClass(item)]"
           >
-            <span :class="{ 'text-base': !isDesktop }">{{ item.icon || "📄" }}</span>
+            <MenuIcon :icon="item.icon" :class="{ 'text-base': !isDesktop }" />
             <template v-if="isDesktop">
               <span>{{ translateRouteTitle(item.title) }}</span>
               <ChevronDown class="h-3 w-3 opacity-50" />
@@ -38,7 +38,7 @@
           <template v-for="child in item.children" :key="child.fullPath">
             <DropdownMenuSub v-if="child.children?.length">
               <DropdownMenuSubTrigger class="gap-2">
-                <span>{{ child.icon || "📄" }}</span>
+                <MenuIcon :icon="child.icon" />
                 <span>{{ translateRouteTitle(child.title) }}</span>
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
@@ -48,13 +48,13 @@
                   class="gap-2"
                   @click="handleSelect(grand)"
                 >
-                  <span>{{ grand.icon || "📄" }}</span>
+                  <MenuIcon :icon="grand.icon" />
                   <span>{{ translateRouteTitle(grand.title) }}</span>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             <DropdownMenuItem v-else class="gap-2" @click="handleSelect(child)">
-              <span>{{ child.icon || "📄" }}</span>
+              <MenuIcon :icon="child.icon" />
               <span>{{ translateRouteTitle(child.title) }}</span>
             </DropdownMenuItem>
           </template>
@@ -71,7 +71,7 @@
           :class="itemClass(item)"
           @click="handleSelect(item)"
         >
-          <span>{{ item.icon || "📄" }}</span>
+          <MenuIcon :icon="item.icon" />
           <span>{{ translateRouteTitle(item.title) }}</span>
         </Button>
         <Tooltip v-else>
@@ -83,7 +83,7 @@
               :class="itemClass(item)"
               @click="handleSelect(item)"
             >
-              <span class="text-base">{{ item.icon || "📄" }}</span>
+              <MenuIcon :icon="item.icon" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom" :side-offset="4">
@@ -116,7 +116,7 @@
                 class="gap-2"
                 :class="{ 'text-primary font-medium': isItemActive(item) }"
               >
-                <span>{{ item.icon || "📄" }}</span>
+                <MenuIcon :icon="item.icon" />
                 <span>{{ translateRouteTitle(item.title) }}</span>
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
@@ -126,13 +126,13 @@
                   class="gap-2"
                   @click="handleSelect(child)"
                 >
-                  <span>{{ child.icon || "📄" }}</span>
+                  <MenuIcon :icon="child.icon" />
                   <span>{{ translateRouteTitle(child.title) }}</span>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             <DropdownMenuItem v-else class="gap-2" @click="handleSelect(item)">
-              <span>{{ item.icon || "📄" }}</span>
+              <MenuIcon :icon="item.icon" />
               <span>{{ translateRouteTitle(item.title) }}</span>
             </DropdownMenuItem>
           </template>
@@ -164,6 +164,7 @@ import { usePermissionStore } from "@/stores";
 import { generateMenus } from "@/utils/menu";
 import { translateRouteTitle } from "@/utils/i18n";
 import type { MenuItem } from "@/utils/menu";
+import MenuIcon from "./MenuIcon.vue";
 
 const route = useRoute();
 const router = useRouter();

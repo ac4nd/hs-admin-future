@@ -55,6 +55,6 @@ import { Label } from "@/components/ui/label";
 import TextScroll from "./components/TextScroll.vue";
 
 const customSpeed = ref(50);
-const customDir = ref("left");
+const customDir = ref<"left" | "right">("left");
 const customText = ref("这是一条可以自定义速度和内容的滚动公告");
 </script>
