@@ -45,6 +45,7 @@
     "滚动文本": "Scrolling Text",
     "自适应表格操作列": "Adaptive Table Operations",
     "后端文档": "Backend Docs",
+    "前端文档": "Frontend Docs",
     "内部文档": "Internal Docs",
     "移动端文档": "Mobile Docs"
   },
@@ -687,5 +688,74 @@
     "mobileBound": "Mobile bound successfully",
     "emailChanged": "Email changed successfully",
     "emailBound": "Email bound successfully"
+  },
+  "doc": {
+    "hero": {
+      "brandName": "Hypersense",
+      "orgName": "氦闪技术开源组织",
+      "subtitle": "GODLIKEAGENTS PLATFORM",
+      "explore": "Explore Frontier",
+      "perceive": "Perceive Future",
+      "geek": "Geek Spirit"
+    },
+    "sections": {
+      "architecture": "Architecture",
+      "techStack": "Tech Stack",
+      "projectStructure": "Project Structure",
+      "manual": "User Manual",
+      "quickStart": "Quick Start"
+    },
+    "frontend": {
+      "title": "Frontend Documentation",
+      "archView": "View Layer",
+      "archUI": "UI Framework",
+      "archBuild": "Build Tools",
+      "manualEnv": "Environment Setup",
+      "manualConfig": "Project Configuration",
+      "manualDev": "Development Workflow",
+      "manualNewPage": "New Page Guide",
+      "manualFaq": "FAQ",
+      "step1Title": "Clone Repository",
+      "step1Desc": "Get the latest code from the repository",
+      "step2Title": "Install Dependencies",
+      "step2Desc": "Install project dependencies with pnpm",
+      "step3Title": "Start Dev Server",
+      "step3Desc": "Start Vite development server, default port 3000"
+    },
+    "backend": {
+      "title": "Backend Documentation",
+      "archController": "Controller Layer",
+      "archService": "Service Layer",
+      "archData": "Data Layer",
+      "manualEnv": "Environment Setup",
+      "manualInfra": "Infrastructure Startup",
+      "manualCodeGen": "Code Generator",
+      "manualTenant": "Multi-tenant Guide",
+      "step1Title": "Start Infrastructure",
+      "step1Desc": "Start PostgreSQL, Redis, MinIO via Docker Compose",
+      "step2Title": "Build Project",
+      "step2Desc": "Compile and package with Maven",
+      "step3Title": "Run Application",
+      "step3Desc": "Start Spring Boot application, dev port 8000",
+      "apiDocs": "Online API Docs",
+      "apiDocsHint": "Access Knife4j API docs after startup"
+    },
+    "mobile": {
+      "title": "Mobile Documentation",
+      "archFramework": "App Framework",
+      "archState": "State & Routing",
+      "archCompile": "Multi-platform",
+      "manualEnv": "Environment Setup",
+      "manualMultiPlatform": "Multi-platform Build",
+      "step1Title": "Clone Repository",
+      "step1Desc": "Get the latest code from the repository",
+      "step2Title": "Install Dependencies",
+      "step2Desc": "Install project dependencies with pnpm",
+      "step3Title": "Start WeChat Dev",
+      "step3Desc": "Output in dist/dev/mp-weixin, open with WeChat DevTools"
+    },
+    "footer": {
+      "tagline": "Explore Frontier · Perceive Future · Geek Spirit"
+    }
   }
 }

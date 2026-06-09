@@ -113,15 +113,27 @@ export const dynamicRoutes: RouteRecordRaw[] = [
   {
     path: "/doc",
     component: () => import("@/layouts/index.vue"),
-    redirect: "/doc/internal-doc",
+    redirect: "/doc/frontend",
     name: "/doc",
     meta: { title: "平台文档", icon: "📖" },
     children: [
       {
-        path: "internal-doc",
-        component: () => import("@/views/demo/internal-doc.vue"),
-        name: "InternalDoc",
-        meta: { title: "document", icon: "📄" },
+        path: "frontend",
+        component: () => import("@/views/doc/frontend.vue"),
+        name: "FrontendDoc",
+        meta: { title: "前端文档", icon: "💻", keepAlive: true },
+      },
+      {
+        path: "backend",
+        component: () => import("@/views/doc/backend.vue"),
+        name: "BackendDoc",
+        meta: { title: "后端文档", icon: "🖥️", keepAlive: true },
+      },
+      {
+        path: "mobile",
+        component: () => import("@/views/doc/mobile.vue"),
+        name: "MobileDoc",
+        meta: { title: "移动端文档", icon: "📱", keepAlive: true },
       },
     ],
   },

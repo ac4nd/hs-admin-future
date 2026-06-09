@@ -45,6 +45,7 @@
     "滚动文本": "滚动文本",
     "自适应表格操作列": "自适应表格操作列",
     "后端文档": "后端文档",
+    "前端文档": "前端文档",
     "内部文档": "内部文档",
     "移动端文档": "移动端文档"
   },
@@ -687,5 +688,74 @@
     "mobileBound": "手机号绑定成功",
     "emailChanged": "邮箱更换成功",
     "emailBound": "邮箱绑定成功"
+  },
+  "doc": {
+    "hero": {
+      "brandName": "Hypersense",
+      "orgName": "氦闪技术开源组织",
+      "subtitle": "GODLIKEAGENTS PLATFORM",
+      "explore": "探索前沿",
+      "perceive": "感知未来",
+      "geek": "极客精神"
+    },
+    "sections": {
+      "architecture": "项目架构",
+      "techStack": "技术栈",
+      "projectStructure": "文件结构",
+      "manual": "使用手册",
+      "quickStart": "快速开始"
+    },
+    "frontend": {
+      "title": "前端文档",
+      "archView": "视图层",
+      "archUI": "UI 框架",
+      "archBuild": "构建工具",
+      "manualEnv": "环境准备",
+      "manualConfig": "项目配置",
+      "manualDev": "开发流程",
+      "manualNewPage": "新增页面指南",
+      "manualFaq": "常见问题",
+      "step1Title": "克隆项目",
+      "step1Desc": "从代码仓库获取最新代码",
+      "step2Title": "安装依赖",
+      "step2Desc": "使用 pnpm 安装项目依赖",
+      "step3Title": "启动开发服务",
+      "step3Desc": "启动 Vite 开发服务器，默认端口 3000"
+    },
+    "backend": {
+      "title": "后端文档",
+      "archController": "Controller 层",
+      "archService": "Service 层",
+      "archData": "数据层",
+      "manualEnv": "环境准备",
+      "manualInfra": "基础设施启动",
+      "manualCodeGen": "代码生成器",
+      "manualTenant": "多租户开发指南",
+      "step1Title": "启动基础设施",
+      "step1Desc": "使用 Docker Compose 启动 PostgreSQL、Redis、MinIO",
+      "step2Title": "构建项目",
+      "step2Desc": "使用 Maven 编译打包",
+      "step3Title": "启动应用",
+      "step3Desc": "运行 Spring Boot 应用，开发环境端口 8000",
+      "apiDocs": "在线 API 文档",
+      "apiDocsHint": "启动后访问 Knife4j 接口文档"
+    },
+    "mobile": {
+      "title": "移动端文档",
+      "archFramework": "应用框架",
+      "archState": "状态 & 路由",
+      "archCompile": "多端编译",
+      "manualEnv": "环境准备",
+      "manualMultiPlatform": "多端编译",
+      "step1Title": "克隆项目",
+      "step1Desc": "从代码仓库获取最新代码",
+      "step2Title": "安装依赖",
+      "step2Desc": "使用 pnpm 安装项目依赖",
+      "step3Title": "启动微信小程序开发",
+      "step3Desc": "编译产物在 dist/dev/mp-weixin，用微信开发者工具打开"
+    },
+    "footer": {
+      "tagline": "探索前沿 · 感知未来 · 极客精神"
+    }
   }
 }
