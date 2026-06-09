@@ -2,7 +2,10 @@
   <div>
     <DocSection :title="title" />
     <GlassCard class="p-5">
-      <pre class="text-[13px] leading-7 whitespace-pre text-muted-foreground font-mono" v-html="tree" />
+      <pre
+        class="text-[13px] leading-7 whitespace-pre text-muted-foreground font-mono"
+        v-html="tree"
+      />
     </GlassCard>
   </div>
 </template>

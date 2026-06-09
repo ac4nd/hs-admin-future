@@ -27,3 +27,4 @@ source-map
 *.map
 *.js.map
 *.css.map
+graphify-out
