@@ -254,7 +254,10 @@
                 </Tooltip>
               </TooltipProvider>
             </Label>
-            <Input v-model.trim="formData.routeName!" :placeholder="t('menu.routeNamePlaceholder')" />
+            <Input
+              v-model.trim="formData.routeName!"
+              :placeholder="t('menu.routeNamePlaceholder')"
+            />
           </div>
 
           <!-- 路由路径 -->
@@ -577,7 +580,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import MenuAPI from "@/api/system/menu";
-import type { MenuItem, MenuForm } from "@/api/menu";
+import type { MenuItem, MenuForm } from "@/api/system/menu/types";
 import type { OptionItem } from "@/api/common";
 import { MenuTypeEnum, MenuScopeEnum } from "@/enums/menu";
 import { appConfig } from "@/settings";
@@ -589,6 +592,7 @@ const { t } = useI18n();
 
 function resolveIcon(name?: string) {
   if (!name) return null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (LucideIcons as any)[name] || (LucideIcons as any)[`${name}Icon`] || null;
 }
 

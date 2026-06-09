@@ -50,7 +50,6 @@ const props = withDefaults(
 );
 
 const visible = ref(true);
-const scrollRef = ref<HTMLElement>();
 const displayedText = ref("");
 let twTimer: ReturnType<typeof setTimeout> | null = null;
 

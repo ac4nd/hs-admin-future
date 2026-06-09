@@ -28,77 +28,25 @@
           </div>
         </section>
 
-        <!-- 主题色 -->
-        <section>
-          <h3 class="text-sm font-medium mb-3">主题色</h3>
-          <div class="flex flex-wrap gap-2.5">
-            <button
-              v-for="color in themeColorPresets"
-              :key="color"
-              class="w-7 h-7 rounded-full border-2 transition-transform hover:scale-110 cursor-pointer"
-              :class="
-                settingsStore.themeColor === color
-                  ? 'border-foreground scale-110 ring-2 ring-foreground/20'
-                  : 'border-transparent'
-              "
-              :style="{ backgroundColor: color }"
-              @click="settingsStore.themeColor = color"
-            />
-            <!-- 自定义取色器 -->
-            <div class="relative">
-              <button
-                class="w-7 h-7 rounded-full border-2 border-dashed border-muted-foreground/40 flex items-center justify-center hover:border-primary/50 transition-colors cursor-pointer"
-                :class="{
-                  'border-primary ring-2 ring-primary/20': !themeColorPresets.includes(
-                    settingsStore.themeColor as any
-                  ),
-                }"
-                @click="colorInputRef?.click()"
-              >
-                <PipetteIcon class="size-3 text-muted-foreground" />
-              </button>
-              <input
-                ref="colorInputRef"
-                type="color"
-                :value="settingsStore.themeColor"
-                class="absolute opacity-0 w-0 h-0"
-                @input="settingsStore.themeColor = ($event.target as HTMLInputElement).value"
-              />
-            </div>
-          </div>
-        </section>
-
         <!-- 界面设置 -->
         <section>
           <h3 class="text-sm font-medium mb-3">界面</h3>
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs text-muted-foreground">显示标签栏</span>
-              <Switch
-                :checked="settingsStore.showTagsView"
-                @update:checked="settingsStore.showTagsView = $event"
-              />
+              <Switch v-model="showTagsView" />
             </div>
             <div class="flex items-center justify-between">
               <span class="text-xs text-muted-foreground">显示 Logo</span>
-              <Switch
-                :checked="settingsStore.showAppLogo"
-                @update:checked="settingsStore.showAppLogo = $event"
-              />
+              <Switch v-model="showAppLogo" />
             </div>
             <div class="flex items-center justify-between">
               <span class="text-xs text-muted-foreground">水印</span>
-              <Switch
-                :checked="settingsStore.showWatermark"
-                @update:checked="settingsStore.showWatermark = $event"
-              />
+              <Switch v-model="showWatermark" />
             </div>
             <div class="flex items-center justify-between">
               <span class="text-xs text-muted-foreground">页面动画</span>
-              <Select
-                :model-value="settingsStore.pageSwitchingAnimation"
-                @update:model-value="settingsStore.pageSwitchingAnimation = $event as string"
-              >
+              <Select v-model="pageSwitchingAnimation">
                 <SelectTrigger class="w-32 h-7 text-xs">
                   <SelectValue />
                 </SelectTrigger>
@@ -111,53 +59,11 @@
             </div>
             <div class="flex items-center justify-between">
               <span class="text-xs text-muted-foreground">灰色模式</span>
-              <Switch
-                :checked="settingsStore.grayMode"
-                @update:checked="settingsStore.grayMode = $event"
-              />
+              <Switch v-model="grayMode" />
             </div>
             <div class="flex items-center justify-between">
               <span class="text-xs text-muted-foreground">色弱模式</span>
-              <Switch
-                :checked="settingsStore.colorWeak"
-                @update:checked="settingsStore.colorWeak = $event"
-              />
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-xs text-muted-foreground">液态玻璃效果</span>
-              <Switch
-                :checked="settingsStore.glassEffect"
-                @update:checked="settingsStore.glassEffect = $event"
-              />
-            </div>
-
-            <!-- 玻璃参数调节 -->
-            <div
-              class="space-y-3 pl-2 border-l-2 border-primary/20 pt-1"
-              :class="{ 'opacity-40 pointer-events-none': !settingsStore.glassEffect }"
-            >
-              <div v-for="item in glassSliders" :key="item.key">
-                <div class="flex items-center justify-between mb-1">
-                  <span class="text-xs text-muted-foreground">{{ item.label }}</span>
-                  <span class="text-xs font-mono" :style="{ color: item.color }">
-                    {{ settingsStore.glassParams?.[item.key] }}{{ item.suffix }}
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  :min="item.min"
-                  :max="item.max"
-                  :step="item.step"
-                  :value="settingsStore.glassParams?.[item.key]"
-                  class="glass-slider w-full"
-                  @input="
-                    settingsStore.setGlassParam(
-                      item.key,
-                      +($event.target as HTMLInputElement).value
-                    )
-                  "
-                />
-              </div>
+              <Switch v-model="colorWeak" />
             </div>
           </div>
         </section>
@@ -230,35 +136,6 @@
             </button>
           </div>
         </section>
-
-        <!-- 侧边栏配色 -->
-        <section v-if="settingsStore.resolvedTheme !== ThemeMode.DARK">
-          <h3 class="text-sm font-medium mb-3">侧边栏配色</h3>
-          <div class="grid grid-cols-2 gap-2">
-            <Button
-              :variant="
-                settingsStore.sidebarColorScheme === SidebarColor.MINIMAL_WHITE
-                  ? 'default'
-                  : 'outline'
-              "
-              size="sm"
-              @click="settingsStore.sidebarColorScheme = SidebarColor.MINIMAL_WHITE"
-            >
-              极简白
-            </Button>
-            <Button
-              :variant="
-                settingsStore.sidebarColorScheme === SidebarColor.CLASSIC_BLUE
-                  ? 'default'
-                  : 'outline'
-              "
-              size="sm"
-              @click="settingsStore.sidebarColorScheme = SidebarColor.CLASSIC_BLUE"
-            >
-              经典蓝
-            </Button>
-          </div>
-        </section>
       </div>
 
       <!-- 底部固定按钮 -->
@@ -296,23 +173,10 @@
 
 <script setup lang="ts">
 import { ref, type Component } from "vue";
+import { storeToRefs } from "pinia";
 import { toast } from "vue-sonner";
-import {
-  SunIcon,
-  MoonIcon,
-  MonitorIcon,
-  CheckIcon,
-  CopyIcon,
-  RotateCcwIcon,
-  PipetteIcon,
-} from "@lucide/vue";
-import {
-  LayoutMode,
-  SidebarColor,
-  ThemeMode,
-  PageSwitchingAnimationOptions,
-} from "@/enums/settings";
-import { themeColorPresets } from "@/settings";
+import { SunIcon, MoonIcon, MonitorIcon, CheckIcon, CopyIcon, RotateCcwIcon } from "@lucide/vue";
+import { LayoutMode, ThemeMode, PageSwitchingAnimationOptions } from "@/enums/settings";
 import { useSettingsStore } from "@/stores";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -333,11 +197,12 @@ import {
 } from "@/components/ui/sheet";
 
 const settingsStore = useSettingsStore();
+const { showTagsView, showAppLogo, showWatermark, grayMode, colorWeak, pageSwitchingAnimation } =
+  storeToRefs(settingsStore);
 
-const colorInputRef = ref<HTMLInputElement>();
 const copyLoading = ref(false);
 
-const themeModes: { value: string; label: string; icon: Component }[] = [
+const themeModes: { value: ThemeMode; label: string; icon: Component }[] = [
   { value: ThemeMode.LIGHT, label: "亮色", icon: SunIcon },
   { value: ThemeMode.DARK, label: "暗色", icon: MoonIcon },
   { value: ThemeMode.AUTO, label: "自动", icon: MonitorIcon },
@@ -350,53 +215,6 @@ const layoutOptions = [
 ];
 
 const animationOptions = Object.values(PageSwitchingAnimationOptions);
-
-const glassSliders = [
-  {
-    key: "displacementScale" as const,
-    label: "折射强度",
-    min: 0,
-    max: 200,
-    step: 1,
-    color: "#3b82f6",
-  },
-  {
-    key: "blur" as const,
-    label: "背景模糊",
-    min: 0,
-    max: 30,
-    step: 1,
-    color: "#22c55e",
-    suffix: "px",
-  },
-  {
-    key: "saturation" as const,
-    label: "饱和度",
-    min: 100,
-    max: 300,
-    step: 10,
-    color: "#a855f7",
-    suffix: "%",
-  },
-  {
-    key: "aberrationIntensity" as const,
-    label: "色散强度",
-    min: 0,
-    max: 20,
-    step: 0.5,
-    color: "#06b6d4",
-  },
-  { key: "elasticity" as const, label: "弹性系数", min: 0, max: 1, step: 0.05, color: "#f97316" },
-  {
-    key: "cornerRadius" as const,
-    label: "圆角",
-    min: 0,
-    max: 100,
-    step: 1,
-    color: "#ec4899",
-    suffix: "px",
-  },
-];
 
 async function handleCopySettings() {
   copyLoading.value = true;
@@ -414,15 +232,6 @@ export const defaults = {
   showWatermark: ${settingsStore.showWatermark},
   pageSwitchingAnimation: "${settingsStore.pageSwitchingAnimation}",
   showSettings: true,
-  glassEffect: ${settingsStore.glassEffect},
-  glassParams: {
-    displacementScale: ${settingsStore.glassParams?.displacementScale},
-    blur: ${settingsStore.glassParams?.blur},
-    saturation: ${settingsStore.glassParams?.saturation},
-    aberrationIntensity: ${settingsStore.glassParams?.aberrationIntensity},
-    elasticity: ${settingsStore.glassParams?.elasticity},
-    cornerRadius: ${settingsStore.glassParams?.cornerRadius},
-  },
 } as const;`;
     await navigator.clipboard.writeText(code);
     toast.success("配置已复制到剪贴板");
@@ -433,45 +242,3 @@ export const defaults = {
   }
 }
 </script>
-
-<style>
-/* 滑块 — 使用全局样式避免 scoped 伪元素问题 */
-.glass-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: hsl(var(--muted));
-  outline: none;
-  cursor: pointer;
-}
-.glass-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: hsl(var(--primary));
-  cursor: pointer;
-  border: 2px solid hsl(var(--background));
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-.glass-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-}
-.glass-slider::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: hsl(var(--primary));
-  cursor: pointer;
-  border: 2px solid hsl(var(--background));
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-.glass-slider::-moz-range-track {
-  height: 6px;
-  border-radius: 3px;
-  background: hsl(var(--muted));
-}
-</style>

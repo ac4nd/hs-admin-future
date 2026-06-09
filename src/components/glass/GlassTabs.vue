@@ -38,7 +38,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  "update:modelValue": [value: string];
+  "update:modelValue": [value: unknown];
 }>();
 
 const { isEnabled } = useGlassFilter("tabs");

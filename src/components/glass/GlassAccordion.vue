@@ -3,7 +3,7 @@
     <GlassSurface
       v-for="item in items"
       :key="item.id"
-      :preset="isEnabled ? 'accordion' : undefined"
+      :preset="isEnabled ? 'accordion' : 'button'"
       :class="cn('w-full', !isEnabled && 'border rounded-lg')"
       :mouse-tracking="false"
     >

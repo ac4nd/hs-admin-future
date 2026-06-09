@@ -14,7 +14,7 @@
           class="layout-top__header-left"
           :class="{ 'layout-top__header-left--mobile': isMobile }"
         >
-          <LayoutLogo :collapse="isMobile" />
+          <LayoutLogo v-if="showLogo" :collapse="isMobile" />
         </div>
         <TopMenu />
         <LayoutNavbar :show-sidebar-toggle="false" :show-breadcrumb="false" />
@@ -39,7 +39,7 @@ import LayoutNavbar from "./components/LayoutNavbar.vue";
 import LayoutTagsView from "./components/LayoutTagsView.vue";
 import LayoutMain from "./components/LayoutMain.vue";
 
-const { showTagsView } = useLayout();
+const { showTagsView, showLogo } = useLayout();
 const appStore = useAppStore();
 const settingsStore = useSettingsStore();
 const glassEffect = computed(() => settingsStore.glassEffect);

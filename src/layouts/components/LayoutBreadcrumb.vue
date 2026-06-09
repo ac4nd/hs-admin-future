@@ -5,14 +5,13 @@
         <BreadcrumbItem>
           <BreadcrumbLink
             v-if="idx < breadcrumbs.length - 1"
-            class="cursor-pointer text-muted-foreground text-sm"
-            @click="router.push(crumb.path)"
+            class="text-muted-foreground text-sm inline-flex items-center"
           >
-            <span v-if="crumb.icon" class="mr-1">{{ crumb.icon }}</span>
+            <MenuIcon v-if="crumb.icon" :icon="crumb.icon" class="mr-1" />
             {{ translateRouteTitle(crumb.title) }}
           </BreadcrumbLink>
-          <BreadcrumbPage v-else class="text-sm font-medium">
-            <span v-if="crumb.icon" class="mr-1">{{ crumb.icon }}</span>
+          <BreadcrumbPage v-else class="text-sm font-medium inline-flex items-center">
+            <MenuIcon v-if="crumb.icon" :icon="crumb.icon" class="mr-1" />
             {{ translateRouteTitle(crumb.title) }}
           </BreadcrumbPage>
         </BreadcrumbItem>

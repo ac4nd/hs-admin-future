@@ -2,6 +2,7 @@
   <TooltipProvider>
     <GlassFilterProvider />
     <RouterView />
+    <Watermark />
     <Toaster />
   </TooltipProvider>
 </template>
@@ -10,4 +11,5 @@
 import { Toaster } from "@/components/ui/sonner";
 import { GlassFilterProvider } from "@/components/glass";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Watermark } from "@/components/ui/watermark";
 </script>

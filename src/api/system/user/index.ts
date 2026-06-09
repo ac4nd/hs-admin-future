@@ -1,6 +1,17 @@
 import request from "@/utils/request";
-import type { UserInfo, UserForm, UserQueryParams, UserItem } from "./types";
-import type { OptionItem } from "@/api/common";
+import type {
+  UserInfo,
+  UserForm,
+  UserQueryParams,
+  UserItem,
+  UserProfileDetail,
+  UserProfileForm,
+  PasswordChangeForm,
+  PasswordVerifyForm,
+  MobileUpdateForm,
+  EmailUpdateForm,
+} from "./types";
+import type { OptionItem, PageResult } from "@/api/common";
 
 const USER_BASE_URL = "/api/v1/users";
 
@@ -101,6 +112,88 @@ const UserAPI = {
     return request<unknown, OptionItem[]>({
       url: `${USER_BASE_URL}/options`,
       method: "get",
+    });
+  },
+
+  // ========== 个人中心 ==========
+
+  /** 获取个人中心用户详情 */
+  getProfile() {
+    return request<unknown, UserProfileDetail>({
+      url: `${USER_BASE_URL}/profile`,
+      method: "get",
+    });
+  },
+
+  /** 更新个人资料 */
+  updateProfile(data: UserProfileForm) {
+    return request({
+      url: `${USER_BASE_URL}/profile`,
+      method: "put",
+      data,
+    });
+  },
+
+  /** 修改密码 */
+  changePassword(data: PasswordChangeForm) {
+    return request({
+      url: `${USER_BASE_URL}/password`,
+      method: "put",
+      data,
+    });
+  },
+
+  /** 发送手机验证码 */
+  sendMobileCode(mobile: string) {
+    return request({
+      url: `${USER_BASE_URL}/mobile/code`,
+      method: "post",
+      params: { mobile },
+    });
+  },
+
+  /** 绑定或更换手机号 */
+  bindOrChangeMobile(data: MobileUpdateForm) {
+    return request({
+      url: `${USER_BASE_URL}/mobile`,
+      method: "put",
+      data,
+    });
+  },
+
+  /** 解绑手机号 */
+  unbindMobile(data: PasswordVerifyForm) {
+    return request({
+      url: `${USER_BASE_URL}/mobile/unbind`,
+      method: "put",
+      data,
+    });
+  },
+
+  /** 发送邮箱验证码 */
+  sendEmailCode(email: string) {
+    return request({
+      url: `${USER_BASE_URL}/email/code`,
+      method: "post",
+      params: { email },
+    });
+  },
+
+  /** 绑定或更换邮箱 */
+  bindOrChangeEmail(data: EmailUpdateForm) {
+    return request({
+      url: `${USER_BASE_URL}/email`,
+      method: "put",
+      data,
+    });
+  },
+
+  /** 解绑邮箱 */
+  unbindEmail(data: PasswordVerifyForm) {
+    return request({
+      url: `${USER_BASE_URL}/email/unbind`,
+      method: "put",
+      data,
     });
   },
 };

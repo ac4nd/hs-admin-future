@@ -340,7 +340,7 @@ function tagVariant(tagType: TagType): "default" | "secondary" | "destructive" |
   return map[tagType ?? ""] ?? "secondary";
 }
 
-function onTagTypeClear(val: string | number | boolean | undefined) {
+function onTagTypeClear(val: unknown) {
   if (val === "" || val === undefined || val === null) {
     formData.tagType = "";
   }

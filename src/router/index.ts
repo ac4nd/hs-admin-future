@@ -32,7 +32,13 @@ export const constantRoutes: RouteRecordRaw[] = [
         path: "dashboard",
         name: "Dashboard",
         component: () => import("@/views/dashboard/index.vue"),
-        meta: { title: "首页", icon: "🪟", affix: true, keepAlive: true },
+        meta: { title: "dashboard", icon: "LayoutDashboard", affix: true, keepAlive: true },
+      },
+      {
+        path: "profile",
+        name: "Profile",
+        component: () => import("@/views/profile/index.vue"),
+        meta: { title: "profile", icon: "User", hidden: true },
       },
       {
         path: "401",
