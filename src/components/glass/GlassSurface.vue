@@ -182,8 +182,11 @@ const layerStyles = computed(() => {
 const containerStyle = computed(() => {
   if (!isEnabled.value) return {};
   const ol = isOverLight.value;
+  // 仅保留 backdrop-filter（背景模糊），剥离 filter（SVG 位移折射）。
+  // SVG 折射滤镜由内层 backdrop span 承担，挂在根容器会扭曲前景文字/图标导致失真。
+  const { filter: _omitFilter, ...backdropOnly } = filterStyle.value;
   return {
-    ...filterStyle.value,
+    ...backdropOnly,
     borderRadius: `${cornerRadius.value}px`,
     background:
       config.value.layer === "liq-clear"
