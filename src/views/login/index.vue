@@ -192,7 +192,7 @@
       </section>
 
       <!-- 右侧登录卡片 -->
-      <GlassSurface preset="card" :mouse-tracking="true" class="login-card justify-self-center">
+      <GlassSurface preset="card" :mouse-tracking="false" class="login-card justify-self-center">
         <div class="w-full p-8 space-y-6">
           <!-- 品牌 -->
           <div class="flex items-center justify-center gap-3">
@@ -211,11 +211,7 @@
             <!-- 用户名 -->
             <div class="space-y-1.5">
               <label class="text-xs font-medium login-text">{{ t("login.username") }}</label>
-              <GlassSurface
-                preset="input"
-                class="glass-field w-full"
-                :class="{ 'field-error': usernameError }"
-              >
+              <div class="glass-field w-full" :class="{ 'field-error': usernameError }">
                 <div class="w-full flex items-center px-3 py-2.5 gap-2 relative z-[1]">
                   <svg
                     class="w-4 h-4 shrink-0 login-text-sub"
@@ -231,7 +227,7 @@
                     />
                   </svg>
                   <input
-                    v-model.trim="username"
+                    v-model="username"
                     type="text"
                     :placeholder="t('login.username')"
                     autocomplete="off"
@@ -240,18 +236,14 @@
                     @keyup.enter="handleEnterLogin"
                   />
                 </div>
-              </GlassSurface>
+              </div>
               <p v-if="usernameError" class="text-xs text-red-400 mt-1">{{ usernameError }}</p>
             </div>
 
             <!-- 密码 -->
             <div class="space-y-1.5">
               <label class="text-xs font-medium login-text">{{ t("login.password") }}</label>
-              <GlassSurface
-                preset="input"
-                class="glass-field w-full"
-                :class="{ 'field-error': passwordError }"
-              >
+              <div class="glass-field w-full" :class="{ 'field-error': passwordError }">
                 <div class="w-full flex items-center px-3 py-2.5 gap-2 relative z-[1]">
                   <svg
                     class="w-4 h-4 shrink-0 login-text-sub"
@@ -316,13 +308,13 @@
                     </svg>
                   </button>
                 </div>
-              </GlassSurface>
+              </div>
               <p v-if="passwordError" class="text-xs text-red-400 mt-1">{{ passwordError }}</p>
             </div>
             <div class="space-y-1.5">
               <label class="text-xs font-medium login-text">{{ t("login.captchaCode") }}</label>
               <div class="flex gap-2">
-                <GlassSurface preset="input" class="glass-field flex-1">
+                <div class="glass-field flex-1">
                   <div class="w-full flex items-center px-3 py-2.5 gap-2 relative z-[1]">
                     <svg
                       class="w-4 h-4 shrink-0 login-text-sub"
@@ -346,7 +338,7 @@
                       class="login-input flex-1 min-w-0 text-sm outline-none"
                     />
                   </div>
-                </GlassSurface>
+                </div>
                 <div
                   class="captcha-img shrink-0 cursor-pointer overflow-hidden"
                   :title="t('login.captchaCode')"
@@ -651,32 +643,32 @@ onMounted(loadCaptcha);
 /* ====== 装饰浮动圆（亮色） ====== */
 .deco {
   position: absolute;
-  border-radius: 50%;
   pointer-events: none;
+  border-radius: 50%;
 }
 .deco-1 {
-  width: 400px;
-  height: 400px;
   top: -10%;
   left: -8%;
+  width: 400px;
+  height: 400px;
   background: radial-gradient(circle, rgba(0, 94, 192, 0.4), transparent 70%);
   filter: blur(60px);
   animation: floatA 12s ease-in-out infinite alternate;
 }
 .deco-2 {
+  right: -5%;
+  bottom: -5%;
   width: 350px;
   height: 350px;
-  bottom: -5%;
-  right: -5%;
   background: radial-gradient(circle, rgba(254, 224, 112, 0.35), transparent 70%);
   filter: blur(55px);
   animation: floatB 10s ease-in-out infinite alternate;
 }
 .deco-3 {
-  width: 250px;
-  height: 250px;
   top: 50%;
   left: 60%;
+  width: 250px;
+  height: 250px;
   background: radial-gradient(circle, rgba(126, 200, 227, 0.25), transparent 70%);
   filter: blur(50px);
   animation: floatA 14s ease-in-out infinite alternate-reverse;
@@ -703,11 +695,24 @@ onMounted(loadCaptcha);
   color: #fff;
 }
 .feature-card {
+  color: #fff;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   backdrop-filter: blur(8px);
+}
+
+/* ====== 亮色模式文字（先于 .login-dark 修饰符声明，避免特异性倒挂） ====== */
+.login-text {
   color: #fff;
+}
+.login-text-sub {
+  color: rgba(255, 255, 255, 0.6);
+}
+.login-input {
+  color: #ffffff;
+  caret-color: #ffffff;
+  background: transparent;
 }
 
 /* ====== 暗色模式 ====== */
@@ -728,14 +733,6 @@ onMounted(loadCaptcha);
 .login-dark .login-input {
   color: #fff;
   caret-color: #fff;
-}
-
-/* ====== 亮色模式文字 ====== */
-.login-text {
-  color: #fff;
-}
-.login-text-sub {
-  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ====== 登录卡片 ====== */
@@ -774,11 +771,17 @@ onMounted(loadCaptcha);
 
 /* ====== 输入框 ====== */
 .glass-field {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   transition:
     border-color 0.2s,
-    box-shadow 0.2s;
+    box-shadow 0.2s,
+    background 0.2s;
 }
 .glass-field:focus-within {
+  background: rgba(255, 255, 255, 0.08);
   border-color: #ffffff !important;
   border-width: 2px !important;
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
@@ -791,11 +794,6 @@ onMounted(loadCaptcha);
 .glass-field.field-error:focus-within {
   border-color: #ef4444 !important;
   box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
-}
-.login-input {
-  background: transparent;
-  color: #ffffff;
-  caret-color: #ffffff;
 }
 .login-input::placeholder {
   color: rgba(255, 255, 255, 0.4);
@@ -813,9 +811,9 @@ onMounted(loadCaptcha);
 .captcha-img {
   width: 120px;
   height: 44px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
   transition: border-color 0.2s;
 }
 .captcha-img:hover {
@@ -829,25 +827,25 @@ onMounted(loadCaptcha);
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.6);
-  transition: all 0.2s;
   cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  transition: all 0.2s;
 }
 .social-icon-btn:hover {
+  color: #ffffff;
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.35);
-  color: #ffffff;
 }
 
 /* ====== 工具栏 ====== */
 .toolbar-pill {
+  padding: 4px 6px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
-  padding: 4px 6px;
   backdrop-filter: blur(12px);
 }
 .toolbar-item {
@@ -856,16 +854,16 @@ onMounted(loadCaptcha);
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
   color: rgba(255, 255, 255, 0.8);
-  transition: all 0.2s;
-  border: none;
+  cursor: pointer;
   background: transparent;
+  border: none;
+  border-radius: 50%;
+  transition: all 0.2s;
 }
 .toolbar-item:hover {
-  background: rgba(255, 255, 255, 0.12);
   color: #fff;
+  background: rgba(255, 255, 255, 0.12);
 }
 .login-dark .toolbar-pill {
   background: rgba(255, 255, 255, 0.06);
@@ -877,35 +875,35 @@ onMounted(loadCaptcha);
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
+  z-index: 100;
   min-width: 130px;
+  padding: 4px;
   background: rgba(20, 30, 50, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 10px;
   backdrop-filter: blur(16px);
-  padding: 4px;
-  z-index: 100;
 }
 .dropdown-item {
   display: flex;
   align-items: center;
   width: 100%;
   padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.8);
   font-size: 13px;
-  cursor: pointer;
-  transition: all 0.15s;
+  color: rgba(255, 255, 255, 0.8);
   white-space: nowrap;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.15s;
 }
 .dropdown-item:hover {
-  background: rgba(255, 255, 255, 0.1);
   color: #fff;
+  background: rgba(255, 255, 255, 0.1);
 }
 .dropdown-item.active {
-  color: #fff;
   font-weight: 500;
+  color: #fff;
 }
 
 /* ====== 下拉动画 ====== */
