@@ -365,6 +365,8 @@ import DeptAPI from "@/api/system/dept";
 import MenuAPI from "@/api/system/menu";
 import type { RoleItem, RoleForm, RoleQueryParams } from "@/api/system/role/types";
 import type { OptionItem } from "@/api/common";
+import { useUserStoreHook } from "@/stores/user";
+import { usePermissionStoreHook } from "@/stores/permission";
 import PermTreeItem from "./PermTreeItem.vue";
 import DepartmentTree from "./DepartmentTree.vue";
 
@@ -656,6 +658,15 @@ async function handleAssignPermSubmit() {
     toast.success(t("role.assignSuccess"));
     assignVisible.value = false;
     handleResetQuery();
+
+    // 刷新当前用户的权限菜单：让侧边栏立即反映新分配的菜单
+    // 流程：拉新 perms（按钮权限）→ 清旧动态路由 → 重新生成并注册
+    try {
+      await useUserStoreHook().getUserInfo();
+      await usePermissionStoreHook().refreshRoutes();
+    } catch (refreshErr) {
+      console.error("[Role] 刷新当前用户菜单失败:", refreshErr);
+    }
   } catch (error) {
     console.error("[Role] 分配权限失败:", error);
   } finally {

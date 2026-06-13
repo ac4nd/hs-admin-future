@@ -467,7 +467,8 @@ import type { UserForm, UserQueryParams, UserItem } from "@/api/system/user";
 import type { OptionItem } from "@/api/common";
 import { DialogMode, CommonStatus } from "@/enums/common";
 import { useTableSelection } from "@/composables/useTableSelection";
-import { useUserStore } from "@/stores/user";
+import { useUserStore, useUserStoreHook } from "@/stores/user";
+import { usePermissionStoreHook } from "@/stores/permission";
 
 import UserDeptTree from "./components/UserDeptTree.vue";
 import DeptSelectOption from "./components/DeptSelectOption.vue";
@@ -665,6 +666,17 @@ const handleSubmit = useDebounceFn(async () => {
     if (formData.id) {
       await UserAPI.update(formData.id, formData);
       toast.success("修改用户成功");
+
+      // 若编辑的是当前登录用户：角色变更可能影响自身菜单/权限，需刷新
+      const currentUserId = useUserStoreHook().userInfo.userId;
+      if (currentUserId && String(currentUserId) === String(formData.id)) {
+        try {
+          await useUserStoreHook().getUserInfo();
+          await usePermissionStoreHook().refreshRoutes();
+        } catch (refreshErr) {
+          console.error("[User] 刷新当前用户菜单失败:", refreshErr);
+        }
+      }
     } else {
       await UserAPI.create(formData);
       toast.success("新增用户成功");

@@ -104,6 +104,19 @@ export const usePermissionStore = defineStore("permission", () => {
     isRouteGenerated.value = false;
   }
 
+  /**
+   * 刷新当前用户的动态路由
+   *
+   * 适用场景：角色分配菜单、用户切换角色、菜单管理等导致当前用户可见菜单变化的操作。
+   * 流程：清除旧路由 → 重新拉取菜单 → 注册到 router。
+   * 调用方应在调用前执行 useUserStoreHook().getUserInfo() 以更新按钮级 perms。
+   */
+  async function refreshRoutes(): Promise<void> {
+    resetRoutes();
+    const dynamicRoutes = await generateRoutes();
+    dynamicRoutes.forEach((route) => router.addRoute(route));
+  }
+
   /** 设置混合布局侧边栏菜单（立即解析完整路径） */
   function setMixLayoutSideMenus(parentPath: string) {
     const parentMenu = routes.value.find((item) => item.path === parentPath);
@@ -120,6 +133,7 @@ export const usePermissionStore = defineStore("permission", () => {
     mixLayoutSideMenus,
     generateRoutes,
     resetRoutes,
+    refreshRoutes,
     setMixLayoutSideMenus,
   };
 });

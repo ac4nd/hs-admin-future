@@ -584,6 +584,8 @@ import type { MenuItem, MenuForm } from "@/api/system/menu/types";
 import type { OptionItem } from "@/api/common";
 import { MenuTypeEnum, MenuScopeEnum } from "@/enums/menu";
 import { appConfig } from "@/settings";
+import { useUserStoreHook } from "@/stores/user";
+import { usePermissionStoreHook } from "@/stores/permission";
 import TreeSelect from "./TreeSelect.vue";
 
 const { t } = useI18n();
@@ -846,6 +848,14 @@ async function handleSubmit() {
 
   closeDialog();
   handleQuery();
+
+  // 菜单变更必然影响当前用户可见菜单视图，立即刷新当前用户的权限与菜单
+  try {
+    await useUserStoreHook().getUserInfo();
+    await usePermissionStoreHook().refreshRoutes();
+  } catch (refreshErr) {
+    console.error("[Menu] 刷新当前用户菜单失败:", refreshErr);
+  }
 }
 
 // ==================== 删除 ====================
@@ -863,6 +873,14 @@ async function confirmDelete() {
   toast.success(t("menu.deleteSuccess"));
   deleteConfirmVisible.value = false;
   handleQuery();
+
+  // 菜单删除影响当前用户可见菜单视图，立即刷新
+  try {
+    await useUserStoreHook().getUserInfo();
+    await usePermissionStoreHook().refreshRoutes();
+  } catch (refreshErr) {
+    console.error("[Menu] 刷新当前用户菜单失败:", refreshErr);
+  }
 }
 
 // ==================== 初始化 ====================
