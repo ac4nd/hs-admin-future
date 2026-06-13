@@ -2,7 +2,6 @@
  * 动态路由定义
  *
  * 数据结构与 hs-admin mock `menus/routes` 返回值一致。
- * 未来接入后端 API 后，此文件可替换为 API 返回数据。
  */
 import type { RouteRecordRaw } from "vue-router";
 
@@ -79,6 +78,45 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/system/tenant/index.vue"),
         name: "Tenant",
         meta: { title: "租户管理", icon: "🏢", keepAlive: true },
+      },
+    ],
+  },
+  {
+    path: "/llm",
+    component: () => import("@/layouts/index.vue"),
+    redirect: "/llm/vendor-config",
+    name: "/llm",
+    meta: { title: "LLM管理", icon: "🤖" },
+    children: [
+      {
+        path: "vendor-config",
+        component: () => import("@/views/system/llm/vendor-config/index.vue"),
+        name: "LlmVendorConfig",
+        meta: { title: "厂商配置", icon: "🏢", keepAlive: true },
+      },
+      {
+        path: "billing-rule",
+        component: () => import("@/views/system/llm/billing-rule/index.vue"),
+        name: "LlmBillingRule",
+        meta: { title: "计费规则", icon: "💰", keepAlive: true },
+      },
+      {
+        path: "api-key-config",
+        component: () => import("@/views/system/llm/api-key-config/index.vue"),
+        name: "LlmApiKeyConfig",
+        meta: { title: "API-KEY配置", icon: "🔑", keepAlive: true },
+      },
+      {
+        path: "model-config",
+        component: () => import("@/views/system/llm/model-config/index.vue"),
+        name: "LlmModelConfig",
+        meta: { title: "模型配置", icon: "⚙️", keepAlive: true },
+      },
+      {
+        path: "usage-log",
+        component: () => import("@/views/system/llm/usage-log/index.vue"),
+        name: "LlmUsageLog",
+        meta: { title: "用量日志", icon: "📊", keepAlive: true },
       },
     ],
   },
